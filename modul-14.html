@@ -1,0 +1,2076 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0f766e">
+<title>Modul 14 — Proyek Akhir: Network Requirement Analysis</title>
+<style>
+  :root{
+    --primary:#0f766e;
+    --primary-dark:#115e59;
+    --primary-light:#ccfbf1;
+    --accent:#f59e0b;
+    --accent-dark:#b45309;
+    --danger:#dc2626;
+    --success:#16a34a;
+    --gold:#eab308;
+    --bg:#f8fafc;
+    --card:#ffffff;
+    --text:#0f172a;
+    --text-muted:#475569;
+    --border:#e2e8f0;
+    --radius:14px;
+    --shadow:0 1px 3px rgba(15,23,42,.06), 0 1px 2px rgba(15,23,42,.04);
+    --shadow-lg:0 8px 24px rgba(15,23,42,.10);
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{margin:0;padding:0}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    line-height:1.6;
+    font-size:16px;
+    -webkit-font-smoothing:antialiased;
+    padding-bottom:env(safe-area-inset-bottom);
+  }
+
+  /* ===== HERO ===== */
+  header.hero{
+    background:linear-gradient(135deg,#0f766e 0%,#115e59 60%,#0f172a 100%);
+    color:#fff;
+    padding:32px 20px 40px;
+    border-radius:0 0 28px 28px;
+    position:relative;
+    overflow:hidden;
+  }
+  header.hero::before{
+    content:"🏆";
+    position:absolute;
+    right:-10px;top:20px;
+    font-size:120px;
+    opacity:.12;
+    transform:rotate(-15deg);
+  }
+  header.hero::after{
+    content:"";
+    position:absolute;
+    left:-60px;bottom:-60px;
+    width:180px;height:180px;
+    background:rgba(94,234,212,.08);
+    border-radius:50%;
+  }
+  .badge{
+    display:inline-block;
+    background:linear-gradient(135deg,#f59e0b,#eab308);
+    color:#78350f;
+    padding:5px 14px;
+    border-radius:999px;
+    font-size:11.5px;
+    font-weight:800;
+    letter-spacing:.5px;
+    text-transform:uppercase;
+    margin-bottom:14px;
+    box-shadow:0 2px 8px rgba(245,158,11,.3);
+  }
+  header.hero h1{
+    font-size:24px;
+    margin:0 0 10px;
+    line-height:1.25;
+    font-weight:800;
+    letter-spacing:-.3px;
+  }
+  header.hero .subtitle{
+    margin:0;
+    font-size:14.5px;
+    opacity:.92;
+    max-width:520px;
+    line-height:1.5;
+  }
+
+  /* ===== TP BOX ===== */
+  .tp-box{
+    background:#fff;
+    margin:-20px 16px 20px;
+    padding:16px 18px;
+    border-radius:var(--radius);
+    box-shadow:var(--shadow-lg);
+    border-left:4px solid var(--accent);
+    position:relative;
+    z-index:1;
+  }
+  .tp-box .label{
+    font-size:11px;
+    font-weight:800;
+    letter-spacing:.6px;
+    text-transform:uppercase;
+    color:var(--accent-dark);
+    margin-bottom:6px;
+    display:block;
+  }
+  .tp-box p{
+    margin:0;
+    font-size:14.5px;
+    color:var(--text);
+    font-weight:500;
+  }
+
+  /* ===== NAV / TOC ===== */
+  nav.toc{
+    background:#fff;
+    margin:0 16px 24px;
+    padding:16px 18px;
+    border-radius:var(--radius);
+    box-shadow:var(--shadow);
+  }
+  nav.toc h2{
+    font-size:14px;
+    margin:0 0 12px;
+    color:var(--text-muted);
+    text-transform:uppercase;
+    letter-spacing:.5px;
+    font-weight:800;
+  }
+  nav.toc ol{
+    margin:0;
+    padding-left:20px;
+    font-size:14.5px;
+  }
+  nav.toc li{margin-bottom:6px}
+  nav.toc a{
+    color:var(--primary);
+    text-decoration:none;
+    font-weight:500;
+  }
+  nav.toc a:active{opacity:.6}
+
+  main{
+    padding:0 16px 40px;
+    max-width:720px;
+    margin:0 auto;
+  }
+
+  /* ===== SECTION (accordion) ===== */
+  section{
+    background:#fff;
+    border-radius:var(--radius);
+    box-shadow:var(--shadow);
+    margin-bottom:16px;
+    overflow:hidden;
+    scroll-margin-top:16px;
+  }
+
+  details{
+    border-radius:var(--radius);
+    overflow:hidden;
+  }
+  details summary{
+    list-style:none;
+    cursor:pointer;
+    padding:16px 18px;
+    display:flex;
+    align-items:center;
+    gap:12px;
+    font-weight:600;
+    font-size:15px;
+    user-select:none;
+    transition:background .15s;
+  }
+  details summary::-webkit-details-marker{display:none}
+  details summary:active{background:var(--bg)}
+
+  .num{
+    flex-shrink:0;
+    width:34px;height:34px;
+    background:var(--primary-light);
+    color:var(--primary-dark);
+    border-radius:10px;
+    display:flex;align-items:center;justify-content:center;
+    font-weight:800;
+    font-size:13px;
+  }
+  .summary-text{
+    flex:1;
+    color:var(--text);
+    line-height:1.35;
+  }
+  .chev{
+    flex-shrink:0;
+    width:20px;height:20px;
+    transition:transform .2s;
+    color:var(--text-muted);
+  }
+  details[open] > summary .chev{transform:rotate(180deg)}
+
+  .content{
+    padding:0 18px 20px;
+    font-size:15px;
+    color:var(--text);
+    border-top:1px solid var(--border);
+    padding-top:16px;
+    margin-top:0;
+  }
+
+  .content p{margin:0 0 12px}
+  .content p:last-child{margin-bottom:0}
+  .content h4{
+    font-size:14px;
+    margin:16px 0 8px;
+    color:var(--primary-dark);
+    font-weight:700;
+  }
+  .content ul,.content ol{
+    margin:0 0 12px;
+    padding-left:22px;
+  }
+  .content li{margin-bottom:6px}
+  .content strong{color:var(--text);font-weight:600}
+  .content code{
+    background:#f1f5f9;
+    padding:1px 6px;
+    border-radius:4px;
+    font-size:13px;
+    font-family:"SF Mono",Consolas,Monaco,monospace;
+    color:var(--primary-dark);
+  }
+
+  /* ===== CALLOUTS ===== */
+  .callout{
+    border-radius:10px;
+    padding:12px 14px;
+    font-size:14px;
+    margin:12px 0;
+    border-left:3px solid;
+  }
+  .callout.tip{background:#ecfdf5;border-color:var(--success);color:#065f46}
+  .callout.warn{background:#fef2f2;border-color:var(--danger);color:#991b1b}
+  .callout.info{background:#eff6ff;border-color:#2563eb;color:#1e40af}
+  .callout.gold{background:#fffbeb;border-color:var(--gold);color:#78350f}
+  .callout .title{
+    font-weight:800;
+    font-size:12px;
+    text-transform:uppercase;
+    letter-spacing:.4px;
+    display:block;
+    margin-bottom:4px;
+  }
+
+  /* ===== TABLES ===== */
+  .table-wrap{
+    overflow-x:auto;
+    margin:12px -4px;
+    border-radius:10px;
+    -webkit-overflow-scrolling:touch;
+  }
+  table{
+    width:100%;
+    border-collapse:collapse;
+    font-size:13.5px;
+    min-width:420px;
+  }
+  th{
+    background:var(--primary-light);
+    color:var(--primary-dark);
+    padding:10px 12px;
+    text-align:left;
+    font-weight:800;
+    font-size:12px;
+    text-transform:uppercase;
+    letter-spacing:.3px;
+    white-space:nowrap;
+  }
+  td{
+    padding:10px 12px;
+    border-top:1px solid var(--border);
+    vertical-align:top;
+  }
+  tr:nth-child(even) td{background:#fafbfc}
+
+  /* ===== CASE HERO ===== */
+  .case-hero{
+    background:linear-gradient(135deg,#0f766e 0%,#115e59 100%);
+    border-radius:16px;
+    padding:20px 18px;
+    color:#fff;
+    margin:12px 0 16px;
+    position:relative;
+    overflow:hidden;
+  }
+  .case-hero::after{
+    content:"";
+    position:absolute;
+    right:-30px;top:-30px;
+    width:120px;height:120px;
+    background:rgba(94,234,212,.15);
+    border-radius:50%;
+  }
+  .case-hero .case-label{
+    display:inline-block;
+    background:rgba(255,255,255,.18);
+    color:#fff;
+    padding:3px 10px;
+    border-radius:999px;
+    font-size:10.5px;
+    font-weight:800;
+    letter-spacing:.5px;
+    text-transform:uppercase;
+    margin-bottom:10px;
+    backdrop-filter:blur(4px);
+  }
+  .case-hero h3{
+    margin:0 0 10px;
+    font-size:17px;
+    font-weight:800;
+    line-height:1.3;
+    position:relative;
+    z-index:1;
+  }
+  .case-hero p{
+    margin:0;
+    font-size:13.5px;
+    line-height:1.55;
+    opacity:.95;
+    position:relative;
+    z-index:1;
+  }
+
+  /* ===== STEP LIST (TUGAS) ===== */
+  .task-list{
+    list-style:none;
+    padding:0;
+    margin:12px 0;
+    counter-reset:task;
+  }
+  .task-list li{
+    counter-increment:task;
+    background:#fff;
+    border:1.5px solid var(--border);
+    border-radius:12px;
+    padding:14px 14px 14px 52px;
+    margin-bottom:8px;
+    font-size:14px;
+    position:relative;
+    transition:border-color .2s,background .2s;
+    cursor:pointer;
+  }
+  .task-list li::before{
+    content:counter(task);
+    position:absolute;
+    left:12px;top:14px;
+    width:28px;height:28px;
+    background:var(--primary-light);
+    color:var(--primary-dark);
+    border-radius:8px;
+    display:flex;align-items:center;justify-content:center;
+    font-size:13px;
+    font-weight:800;
+    transition:all .2s;
+  }
+  .task-list li::after{
+    content:"";
+    position:absolute;
+    right:14px;top:50%;
+    transform:translateY(-50%);
+    width:20px;height:20px;
+    border:2px solid var(--border);
+    border-radius:50%;
+    transition:all .2s;
+  }
+  .task-list li.done{
+    background:#f0fdf4;
+    border-color:var(--success);
+  }
+  .task-list li.done::before{
+    background:var(--success);
+    color:#fff;
+  }
+  .task-list li.done::after{
+    background:var(--success);
+    border-color:var(--success);
+    content:"✓";
+    color:#fff;
+    font-size:13px;
+    font-weight:800;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+  .task-list li .task-title{
+    font-weight:700;
+    display:block;
+    margin-bottom:2px;
+    color:var(--text);
+  }
+  .task-list li .task-desc{
+    font-size:12.5px;
+    color:var(--text-muted);
+    font-weight:400;
+  }
+
+  /* Task progress */
+  .task-progress{
+    background:#f8fafc;
+    border-radius:10px;
+    padding:12px 14px;
+    margin:12px 0;
+    display:flex;
+    align-items:center;
+    gap:12px;
+    border:1px solid var(--border);
+  }
+  .task-progress .prog-bar{
+    flex:1;
+    height:8px;
+    background:#e2e8f0;
+    border-radius:4px;
+    overflow:hidden;
+  }
+  .task-progress .prog-fill{
+    height:100%;
+    background:linear-gradient(90deg,var(--success),#4ade80);
+    width:0%;
+    transition:width .3s ease;
+    border-radius:4px;
+  }
+  .task-progress .prog-text{
+    flex-shrink:0;
+    font-size:12.5px;
+    font-weight:800;
+    color:var(--primary-dark);
+    font-family:"SF Mono",Consolas,monospace;
+    min-width:44px;
+    text-align:right;
+  }
+
+  /* ===== RUBRIC ===== */
+  .rubric{
+    background:#fff;
+    border:1.5px solid var(--border);
+    border-radius:14px;
+    overflow:hidden;
+    margin:14px 0;
+  }
+  .rubric-head{
+    background:linear-gradient(135deg,#1e293b 0%,#0f172a 100%);
+    color:#fff;
+    padding:14px 16px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+  }
+  .rubric-head .title{
+    font-size:13px;
+    font-weight:800;
+    letter-spacing:.4px;
+    text-transform:uppercase;
+  }
+  .rubric-head .sub{
+    font-size:11px;
+    color:#94a3b8;
+    margin-top:2px;
+    font-weight:400;
+    text-transform:none;
+    letter-spacing:0;
+  }
+  .rubric-item{
+    padding:14px 16px;
+    border-bottom:1px solid var(--border);
+  }
+  .rubric-item:last-child{border-bottom:none}
+  .rubric-item .item-head{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    margin-bottom:8px;
+  }
+  .rubric-item .item-name{
+    font-size:13.5px;
+    font-weight:700;
+    color:var(--text);
+    flex:1;
+  }
+  .rubric-item .item-weight{
+    flex-shrink:0;
+    background:var(--primary-light);
+    color:var(--primary-dark);
+    padding:3px 10px;
+    border-radius:6px;
+    font-size:11px;
+    font-weight:800;
+    letter-spacing:.3px;
+  }
+  .rubric-item .item-desc{
+    font-size:12.5px;
+    color:var(--text-muted);
+    line-height:1.5;
+    margin-bottom:10px;
+  }
+  .rubric-scale{
+    display:flex;
+    gap:5px;
+  }
+  .rubric-scale button{
+    flex:1;
+    padding:10px 4px;
+    border-radius:8px;
+    border:1.5px solid var(--border);
+    background:#fff;
+    cursor:pointer;
+    font-family:inherit;
+    font-weight:700;
+    font-size:12px;
+    color:var(--text-muted);
+    transition:all .15s;
+    line-height:1.2;
+  }
+  .rubric-scale button:hover{
+    border-color:var(--primary);
+    color:var(--primary-dark);
+  }
+  .rubric-scale button .score-num{
+    display:block;
+    font-size:15px;
+    font-weight:800;
+    font-family:"SF Mono",Consolas,monospace;
+    margin-bottom:2px;
+  }
+  .rubric-scale button .score-label{
+    font-size:10px;
+    font-weight:500;
+    opacity:.8;
+  }
+  .rubric-scale button.active{
+    background:var(--primary);
+    border-color:var(--primary);
+    color:#fff;
+    transform:scale(1.03);
+    box-shadow:0 3px 8px rgba(15,118,110,.25);
+  }
+  .rubric-scale button.active .score-label{opacity:.95}
+  .rubric-scale button[data-v="5"].active{background:var(--success);border-color:var(--success);box-shadow:0 3px 8px rgba(22,163,74,.25)}
+  .rubric-scale button[data-v="4"].active{background:#65a30d;border-color:#65a30d;box-shadow:0 3px 8px rgba(101,163,13,.25)}
+  .rubric-scale button[data-v="3"].active{background:var(--accent);border-color:var(--accent);box-shadow:0 3px 8px rgba(245,158,11,.25)}
+  .rubric-scale button[data-v="2"].active{background:#ea580c;border-color:#ea580c;box-shadow:0 3px 8px rgba(234,88,12,.25)}
+  .rubric-scale button[data-v="1"].active{background:var(--danger);border-color:var(--danger);box-shadow:0 3px 8px rgba(220,38,38,.25)}
+
+  /* Score Result */
+  .score-result{
+    background:linear-gradient(135deg,#0f172a 0%,#1e293b 100%);
+    border-radius:16px;
+    padding:20px 18px;
+    color:#fff;
+    margin:16px 0;
+    text-align:center;
+    position:relative;
+    overflow:hidden;
+  }
+  .score-result::before{
+    content:"";
+    position:absolute;
+    right:-40px;top:-40px;
+    width:140px;height:140px;
+    background:radial-gradient(circle,rgba(94,234,212,.15) 0%,transparent 70%);
+    border-radius:50%;
+  }
+  .score-result .score-label{
+    font-size:11.5px;
+    color:#94a3b8;
+    letter-spacing:.5px;
+    text-transform:uppercase;
+    font-weight:800;
+    margin-bottom:8px;
+    position:relative;
+    z-index:1;
+  }
+  .score-result .score-value{
+    font-size:48px;
+    font-weight:800;
+    font-family:"SF Mono",Consolas,monospace;
+    line-height:1;
+    color:#5eead4;
+    margin-bottom:4px;
+    position:relative;
+    z-index:1;
+    transition:color .3s;
+  }
+  .score-result .score-value small{
+    font-size:20px;
+    color:#94a3b8;
+    font-weight:600;
+  }
+  .score-result .score-grade{
+    font-size:14px;
+    font-weight:700;
+    color:#cbd5e1;
+    margin-bottom:12px;
+    position:relative;
+    z-index:1;
+  }
+  .score-result .score-verdict{
+    font-size:13px;
+    line-height:1.55;
+    color:#94a3b8;
+    padding:12px 14px;
+    background:rgba(255,255,255,.05);
+    border-radius:10px;
+    position:relative;
+    z-index:1;
+  }
+
+  /* ===== CHECKLIST ===== */
+  .checklist{
+    background:#fff;
+    border:1.5px solid var(--border);
+    border-radius:14px;
+    overflow:hidden;
+    margin:14px 0;
+  }
+  .checklist-item{
+    display:flex;
+    align-items:flex-start;
+    gap:12px;
+    padding:12px 14px;
+    border-bottom:1px solid var(--border);
+    cursor:pointer;
+    transition:background .15s;
+    user-select:none;
+  }
+  .checklist-item:last-child{border-bottom:none}
+  .checklist-item:active{background:#f8fafc}
+  .checklist-item .cb{
+    flex-shrink:0;
+    width:22px;height:22px;
+    border:2px solid var(--border);
+    border-radius:6px;
+    margin-top:2px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    transition:all .15s;
+  }
+  .checklist-item .cb::after{
+    content:"";
+    font-size:14px;
+    font-weight:900;
+    color:#fff;
+    line-height:1;
+    opacity:0;
+    transition:opacity .15s;
+  }
+  .checklist-item.checked .cb{
+    background:var(--success);
+    border-color:var(--success);
+  }
+  .checklist-item.checked .cb::after{
+    content:"✓";
+    opacity:1;
+  }
+  .checklist-item .cb-text{
+    flex:1;
+    font-size:13.5px;
+    line-height:1.5;
+    color:var(--text);
+    transition:color .15s;
+  }
+  .checklist-item.checked .cb-text{
+    color:var(--text-muted);
+    text-decoration:line-through;
+    text-decoration-color:var(--border);
+  }
+
+  /* ===== TIMELINE ===== */
+  .timeline{
+    position:relative;
+    margin:16px 0;
+    padding-left:36px;
+  }
+  .timeline::before{
+    content:"";
+    position:absolute;
+    left:14px;
+    top:8px;
+    bottom:8px;
+    width:2px;
+    background:linear-gradient(180deg,var(--primary) 0%,var(--primary-light) 100%);
+    border-radius:1px;
+  }
+  .timeline-item{
+    position:relative;
+    margin-bottom:18px;
+  }
+  .timeline-item:last-child{margin-bottom:0}
+  .timeline-item::before{
+    content:"";
+    position:absolute;
+    left:-28px;
+    top:4px;
+    width:14px;height:14px;
+    background:var(--primary);
+    border:3px solid #fff;
+    border-radius:50%;
+    box-shadow:0 0 0 2px var(--primary);
+  }
+  .timeline-item .tl-title{
+    font-size:14px;
+    font-weight:800;
+    color:var(--primary-dark);
+    margin-bottom:4px;
+  }
+  .timeline-item .tl-time{
+    display:inline-block;
+    background:var(--primary-light);
+    color:var(--primary-dark);
+    padding:1px 8px;
+    border-radius:5px;
+    font-size:10.5px;
+    font-weight:800;
+    letter-spacing:.3px;
+    text-transform:uppercase;
+    margin-bottom:6px;
+  }
+  .timeline-item .tl-desc{
+    font-size:13px;
+    color:var(--text-muted);
+    line-height:1.5;
+  }
+
+  /* ===== SCENARIO BOX ===== */
+  .scenario{
+    background:linear-gradient(135deg,#fffbeb 0%,#fef3c7 100%);
+    border-radius:14px;
+    padding:16px 18px;
+    margin:14px 0;
+    border-left:4px solid var(--accent);
+    font-size:14px;
+    color:#78350f;
+    line-height:1.6;
+  }
+  .scenario .label{
+    display:block;
+    font-size:11px;
+    font-weight:800;
+    letter-spacing:.5px;
+    text-transform:uppercase;
+    color:var(--accent-dark);
+    margin-bottom:8px;
+  }
+  .scenario em{
+    font-style:normal;
+    background:rgba(180,83,9,.12);
+    padding:1px 5px;
+    border-radius:4px;
+    font-weight:600;
+  }
+
+  /* ===== STAT GRID ===== */
+  .stat-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:8px;
+    margin:12px 0;
+  }
+  .stat-card{
+    background:#fff;
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:12px;
+    text-align:center;
+  }
+  .stat-card .stat-num{
+    font-size:22px;
+    font-weight:800;
+    color:var(--primary-dark);
+    line-height:1;
+    font-family:"SF Mono",Consolas,monospace;
+    margin-bottom:4px;
+  }
+  .stat-card .stat-label{
+    font-size:11px;
+    color:var(--text-muted);
+    text-transform:uppercase;
+    letter-spacing:.3px;
+    font-weight:700;
+    line-height:1.3;
+  }
+
+  /* ===== REVEAL ===== */
+  .reveal{
+    background:transparent;
+    border:2px dashed var(--accent);
+    border-radius:12px;
+    margin:14px 0 0;
+    overflow:hidden;
+    transition:border-color .2s;
+  }
+  .reveal[open]{
+    border-style:solid;
+    border-color:var(--accent);
+    background:#fff;
+  }
+  .reveal > summary{
+    padding:14px 16px;
+    font-size:14px;
+    font-weight:700;
+    color:var(--accent-dark);
+    background:linear-gradient(135deg,#fffbeb 0%,#fef3c7 100%);
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  .reveal[open] > summary{
+    background:#f8fafc;
+    color:var(--primary-dark);
+    border-bottom:1px solid var(--border);
+  }
+  .reveal > summary .reveal-icon{
+    flex-shrink:0;
+    width:32px;height:32px;
+    background:var(--accent);
+    color:#fff;
+    border-radius:9px;
+    display:flex;align-items:center;justify-content:center;
+    font-size:15px;
+  }
+  .reveal[open] > summary .reveal-icon{background:var(--primary)}
+  .reveal > summary .reveal-text{
+    flex:1;
+    line-height:1.3;
+  }
+  .reveal > summary .reveal-text small{
+    display:block;
+    font-size:11.5px;
+    font-weight:500;
+    color:var(--accent-dark);
+    margin-top:2px;
+  }
+  .reveal[open] > summary .reveal-text small{color:var(--text-muted)}
+  .reveal[open] > summary .chev{
+    color:var(--primary-dark);
+    transform:rotate(180deg);
+  }
+  .reveal-body{
+    padding:16px 18px;
+    font-size:14px;
+  }
+  .reveal-body p{margin:0 0 10px}
+  .reveal-body p:last-child{margin-bottom:0}
+  .reveal-body h5{
+    font-size:13px;
+    margin:14px 0 8px;
+    color:var(--primary-dark);
+    font-weight:800;
+    text-transform:uppercase;
+    letter-spacing:.3px;
+    display:flex;
+    align-items:center;
+    gap:6px;
+  }
+  .reveal-body h5::before{
+    content:"";
+    width:4px;height:14px;
+    background:var(--accent);
+    border-radius:2px;
+  }
+  .reveal-body ul,.reveal-body ol{
+    margin:0 0 10px;
+    padding-left:20px;
+    font-size:13.5px;
+  }
+  .reveal-body ul li,.reveal-body ol li{margin-bottom:4px}
+
+  /* ===== STEPS ===== */
+  .steps{
+    counter-reset:step;
+    list-style:none;
+    padding:0;
+    margin:12px 0;
+  }
+  .steps li{
+    counter-increment:step;
+    position:relative;
+    padding:0 0 16px 40px;
+    font-size:14.5px;
+  }
+  .steps li::before{
+    content:counter(step);
+    position:absolute;
+    left:0;top:0;
+    width:28px;height:28px;
+    background:var(--primary);
+    color:#fff;
+    border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    font-size:13px;
+    font-weight:800;
+  }
+  .steps li:last-child{padding-bottom:0}
+
+  /* ===== FORMULA ===== */
+  .formula{
+    background:#0f172a;
+    color:#e2e8f0;
+    border-radius:12px;
+    padding:14px 16px;
+    margin:12px 0;
+    font-family:"SF Mono",Consolas,Monaco,monospace;
+    font-size:12.5px;
+    line-height:1.7;
+    overflow-x:auto;
+    -webkit-overflow-scrolling:touch;
+  }
+  .formula .hl{color:#5eead4;font-weight:700}
+  .formula .cm{color:#94a3b8}
+
+  /* ===== TAKEAWAY ===== */
+  .takeaway{
+    background:linear-gradient(135deg,#0f172a 0%,#1e293b 100%);
+    color:#fff;
+    border-radius:var(--radius);
+    padding:22px 20px;
+    margin:24px 0 0;
+    position:relative;
+    overflow:hidden;
+  }
+  .takeaway::before{
+    content:"🎓";
+    position:absolute;
+    right:-10px;top:-10px;
+    font-size:100px;
+    opacity:.08;
+  }
+  .takeaway h3{
+    margin:0 0 14px;
+    font-size:15px;
+    color:#5eead4;
+    text-transform:uppercase;
+    letter-spacing:.5px;
+    position:relative;
+    z-index:1;
+  }
+  .takeaway ol{
+    margin:0;
+    padding-left:22px;
+    font-size:14.5px;
+    position:relative;
+    z-index:1;
+  }
+  .takeaway li{margin-bottom:10px;color:#e2e8f0}
+  .takeaway li:last-child{margin-bottom:0}
+  .takeaway strong{color:#5eead4}
+
+  /* ===== FOOTER ===== */
+  footer{
+    text-align:center;
+    padding:24px 16px 40px;
+    font-size:12.5px;
+    color:var(--text-muted);
+  }
+  footer strong{color:var(--primary-dark)}
+
+  /* ===== BACK TO TOP ===== */
+  .back-top{
+    position:fixed;
+    right:16px;
+    bottom:calc(16px + env(safe-area-inset-bottom));
+    width:44px;height:44px;
+    border-radius:50%;
+    background:var(--primary);
+    color:#fff;
+    border:none;
+    box-shadow:0 4px 12px rgba(15,118,110,.35);
+    cursor:pointer;
+    display:none;
+    align-items:center;justify-content:center;
+    z-index:50;
+    transition:transform .15s,opacity .2s;
+  }
+  .back-top:active{transform:scale(.92)}
+  .back-top.show{display:flex}
+
+  @media (min-width:600px){
+    header.hero{padding:44px 32px 52px}
+    header.hero h1{font-size:30px}
+    header.hero::before{font-size:160px;right:20px}
+    .tp-box{margin:-24px 24px 24px;padding:18px 22px}
+    nav.toc{margin:0 24px 28px;padding:18px 22px}
+    main{padding:0 24px 60px}
+    .content{font-size:15.5px}
+    .stat-grid{grid-template-columns:repeat(4,1fr)}
+    .rubric-scale button{padding:12px 4px}
+    .rubric-scale button .score-label{font-size:10.5px}
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <span class="badge">🏆 Modul 14 · Proyek Akhir</span>
+  <h1>Network Requirement Analysis</h1>
+  <p class="subtitle">Proyek puncak: dari analisis kebutuhan sampai proposal jaringan lengkap untuk kasus nyata.</p>
+</header>
+
+<div class="tp-box">
+  <span class="label">Tujuan Pembelajaran</span>
+  <p>Memahami kebutuhan teknis pengguna dan peralatan jaringan dengan teknologi yang sesuai.</p>
+</div>
+
+<nav class="toc">
+  <h2>Daftar Isi</h2>
+  <ol>
+    <li><a href="#m14-1">Pengantar Proyek Akhir</a></li>
+    <li><a href="#m14-2">Kasus: SMKN 3 Jember</a></li>
+    <li><a href="#m14-3">15 Tugas Proyek</a></li>
+    <li><a href="#m14-4">Timeline & Pembagian Kerja</a></li>
+    <li><a href="#m14-5">Checklist Penyerahan</a></li>
+    <li><a href="#m14-6">Rubrik Penilaian</a></li>
+    <li><a href="#m14-7">Format Presentasi</a></li>
+    <li><a href="#m14-8">Panduan Pembahasan Proyek</a></li>
+  </ol>
+</nav>
+
+<main>
+
+  <!-- 14.1 -->
+  <section id="m14-1">
+    <details open>
+      <summary>
+        <span class="num">14.1</span>
+        <span class="summary-text">Pengantar Proyek Akhir</span>
+        <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </summary>
+      <div class="content">
+        <p>Selamat datang di <strong>Modul 14 — Proyek Akhir</strong>. Ini adalah puncak dari seluruh rangkaian modul 1–13. Di sini Anda akan menerapkan semua yang telah dipelajari untuk satu proyek jaringan lengkap.</p>
+
+        <div class="callout gold">
+          <span class="title">Hakikat Proyek Ini</span>
+          <p style="margin:0">Proyek ini bukan tentang "bisa setting perangkat". Proyek ini tentang <strong>mampu menjawab pertanyaan teknisi yang paling penting</strong>:<br><br>
+          <em>"Mengapa perangkat dan teknologi ini yang dipilih untuk kebutuhan tersebut?"</em></p>
+        </div>
+
+        <h4>Alur Berpikir Proyek</h4>
+        <div class="formula">
+          <span class="cm">Kebutuhan pengguna</span>
+          <br><span class="hl">↓</span><br>
+          <span class="cm">Kebutuhan teknis</span>
+          <br><span class="hl">↓</span><br>
+          <span class="cm">Parameter jaringan</span>
+          <br><span class="hl">↓</span><br>
+          <span class="cm">Alternatif teknologi</span>
+          <br><span class="hl">↓</span><br>
+          <span class="cm">Perbandingan perangkat</span>
+          <br><span class="hl">↓</span><br>
+          <span class="cm">Pemilihan teknologi</span>
+          <br><span class="hl">↓</span><br>
+          <span class="cm">Perancangan jaringan</span>
+          <br><span class="hl">↓</span><br>
+          <span class="cm">BoM + estimasi biaya</span>
+          <br><span class="hl">↓</span><br>
+          <span class="cm">Justifikasi teknis</span>
+        </div>
+
+        <h4>Output yang Diharapkan</h4>
+        <ul>
+          <li><strong>Proposal Kebutuhan Jaringan</strong> lengkap (10–20 halaman).</li>
+          <li><strong>Bill of Materials (BoM)</strong> dengan estimasi biaya.</li>
+          <li><strong>Network Diagram</strong> — diagram topologi jaringan.</li>
+          <li><strong>Justifikasi Teknis</strong> — untuk setiap keputusan.</li>
+          <li><strong>Presentasi</strong> — 15 menit + tanya jawab.</li>
+        </ul>
+
+        <div class="callout tip">
+          <span class="title">Tips</span>
+          <p style="margin:0">Proyek ini <strong>tidak ada satu jawaban benar</strong>. Banyak solusi bisa valid asalkan setiap pilihan punya alasan teknis & bisnis yang kuat. Fokus pada <em>proses berpikir</em>, bukan pada <em>hasil akhir</em>.</p>
+        </div>
+      </div>
+    </details>
+  </section>
+
+  <!-- 14.2 KASUS -->
+  <section id="m14-2">
+    <details>
+      <summary>
+        <span class="num">14.2</span>
+        <span class="summary-text">Kasus: SMKN 3 Jember</span>
+        <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </summary>
+      <div class="content">
+        <div class="case-hero">
+          <span class="case-label">📋 Kasus Proyek Akhir</span>
+          <h3>SMKN 3 Jember akan membangun jaringan baru untuk sebuah laboratorium TKJ</h3>
+          <p>Dengan 36 komputer, akses Wi-Fi untuk guru, server lokal, akses internet, dan kemungkinan penambahan pengguna di masa depan.</p>
+        </div>
+
+        <h4>Data Awal Proyek</h4>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Aspek</th><th>Detail</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Sekolah</td><td>SMK Negeri 3 Jember</td></tr>
+              <tr><td>Ruang lingkup</td><td>Laboratorium TKJ baru</td></tr>
+              <tr><td>PC siswa</td><td>36 unit</td></tr>
+              <tr><td>PC guru / instruktur</td><td>2 unit</td></tr>
+              <tr><td>Akses Wi-Fi</td><td>Untuk guru & staf di area lab</td></tr>
+              <tr><td>Server lokal</td><td>Untuk file sharing, print server, LMS</td></tr>
+              <tr><td>Akses internet</td><td>Koneksi ke ISP sekolah</td></tr>
+              <tr><td>Pertumbuhan</td><td>Kemungkinan tambah pengguna di masa depan</td></tr>
+              <tr><td>Anggaran</td><td>Ditentukan oleh sekolah (asumsi Rp30 juta untuk perangkat jaringan)</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h4>Statistik Proyek</h4>
+        <div class="stat-grid">
+          <div class="stat-card">
+            <div class="stat-num">36</div>
+            <div class="stat-label">PC Siswa</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num">2</div>
+            <div class="stat-label">PC Guru</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num">12</div>
+            <div class="stat-label">Guru Wi-Fi</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num">1</div>
+            <div class="stat-label">Server Lokal</div>
+          </div>
+        </div>
+
+        <div class="scenario">
+          <span class="label">Konteks Lengkap</span>
+          Lab TKJ ini akan menjadi ruang utama praktikum siswa kelas X, XI, dan XII. Setiap kelas praktikum berlangsung 3–4 jam, dengan seluruh PC aktif bersamaan. Server lokal akan menyimpan image OS, file materi, dan aplikasi praktikum. Siswa juga perlu akses ke internet untuk praktikum jaringan dan ujian online.
+        </div>
+
+        <h4>Asumsi & Batasan</h4>
+        <ul>
+          <li>Lab berada di <strong>satu ruangan besar</strong> (12 × 8 m).</li>
+          <li>Jarak lab ke <strong>ruang server sekolah</strong> ~30 m.</li>
+          <li>Kabel antar gedung <strong>tidak</strong> termasuk dalam anggaran.</li>
+          <li>Perangkat client (PC) sudah tersedia — hanya jaringan yang dibangun.</li>
+          <li>Listrik sudah tersedia di setiap meja.</li>
+        </ul>
+
+        <div class="callout info">
+          <span class="title">Peran Anda</span>
+          <p style="margin:0">Anda adalah <strong>teknisi jaringan</strong> yang diminta menyusun proposal lengkap untuk kepala sekolah. Semua keputusan harus bisa Anda pertanggungjawabkan secara teknis dan ekonomis.</p>
+        </div>
+      </div>
+    </details>
+  </section>
+
+  <!-- 14.3 15 TUGAS -->
+  <section id="m14-3">
+    <details>
+      <summary>
+        <span class="num">14.3</span>
+        <span class="summary-text">15 Tugas Proyek</span>
+        <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </summary>
+      <div class="content">
+        <p>Lima belas tugas berikut adalah <strong>kerangka proyek akhir</strong>. Tandai setiap tugas yang sudah selesai dengan <em>tap</em> pada kartunya. Progres akan terlihat otomatis di bawah.</p>
+
+        <div class="task-progress">
+          <div class="prog-bar"><div class="prog-fill" id="progFill"></div></div>
+          <div class="prog-text"><span id="progCount">0</span>/15</div>
+        </div>
+
+        <ol class="task-list" id="taskList">
+          <li data-task="1" onclick="toggleTask(this)">
+            <span class="task-title">Identifikasi Kebutuhan Pengguna</span>
+            <span class="task-desc">Siapa penggunanya, berapa jumlahnya, apa kebutuhannya</span>
+          </li>
+          <li data-task="2" onclick="toggleTask(this)">
+            <span class="task-title">Identifikasi Aplikasi & Layanan</span>
+            <span class="task-desc">Daftar aplikasi yang akan dipakai + profil trafiknya</span>
+          </li>
+          <li data-task="3" onclick="toggleTask(this)">
+            <span class="task-title">Menentukan Kebutuhan Bandwidth</span>
+            <span class="task-desc">Total bandwidth untuk semua aplikasi & pengguna + cadangan</span>
+          </li>
+          <li data-task="4" onclick="toggleTask(this)">
+            <span class="task-title">Menentukan Media Transmisi</span>
+            <span class="task-desc">Kabel / fiber / wireless, plus alasan pemilihan</span>
+          </li>
+          <li data-task="5" onclick="toggleTask(this)">
+            <span class="task-title">Menentukan Teknologi Ethernet</span>
+            <span class="task-desc">Kecepatan access & uplink (1G / 2.5G / 10G)</span>
+          </li>
+          <li data-task="6" onclick="toggleTask(this)">
+            <span class="task-title">Menentukan Teknologi Wi-Fi</span>
+            <span class="task-desc">Standar, band, jumlah AP, coverage</span>
+          </li>
+          <li data-task="7" onclick="toggleTask(this)">
+            <span class="task-title">Memilih Switch</span>
+            <span class="task-desc">Jenis, jumlah port, PoE, uplink, manajemen</span>
+          </li>
+          <li data-task="8" onclick="toggleTask(this)">
+            <span class="task-title">Memilih Router</span>
+            <span class="task-desc">Throughput, WAN, firewall, QoS, VPN</span>
+          </li>
+          <li data-task="9" onclick="toggleTask(this)">
+            <span class="task-title">Memilih Access Point</span>
+            <span class="task-desc">Jumlah, jenis, kapasitas client, manajemen</span>
+          </li>
+          <li data-task="10" onclick="toggleTask(this)">
+            <span class="task-title">Menentukan Perangkat Pendukung</span>
+            <span class="task-desc">Rack, kabel, konektor, UPS, label, dll.</span>
+          </li>
+          <li data-task="11" onclick="toggleTask(this)">
+            <span class="task-title">Membuat Topologi</span>
+            <span class="task-desc">Jenis topologi + alasan pemilihan</span>
+          </li>
+          <li data-task="12" onclick="toggleTask(this)">
+            <span class="task-title">Membuat Bill of Materials (BoM)</span>
+            <span class="task-desc">Daftar lengkap item + qty + harga + total</span>
+          </li>
+          <li data-task="13" onclick="toggleTask(this)">
+            <span class="task-title">Menghitung Estimasi Biaya</span>
+            <span class="task-desc">Subtotal + instalasi + cadangan, total ≤ anggaran</span>
+          </li>
+          <li data-task="14" onclick="toggleTask(this)">
+            <span class="task-title">Membuat Tabel Perbandingan Perangkat</span>
+            <span class="task-desc">Minimal 3 kandidat perangkat utama + decision matrix</span>
+          </li>
+          <li data-task="15" onclick="toggleTask(this)">
+            <span class="task-title">Mempertanggungjawabkan Alasan Setiap Pilihan</span>
+            <span class="task-desc">Justifikasi teknis & bisnis untuk setiap keputusan</span>
+          </li>
+        </ol>
+
+        <div class="callout tip">
+          <span class="title">Tips</span>
+          <p style="margin:0">Tandai tugas yang sudah selesai seiring berjalannya proyek. Ini membantu Anda melihat progres secara visual.</p>
+        </div>
+      </div>
+    </details>
+  </section>
+
+  <!-- 14.4 TIMELINE -->
+  <section id="m14-4">
+    <details>
+      <summary>
+        <span class="num">14.4</span>
+        <span class="summary-text">Timeline & Pembagian Kerja</span>
+        <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </summary>
+      <div class="content">
+        <p>Proyek akhir ini bisa dikerjakan <strong>individual</strong> (rekomendasi) atau <strong>kelompok 2–3 orang</strong> (jika diizinkan). Berikut timeline yang disarankan untuk 4 minggu.</p>
+
+        <h4>Timeline 4 Minggu</h4>
+        <div class="timeline">
+          <div class="timeline-item">
+            <div class="tl-title">Fase 1 — Analisis Kebutuhan</div>
+            <div class="tl-time">Minggu 1</div>
+            <div class="tl-desc">Tugas 1–3: Identifikasi pengguna, aplikasi, dan bandwidth. Output: User Requirement + Application Requirement.</div>
+          </div>
+
+          <div class="timeline-item">
+            <div class="tl-title">Fase 2 — Pemilihan Teknologi</div>
+            <div class="tl-time">Minggu 2</div>
+            <div class="tl-desc">Tugas 4–9: Media transmisi, Ethernet, Wi-Fi, switch, router, AP. Output: Technology Selection.</div>
+          </div>
+
+          <div class="timeline-item">
+            <div class="tl-title">Fase 3 — Perancangan & Biaya</div>
+            <div class="tl-time">Minggu 3</div>
+            <div class="tl-desc">Tugas 10–13: Perangkat pendukung, topologi, BoM, estimasi biaya. Output: BoM + Diagram.</div>
+          </div>
+
+          <div class="timeline-item">
+            <div class="tl-title">Fase 4 — Finalisasi & Presentasi</div>
+            <div class="tl-time">Minggu 4</div>
+            <div class="tl-desc">Tugas 14–15: Perbandingan perangkat, justifikasi, proposal akhir, presentasi. Output: Proposal lengkap.</div>
+          </div>
+        </div>
+
+        <h4>Pembagian Kerja (Jika Kelompok)</h4>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Peran</th><th>Tanggung Jawab</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Analis Kebutuhan</strong></td>
+                <td>Fokus pada Tugas 1–3 (pengguna, aplikasi, bandwidth)</td>
+              </tr>
+              <tr>
+                <td><strong>Arsitek Jaringan</strong></td>
+                <td>Fokus pada Tugas 4–7, 11 (teknologi & topologi)</td>
+              </tr>
+              <tr>
+                <td><strong>Pengadaan & Biaya</strong></td>
+                <td>Fokus pada Tugas 8–10, 12–13 (perangkat, BoM, biaya)</td>
+              </tr>
+              <tr>
+                <td><strong>Semua anggota</strong></td>
+                <td>Tugas 14–15 (perbandingan & justifikasi) dikerjakan bersama</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="callout warn">
+          <span class="title">Peringatan</span>
+          <p style="margin:0">Jangan menumpuk semua pekerjaan di minggu terakhir. Jaringan yang baik <strong>dirancang</strong>, bukan <strong>dikarang</strong>. Butuh waktu untuk analisis & revisi.</p>
+        </div>
+      </div>
+    </details>
+  </section>
+
+  <!-- 14.5 CHECKLIST -->
+  <section id="m14-5">
+    <details>
+      <summary>
+        <span class="num">14.5</span>
+        <span class="summary-text">Checklist Penyerahan</span>
+        <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </summary>
+      <div class="content">
+        <p>Sebelum menyerahkan proyek, pastikan semua item di bawah ini sudah selesai. Tap untuk mencentang.</p>
+
+        <div class="checklist" id="submitChecklist">
+          <div class="checklist-item" onclick="toggleCheck(this)">
+            <div class="cb"></div>
+            <div class="cb-text">User Requirement List (minimal 6 item) sudah lengkap dengan prioritas MoSCoW</div>
+          </div>
+          <div class="checklist-item" onclick="toggleCheck(this)">
+            <div class="cb"></div>
+            <div class="cb-text">Application Requirement List sudah lengkap dengan profil trafik</div>
+          </div>
+          <div class="checklist-item" onclick="toggleCheck(this)">
+            <div class="cb"></div>
+            <div class="cb-text">Perhitungan bandwidth total (termasuk overhead & cadangan) sudah ada</div>
+          </div>
+          <div class="checklist-item" onclick="toggleCheck(this)">
+            <div class="cb"></div>
+            <div class="cb-text">Justifikasi media transmisi, Ethernet, dan Wi-Fi sudah lengkap</div>
+          </div>
+          <div class="checklist-item" onclick="toggleCheck(this)">
+            <div class="cb"></div>
+            <div class="cb-text">Daftar perangkat (switch, router, AP) sudah lengkap dengan spesifikasi</div>
+          </div>
+          <div class="checklist-item" onclick="toggleCheck(this)">
+            <div class="cb"></div>
+            <div class="cb-text">Diagram topologi jaringan sudah ada dan bisa dibaca</div>
+          </div>
+          <div class="checklist-item" onclick="toggleCheck(this)">
+            <div class="cb"></div>
+            <div class="cb-text">Bill of Materials (BoM) lengkap dengan qty & harga</div>
+          </div>
+          <div class="checklist-item" onclick="toggleCheck(this)">
+            <div class="cb"></div>
+            <div class="cb-text">Estimasi biaya total ≤ anggaran yang ditentukan (Rp30 juta)</div>
+          </div>
+          <div class="checklist-item" onclick="toggleCheck(this)">
+            <div class="cb"></div>
+            <div class="cb-text">Tabel perbandingan minimal 3 kandidat perangkat utama sudah ada</div>
+          </div>
+          <div class="checklist-item" onclick="toggleCheck(this)">
+            <div class="cb"></div>
+            <div class="cb-text">Justifikasi teknis & bisnis untuk setiap keputusan sudah lengkap</div>
+          </div>
+          <div class="checklist-item" onclick="toggleCheck(this)">
+            <div class="cb"></div>
+            <div class="cb-text">Proposal disusun mengikuti struktur standar (13 bagian)</div>
+          </div>
+          <div class="checklist-item" onclick="toggleCheck(this)">
+            <div class="cb"></div>
+            <div class="cb-text">Rencana implementasi & timeline realistis sudah dibuat</div>
+          </div>
+          <div class="checklist-item" onclick="toggleCheck(this)">
+            <div class="cb"></div>
+            <div class="cb-text">Risiko & mitigasi sudah diidentifikasi minimal 3 risiko</div>
+          </div>
+          <div class="checklist-item" onclick="toggleCheck(this)">
+            <div class="cb"></div>
+            <div class="cb-text">Presentasi (slide) sudah siap, 15 menit + tanya jawab</div>
+          </div>
+          <div class="checklist-item" onclick="toggleCheck(this)">
+            <div class="cb"></div>
+            <div class="cb-text">Dokumen dicetak/dijilid rapi, tanpa typo, format konsisten</div>
+          </div>
+        </div>
+
+        <div class="callout info">
+          <span class="title">Catatan</span>
+          <p style="margin:0">Kalau ada item yang belum selesai, berarti proyek belum lengkap. Kembali ke bagian yang kurang sebelum diserahkan.</p>
+        </div>
+      </div>
+    </details>
+  </section>
+
+  <!-- 14.6 RUBRIK -->
+  <section id="m14-6">
+    <details>
+      <summary>
+        <span class="num">14.6</span>
+        <span class="summary-text">Rubrik Penilaian</span>
+        <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </summary>
+      <div class="content">
+        <p>Rubrik ini digunakan untuk menilai proyek akhir. Setiap aspek memiliki bobot berbeda sesuai tingkat kepentingan dalam TP.</p>
+
+        <div class="callout gold">
+          <span class="title">Total Bobot = 100%</span>
+          <p style="margin:0">Bobot tertinggi ada di <strong>ketepatan pemilihan teknologi</strong> (25%) dan <strong>ketepatan analisis kebutuhan</strong> (25%) — karena inilah inti TP.</p>
+        </div>
+
+        <div class="rubric" id="rubric">
+          <!-- 1. Analisis Kebutuhan -->
+          <div class="rubric-item" data-crit="1" data-weight="25">
+            <div class="item-head">
+              <div class="item-name">Ketepatan Analisis Kebutuhan</div>
+              <div class="item-weight">25%</div>
+            </div>
+            <div class="item-desc">Ketepatan identifikasi pengguna, aplikasi, dan kebutuhan bandwidth. Termasuk kelengkapan URL & ARL.</div>
+            <div class="rubric-scale">
+              <button data-v="1" onclick="setScore(this, 1)"><span class="score-num">1</span><span class="score-label">Kurang</span></button>
+              <button data-v="2" onclick="setScore(this, 2)"><span class="score-num">2</span><span class="score-label">Cukup</span></button>
+              <button data-v="3" onclick="setScore(this, 3)"><span class="score-num">3</span><span class="score-label">Baik</span></button>
+              <button data-v="4" onclick="setScore(this, 4)"><span class="score-num">4</span><span class="score-label">Sangat Baik</span></button>
+              <button data-v="5" onclick="setScore(this, 5)"><span class="score-num">5</span><span class="score-label">Istimewa</span></button>
+            </div>
+          </div>
+
+          <!-- 2. Pemilihan Teknologi -->
+          <div class="rubric-item" data-crit="2" data-weight="25">
+            <div class="item-head">
+              <div class="item-name">Ketepatan Pemilihan Teknologi</div>
+              <div class="item-weight">25%</div>
+            </div>
+            <div class="item-desc">Ketepatan pemilihan media transmisi, Ethernet, Wi-Fi, switch, router, dan AP sesuai kebutuhan.</div>
+            <div class="rubric-scale">
+              <button data-v="1" onclick="setScore(this, 1)"><span class="score-num">1</span><span class="score-label">Kurang</span></button>
+              <button data-v="2" onclick="setScore(this, 2)"><span class="score-num">2</span><span class="score-label">Cukup</span></button>
+              <button data-v="3" onclick="setScore(this, 3)"><span class="score-num">3</span><span class="score-label">Baik</span></button>
+              <button data-v="4" onclick="setScore(this, 4)"><span class="score-num">4</span><span class="score-label">Sangat Baik</span></button>
+              <button data-v="5" onclick="setScore(this, 5)"><span class="score-num">5</span><span class="score-label">Istimewa</span></button>
+            </div>
+          </div>
+
+          <!-- 3. Kelayakan Desain & BoM -->
+          <div class="rubric-item" data-crit="3" data-weight="20">
+            <div class="item-head">
+              <div class="item-name">Kelayakan Desain & BoM</div>
+              <div class="item-weight">20%</div>
+            </div>
+            <div class="item-desc">Kualitas diagram topologi, kelengkapan BoM, dan konsistensi estimasi biaya terhadap anggaran.</div>
+            <div class="rubric-scale">
+              <button data-v="1" onclick="setScore(this, 1)"><span class="score-num">1</span><span class="score-label">Kurang</span></button>
+              <button data-v="2" onclick="setScore(this, 2)"><span class="score-num">2</span><span class="score-label">Cukup</span></button>
+              <button data-v="3" onclick="setScore(this, 3)"><span class="score-num">3</span><span class="score-label">Baik</span></button>
+              <button data-v="4" onclick="setScore(this, 4)"><span class="score-num">4</span><span class="score-label">Sangat Baik</span></button>
+              <button data-v="5" onclick="setScore(this, 5)"><span class="score-num">5</span><span class="score-label">Istimewa</span></button>
+            </div>
+          </div>
+
+          <!-- 4. Justifikasi Teknis -->
+          <div class="rubric-item" data-crit="4" data-weight="20">
+            <div class="item-head">
+              <div class="item-name">Kualitas Justifikasi Teknis</div>
+              <div class="item-weight">20%</div>
+            </div>
+            <div class="item-desc">Kemampuan menjelaskan alasan teknis & bisnis untuk setiap keputusan, bukan hanya daftar pilihan.</div>
+            <div class="rubric-scale">
+              <button data-v="1" onclick="setScore(this, 1)"><span class="score-num">1</span><span class="score-label">Kurang</span></button>
+              <button data-v="2" onclick="setScore(this, 2)"><span class="score-num">2</span><span class="score-label">Cukup</span></button>
+              <button data-v="3" onclick="setScore(this, 3)"><span class="score-num">3</span><span class="score-label">Baik</span></button>
+              <button data-v="4" onclick="setScore(this, 4)"><span class="score-num">4</span><span class="score-label">Sangat Baik</span></button>
+              <button data-v="5" onclick="setScore(this, 5)"><span class="score-num">5</span><span class="score-label">Istimewa</span></button>
+            </div>
+          </div>
+
+          <!-- 5. Presentasi -->
+          <div class="rubric-item" data-crit="5" data-weight="10">
+            <div class="item-head">
+              <div class="item-name">Presentasi & Dokumentasi</div>
+              <div class="item-weight">10%</div>
+            </div>
+            <div class="item-desc">Kejelasan presentasi, kualitas slide, kemampuan menjawab pertanyaan, dan kerapian dokumen.</div>
+            <div class="rubric-scale">
+              <button data-v="1" onclick="setScore(this, 1)"><span class="score-num">1</span><span class="score-label">Kurang</span></button>
+              <button data-v="2" onclick="setScore(this, 2)"><span class="score-num">2</span><span class="score-label">Cukup</span></button>
+              <button data-v="3" onclick="setScore(this, 3)"><span class="score-num">3</span><span class="score-label">Baik</span></button>
+              <button data-v="4" onclick="setScore(this, 4)"><span class="score-num">4</span><span class="score-label">Sangat Baik</span></button>
+              <button data-v="5" onclick="setScore(this, 5)"><span class="score-num">5</span><span class="score-label">Istimewa</span></button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Score Result -->
+        <div class="score-result">
+          <div class="score-label">Nilai Akhir Proyek</div>
+          <div class="score-value" id="finalScore">0<small>/100</small></div>
+          <div class="score-grade" id="finalGrade">— Belum dinilai —</div>
+          <div class="score-verdict" id="finalVerdict">Pilih skor (1–5) untuk setiap aspek di atas untuk melihat nilai akhir.</div>
+        </div>
+
+        <h4>Skala Penilaian</h4>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Skor</th><th>Label</th><th>Deskripsi</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>5</strong></td>
+                <td><span class="rubric-scale" style="display:inline-block"><button style="background:var(--success);color:#fff;border:none;padding:2px 10px;font-size:12px;border-radius:6px;cursor:default">Istimewa</button></span></td>
+                <td>Melebihi ekspektasi, analisis mendalam, justifikasi kuat</td>
+              </tr>
+              <tr>
+                <td><strong>4</strong></td>
+                <td>Sangat Baik</td>
+                <td>Memenuhi semua ekspektasi dengan kualitas tinggi</td>
+              </tr>
+              <tr>
+                <td><strong>3</strong></td>
+                <td>Baik</td>
+                <td>Memenuhi ekspektasi dasar, ada ruang perbaikan</td>
+              </tr>
+              <tr>
+                <td><strong>2</strong></td>
+                <td>Cukup</td>
+                <td>Ada bagian penting yang kurang</td>
+              </tr>
+              <tr>
+                <td><strong>1</strong></td>
+                <td>Kurang</td>
+                <td>Banyak bagian yang belum memenuhi standar</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="callout tip">
+          <span class="title">Tips</span>
+          <p style="margin:0">Rubrik ini juga bisa dipakai sebagai <strong>self-assessment</strong> sebelum submit. Nilai proyek Anda sendiri, lihat bagian mana yang perlu diperbaiki.</p>
+        </div>
+      </div>
+    </details>
+  </section>
+
+  <!-- 14.7 PRESENTASI -->
+  <section id="m14-7">
+    <details>
+      <summary>
+        <span class="num">14.7</span>
+        <span class="summary-text">Format Presentasi</span>
+        <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </summary>
+      <div class="content">
+        <p>Presentasi proyek akhir berlangsung <strong>15 menit</strong> + <strong>10 menit tanya jawab</strong>. Berikut struktur yang disarankan.</p>
+
+        <h4>Struktur Slide (15 menit)</h4>
+        <div class="timeline">
+          <div class="timeline-item">
+            <div class="tl-title">Slide 1 — Judul</div>
+            <div class="tl-time">30 detik</div>
+            <div class="tl-desc">Nama proyek, nama penyusun, tanggal.</div>
+          </div>
+          <div class="timeline-item">
+            <div class="tl-title">Slide 2 — Ringkasan Eksekutif</div>
+            <div class="tl-time">1 menit</div>
+            <div class="tl-desc">Masalah · Solusi · Biaya · Manfaat. Satu slide, padat.</div>
+          </div>
+          <div class="timeline-item">
+            <div class="tl-title">Slide 3 — Latar Belakang & Tujuan</div>
+            <div class="tl-time">1 menit</div>
+            <div class="tl-desc">Mengapa proyek ini penting untuk SMKN 3 Jember.</div>
+          </div>
+          <div class="timeline-item">
+            <div class="tl-title">Slide 4 — Kebutuhan Pengguna & Aplikasi</div>
+            <div class="tl-time">2 menit</div>
+            <div class="tl-desc">Siapa pengguna, aplikasi apa, bandwidth berapa.</div>
+          </div>
+          <div class="timeline-item">
+            <div class="tl-title">Slide 5–6 — Solusi Teknologi</div>
+            <div class="tl-time">3 menit</div>
+            <div class="tl-desc">Media transmisi, Ethernet, Wi-Fi, switch, router, AP. Tunjukkan perbandingan.</div>
+          </div>
+          <div class="timeline-item">
+            <div class="tl-title">Slide 7 — Diagram Jaringan</div>
+            <div class="tl-time">1,5 menit</div>
+            <div class="tl-desc">Topologi & aliran data. Jelaskan tiap layer.</div>
+          </div>
+          <div class="timeline-item">
+            <div class="tl-title">Slide 8 — BoM & Estimasi Biaya</div>
+            <div class="tl-time">2 menit</div>
+            <div class="tl-desc">Item utama, subtotal, total, perbandingan dengan anggaran.</div>
+          </div>
+          <div class="timeline-item">
+            <div class="tl-title">Slide 9 — Justifikasi Utama</div>
+            <div class="tl-time">2 menit</div>
+            <div class="tl-desc">3–5 keputusan kunci + alasan teknis & bisnis.</div>
+          </div>
+          <div class="timeline-item">
+            <div class="tl-title">Slide 10 — Rencana Implementasi & Risiko</div>
+            <div class="tl-time">1 menit</div>
+            <div class="tl-desc">Timeline 4 minggu + 3 risiko utama + mitigasi.</div>
+          </div>
+          <div class="timeline-item">
+            <div class="tl-title">Slide 11 — Penutup</div>
+            <div class="tl-time">30 detik</div>
+            <div class="tl-desc">Kesimpulan & rekomendasi. Ucapan terima kasih.</div>
+          </div>
+        </div>
+
+        <h4>Tips Presentasi</h4>
+        <ul>
+          <li><strong>Mulai dengan kesimpulan</strong> — jangan buat audiens menunggu.</li>
+          <li><strong>Gunakan visual</strong> — diagram & grafik lebih kuat dari teks.</li>
+          <li><strong>Latih timing</strong> — 15 menit berarti 15 menit, bukan 25.</li>
+          <li><strong>Siapkan jawaban</strong> — antisipasi 5–10 pertanyaan tersulit.</li>
+          <li><strong>Jangan baca slide</strong> — slide adalah penunjang, bukan naskah.</li>
+          <li><strong>Tutup dengan rekomendasi jelas</strong> — apa yang Anda usulkan.</li>
+        </ul>
+
+        <div class="callout tip">
+          <span class="title">Tips Menjawab Pertanyaan</span>
+          <p style="margin:0">
+            • Kalau tahu: jawab singkat & langsung.<br>
+            • Kalau tidak tahu: akui, lalu usulkan cara menemukan jawabannya.<br>
+            • Kalau pertanyaannya "mengapa": kembali ke kebutuhan pengguna.<br>
+            • Jangan berdebat — diskusikan.
+          </p>
+        </div>
+      </div>
+    </details>
+  </section>
+
+  <!-- 14.8 PANDUAN -->
+  <section id="m14-8">
+    <details>
+      <summary>
+        <span class="num">14.8</span>
+        <span class="summary-text">Panduan Pembahasan Proyek</span>
+        <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </summary>
+      <div class="content">
+        <p>Bagian ini memberikan <strong>contoh pembahasan lengkap</strong> untuk kasus SMKN 3 Jember. Gunakan sebagai referensi — bukan untuk dicontek, tapi untuk membandingkan dengan analisis Anda sendiri.</p>
+
+        <div class="callout warn">
+          <span class="title">Peringatan</span>
+          <p style="margin:0">Buka pembahasan ini hanya setelah Anda menyelesaikan analisis sendiri. Tujuan proyek adalah <strong>melatih kemampuan analisis</strong>, bukan mendapatkan jawaban.</p>
+        </div>
+
+        <details class="reveal">
+          <summary>
+            <span class="reveal-icon">🔓</span>
+            <span class="reveal-text">
+              Lihat Pembahasan Lengkap
+              <small>Contoh analisis untuk kasus SMKN 3 Jember</small>
+            </span>
+            <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </summary>
+          <div class="reveal-body">
+
+            <h5>Tugas 1 — Kebutuhan Pengguna</h5>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr><th>ID</th><th>Kebutuhan</th><th>Prioritas</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>UR-01</td><td>36 PC siswa dapat akses server lokal & internet</td><td>Must</td></tr>
+                  <tr><td>UR-02</td><td>PC guru & instruktur dapat kontrol lab</td><td>Must</td></tr>
+                  <tr><td>UR-03</td><td>Wi-Fi untuk 12 guru di area lab</td><td>Must</td></tr>
+                  <tr><td>UR-04</td><td>Akses ke server lokal (LMS, file, print)</td><td>Must</td></tr>
+                  <tr><td>UR-05</td><td>Akses internet untuk praktikum & ujian</td><td>Must</td></tr>
+                  <tr><td>UR-06</td><td>Kapasitas naik 30% dalam 2 tahun</td><td>Should</td></tr>
+                  <tr><td>UR-07</td><td>Wi-Fi tamu terpisah untuk dinas luar</td><td>Could</td></tr>
+                </tbody>
+              </table>
+            </div>
+
+            <h5>Tugas 2 — Aplikasi & Profil Trafik</h5>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr><th>Aplikasi</th><th>User</th><th>BW/user</th><th>Total</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>Browsing & praktikum</td><td>36</td><td>1 Mbps</td><td>36 Mbps</td></tr>
+                  <tr><td>Akses LMS (server lokal)</td><td>36</td><td>2 Mbps</td><td>72 Mbps</td></tr>
+                  <tr><td>File server lokal (image OS)</td><td>10</td><td>20 Mbps</td><td>200 Mbps</td></tr>
+                  <tr><td>Video conference (guru)</td><td>2</td><td>3 Mbps</td><td>6 Mbps</td></tr>
+                  <tr><td>Streaming materi</td><td>5</td><td>5 Mbps</td><td>25 Mbps</td></tr>
+                  <tr><td>Print server</td><td>2</td><td>1 Mbps</td><td>2 Mbps</td></tr>
+                </tbody>
+              </table>
+            </div>
+
+            <h5>Tugas 3 — Bandwidth</h5>
+            <ul>
+              <li><strong>Bandwidth LAN (internal):</strong> 200+ Mbps (akses server lokal)</li>
+              <li><strong>Bandwidth internet:</strong> (36+6+25+2) × 1.3 ≈ 90 Mbps</li>
+              <li><strong>Rekomendasi langganan:</strong> 100 Mbps untuk lab</li>
+              <li><strong>Uplink internal:</strong> ≥ 1 Gbps (server lokal akses dari 36 PC)</li>
+            </ul>
+
+            <h5>Tugas 4 — Media Transmisi</h5>
+            <ul>
+              <li><strong>PC siswa:</strong> UTP Cat6, 1 Gbps (wajib untuk praktikum & transfer image)</li>
+              <li><strong>PC guru:</strong> UTP Cat6, 1 Gbps</li>
+              <li><strong>Server lokal:</strong> UTP Cat6, teaming 2× 1 Gbps (total 2 Gbps)</li>
+              <li><strong>AP Wi-Fi:</strong> UTP Cat6, PoE</li>
+              <li><strong>Uplink ke backbone sekolah:</strong> Fiber atau Cat6</li>
+            </ul>
+
+            <h5>Tugas 5 — Teknologi Ethernet</h5>
+            <ul>
+              <li><strong>Access port:</strong> 1 Gbps (cukup untuk 36 PC + server)</li>
+              <li><strong>Uplink:</strong> 1 Gbps minimal, 10 Gbps ideal untuk server</li>
+              <li><strong>NIC server:</strong> Team 2× 1 Gbps atau 1× 10 Gbps</li>
+            </ul>
+
+            <h5>Tugas 6 — Teknologi Wi-Fi</h5>
+            <ul>
+              <li><strong>Standar:</strong> Wi-Fi 6 dual-band (AX1800+ minimum)</li>
+              <li><strong>Jumlah AP:</strong> 2 AP (coverage 12×8 m = 96 m², tapi butuh coverage merata dengan kapasitas guru)</li>
+              <li><strong>Band:</strong> 2.4 + 5 GHz, prioritas 5 GHz</li>
+              <li><strong>SSID:</strong> 2 terpisah — Guru (private) & Tamu (isolated)</li>
+            </ul>
+
+            <h5>Tugas 7 — Switch</h5>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr><th>Switch</th><th>Jumlah</th><th>Spesifikasi</th></tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Switch utama</td>
+                    <td>1</td>
+                    <td>Managed 48-port 1G + 4× SFP, PoE+ 190W</td>
+                  </tr>
+                  <tr>
+                    <td>Switch cadangan</td>
+                    <td>1</td>
+                    <td>24-port 1G unmanaged (untuk ekspansi)</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <ul>
+              <li><strong>Total port:</strong> 36 PC + 2 guru + 1 server + 2 AP + 1 printer + 1 uplink = 43 port</li>
+              <li><strong>Cadangan 20%:</strong> +9 port = <strong>52 port</strong></li>
+              <li><strong>Rekomendasi:</strong> 48-port managed + 24-port tambahan</li>
+            </ul>
+
+            <h5>Tugas 8 — Router</h5>
+            <ul>
+              <li><strong>Throughput routing:</strong> ≥ 200 Mbps (cukup untuk 100 Mbps internet + cadangan)</li>
+              <li><strong>Firewall throughput:</strong> ≥ 150 Mbps (saat aktif)</li>
+              <li><strong>WAN:</strong> Minimal 1 port, idealnya 2 untuk backup</li>
+              <li><strong>Fitur:</strong> QoS, VLAN, DHCP server, bandwidth management</li>
+              <li><strong>Kelas:</strong> Router SMB dengan firewall & VLAN</li>
+            </ul>
+
+            <h5>Tugas 9 — Access Point</h5>
+            <ul>
+              <li><strong>Jumlah:</strong> 2 AP Wi-Fi 6 dual-band</li>
+              <li><strong>Kapasitas:</strong> 30+ client aktif per AP (12 guru + tamu)</li>
+              <li><strong>Manajemen:</strong> Standalone atau controller-based (tergantung budget)</li>
+              <li><strong>PoE:</strong> 802.3af atau 802.3at</li>
+              <li><strong>Keamanan:</strong> WPA2/WPA3, SSID terpisah, client isolation untuk tamu</li>
+            </ul>
+
+            <h5>Tugas 10 — Perangkat Pendukung</h5>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr><th>Item</th><th>Qty</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>Patch panel 24-port</td><td>3</td></tr>
+                  <tr><td>Kabel UTP Cat6 (305 m/box)</td><td>5 box</td></tr>
+                  <tr><td>Konektor RJ45</td><td>120 pcs</td></tr>
+                  <tr><td>Keystone jack</td><td>52 pcs</td></tr>
+                  <tr><td>Faceplate</td><td>52 pcs</td></tr>
+                  <tr><td>Patch cord Cat6</td><td>60 pcs</td></tr>
+                  <tr><td>Rack 22U + PDU</td><td>1</td></tr>
+                  <tr><td>UPS 2200VA</td><td>1</td></tr>
+                  <tr><td>Cable manager</td><td>2</td></tr>
+                </tbody>
+              </table>
+            </div>
+
+            <h5>Tugas 11 — Topologi</h5>
+            <ul>
+              <li><strong>Topologi:</strong> Star (semua PC ke switch utama)</li>
+              <li><strong>Alasan:</strong> Satu ruangan, mudah di-manage, cocok untuk skala lab</li>
+              <li><strong>Uplink:</strong> Switch utama ke switch inti sekolah (via SFP/fiber)</li>
+              <li><strong>Server:</strong> Terhubung langsung ke switch utama (bukan lewat patch panel)</li>
+            </ul>
+
+            <h5>Tugas 12 — BoM</h5>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr><th>Item</th><th>Qty</th><th>Total</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>Switch managed 48-port PoE+</td><td>1</td><td>Rp5.500.000</td></tr>
+                  <tr><td>Switch 24-port unmanaged</td><td>1</td><td>Rp900.000</td></tr>
+                  <tr><td>Router SMB + firewall</td><td>1</td><td>Rp3.500.000</td></tr>
+                  <tr><td>Access Point Wi-Fi 6</td><td>2</td><td>Rp1.700.000</td></tr>
+                  <tr><td>Kabel UTP Cat6 (5 box)</td><td>5</td><td>Rp7.500.000</td></tr>
+                  <tr><td>Konektor, keystone, faceplate</td><td>1 set</td><td>Rp2.500.000</td></tr>
+                  <tr><td>Patch panel + patch cord</td><td>1 set</td><td>Rp1.800.000</td></tr>
+                  <tr><td>Rack 22U + PDU</td><td>1</td><td>Rp2.800.000</td></tr>
+                  <tr><td>UPS 2200VA</td><td>1</td><td>Rp2.500.000</td></tr>
+                  <tr><td>Instalasi & terminasi</td><td>1</td><td>Rp3.000.000</td></tr>
+                  <tr style="background:#f0fdfa"><td><strong>Subtotal</strong></td><td></td><td><strong>Rp31.700.000</strong></td></tr>
+                </tbody>
+              </table>
+            </div>
+
+            <h5>Tugas 13 — Estimasi Biaya & Revisi Anggaran</h5>
+            <div class="callout warn">
+              <span class="title">Perhatian</span>
+              <p style="margin:0">Total di atas <strong>Rp31.7 juta</strong>, melebihi anggaran <strong>Rp30 juta</strong>. Ini contoh nyata di lapangan: harus ada kompromi.</p>
+            </div>
+            <p><strong>Opsi kompromi:</strong></p>
+            <ul>
+              <li><strong>Opsi A:</strong> Ganti switch 48-port ke 24+24 (hemat ~Rp1.5 juta)</li>
+              <li><strong>Opsi B:</strong> Kurangi AP dari 2 menjadi 1 + 1 AP nanti (hemat Rp850rb)</li>
+              <li><strong>Opsi C:</strong> Kurangi patch cord & faceplate (hemat ~Rp500rb)</li>
+              <li><strong>Opsi D:</strong> Minta tambahan anggaran Rp2 juta ke sekolah</li>
+            </ul>
+            <p><strong>Rekomendasi:</strong> Opsi A + C, dan pertahankan AP 2 unit untuk coverage yang baik.</p>
+
+            <h5>Tugas 14 — Tabel Perbandingan Switch</h5>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr><th>Spesifikasi</th><th>Kandidat A</th><th>Kandidat B</th><th>Kandidat C</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>Harga</td><td>Rp4.200.000</td><td>Rp5.500.000</td><td>Rp7.800.000</td></tr>
+                  <tr><td>Port</td><td>48 + 2 SFP</td><td>48 + 4 SFP</td><td>48 + 4 SFP+</td></tr>
+                  <tr><td>PoE Budget</td><td>150 W</td><td>190 W</td><td>370 W</td></tr>
+                  <tr><td>Switching Cap.</td><td>52 Gbps</td><td>56 Gbps</td><td>176 Gbps</td></tr>
+                  <tr><td>Manajemen</td><td>Web only</td><td>Web + CLI</td><td>Web + CLI + Cloud</td></tr>
+                  <tr><td>Garansi</td><td>1 tahun</td><td>3 tahun</td><td>5 tahun</td></tr>
+                  <tr style="background:#ecfdf5"><td><strong>Skor</strong></td><td><strong>3.5</strong></td><td><strong>4.3</strong></td><td><strong>3.9</strong></td></tr>
+                </tbody>
+              </table>
+            </div>
+            <p><strong>Pemenang:</strong> Kandidat B — keseimbangan terbaik antara harga, PoE budget, dan fitur manajemen.</p>
+
+            <h5>Tugas 15 — Justifikasi Utama</h5>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr><th>Komponen</th><th>Dipilih</th><th>Alasan Teknis</th><th>Alasan Bisnis</th></tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Media</td>
+                    <td>UTP Cat6</td>
+                    <td>Stabil, 1 Gbps, latency rendah untuk praktikum</td>
+                    <td>Murah, mudah dipasang & diperbaiki</td>
+                  </tr>
+                  <tr>
+                    <td>Ethernet</td>
+                    <td>1 Gbps access</td>
+                    <td>Standar minimum untuk PC modern</td>
+                    <td>Sudah cukup, tidak perlu bayar lebih</td>
+                  </tr>
+                  <tr>
+                    <td>Wi-Fi</td>
+                    <td>Wi-Fi 6 dual-band</td>
+                    <td>Kapasitas 30+ client, band 5 GHz</td>
+                    <td>Harga sudah turun, future-proof</td>
+                  </tr>
+                  <tr>
+                    <td>Switch</td>
+                    <td>Managed 48-port PoE+</td>
+                    <td>VLAN, PoE untuk AP, SFP uplink</td>
+                    <td>Sekali beli untuk 5 tahun</td>
+                  </tr>
+                  <tr>
+                    <td>Router</td>
+                    <td>SMB dengan QoS</td>
+                    <td>Firewall aktif, bandwidth management</td>
+                    <td>Menghindari beli firewall terpisah</td>
+                  </tr>
+                  <tr>
+                    <td>AP</td>
+                    <td>2× Wi-Fi 6</td>
+                    <td>Coverage merata + kapasitas guru</td>
+                    <td>Instalasi sederhana, PoE</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <h5>Ringkasan Akhir</h5>
+            <div class="insights" style="background:#0f172a;color:#e2e8f0;border-radius:10px;padding:14px 16px;margin-top:14px">
+              <span style="display:block;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.4px;color:#5eead4;margin-bottom:10px">Pelajari dari Kasus Ini</span>
+              <ul style="margin:0;padding-left:20px;font-size:13px;color:#cbd5e1">
+                <li>Setiap angka harus bisa dipertanggungjawabkan</li>
+                <li>Anggaran sering tidak cukup — harus ada kompromi cerdas</li>
+                <li>Bandwidth LAN ≠ bandwidth internet</li>
+                <li>Server lokal tidak butuh bandwidth internet besar, tapi butuh switch cepat</li>
+                <li>Justifikasi teknis + bisnis = keputusan yang kuat</li>
+                <li>Proposal yang baik <strong>menjawab pertanyaan</strong>, bukan sekadar mendaftar</li>
+              </ul>
+            </div>
+
+          </div>
+        </details>
+      </div>
+    </details>
+  </section>
+
+  <!-- TAKEAWAY -->
+  <div class="takeaway">
+    <h3>🎓 Selamat — Anda Menyelesaikan 14 Modul</h3>
+    <ol>
+      <li><strong>Modul 1–4</strong> membangun fondasi analisis & parameter teknis.</li>
+      <li><strong>Modul 5–9</strong> mengajarkan teknologi & perangkat.</li>
+      <li><strong>Modul 10–11</strong> melatih pemilihan & perancangan.</li>
+      <li><strong>Modul 12–13</strong> mengasah penerapan & dokumentasi.</li>
+      <li><strong>Modul 14</strong> menguji semuanya dalam satu proyek nyata.</li>
+    </ol>
+    <p style="margin:16px 0 0;font-size:14px;color:#cbd5e1;position:relative;z-index:1">
+      Kalau Anda bisa menjawab pertanyaan <em>"Mengapa perangkat dan teknologi ini yang dipilih untuk kebutuhan tersebut?"</em> — berarti TP sudah tercapai.
+    </p>
+  </div>
+
+</main>
+
+<button class="back-top" id="backTop" aria-label="Kembali ke atas">
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>
+</button>
+
+<footer>
+  <strong>Modul 14 — Proyek Akhir: Network Requirement Analysis</strong><br>
+  Kelas XI TKJ · TP: Memahami kebutuhan teknis pengguna dan peralatan jaringan dengan teknologi yang sesuai.
+</footer>
+
+<script>
+  // Smooth scroll
+  document.querySelectorAll('nav.toc a').forEach(a=>{
+    a.addEventListener('click', e=>{
+      const el = document.querySelector(a.getAttribute('href'));
+      if(el){ e.preventDefault(); el.scrollIntoView({behavior:'smooth', block:'start'}); }
+    });
+  });
+
+  // Back to top
+  const btn = document.getElementById('backTop');
+  window.addEventListener('scroll', ()=>{
+    if(window.scrollY > 400) btn.classList.add('show');
+    else btn.classList.remove('show');
+  });
+  btn.addEventListener('click', ()=>window.scrollTo({top:0, behavior:'smooth'}));
+
+  // ===== TASK LIST =====
+  function toggleTask(li){
+    li.classList.toggle('done');
+    updateTaskProgress();
+  }
+
+  function updateTaskProgress(){
+    const tasks = document.querySelectorAll('#taskList li');
+    const done = document.querySelectorAll('#taskList li.done').length;
+    const total = tasks.length;
+    const pct = (done / total) * 100;
+    document.getElementById('progFill').style.width = pct + '%';
+    document.getElementById('progCount').textContent = done;
+  }
+
+  // ===== CHECKLIST =====
+  function toggleCheck(item){
+    item.classList.toggle('checked');
+  }
+
+  // ===== RUBRIC =====
+  const rubricScores = {};
+
+  function setScore(btn, val){
+    const item = btn.closest('.rubric-item');
+    const crit = item.dataset.crit;
+    rubricScores[crit] = val;
+
+    item.querySelectorAll('.rubric-scale button').forEach(b=>{
+      b.classList.remove('active');
+    });
+    btn.classList.add('active');
+
+    updateFinalScore();
+  }
+
+  function updateFinalScore(){
+    let totalScore = 0;
+    let totalWeight = 0;
+
+    document.querySelectorAll('.rubric-item').forEach(item=>{
+      const crit = item.dataset.crit;
+      const weight = parseFloat(item.dataset.weight);
+      totalWeight += weight;
+
+      if(rubricScores[crit] !== undefined){
+        // skor 1-5 dikonversi ke 0-100, dikalikan bobot
+        const normalized = (rubricScores[crit] / 5) * 100;
+        totalScore += normalized * (weight / 100);
+      }
+    });
+
+    const final = totalWeight > 0 ? (totalScore / (totalWeight / 100)) : 0;
+    const rounded = Math.round(final);
+    const scoreEl = document.getElementById('finalScore');
+    const gradeEl = document.getElementById('finalGrade');
+    const verdictEl = document.getElementById('finalVerdict');
+
+    scoreEl.innerHTML = rounded + '<small>/100</small>';
+
+    // Grade & color
+    let grade, color, verdict;
+    if(rounded === 0){
+      grade = '— Belum dinilai —';
+      color = '#5eead4';
+      verdict = 'Pilih skor (1–5) untuk setiap aspek di atas untuk melihat nilai akhir.';
+    } else if(rounded >= 90){
+      grade = 'A — Istimewa';
+      color = '#4ade80';
+      verdict = '🎉 Luar biasa! Proyek melebihi ekspektasi. Analisis mendalam, pemilihan tepat, justifikasi kuat.';
+    } else if(rounded >= 80){
+      grade = 'B — Sangat Baik';
+      color = '#5eead4';
+      verdict = '👍 Bagus sekali! Proyek memenuhi semua ekspektasi dengan kualitas tinggi.';
+    } else if(rounded >= 70){
+      grade = 'C — Baik';
+      color = '#fbbf24';
+      verdict = '✅ Baik. Proyek memenuhi standar, tapi ada ruang perbaikan di beberapa bagian.';
+    } else if(rounded >= 60){
+      grade = 'D — Cukup';
+      color = '#fb923c';
+      verdict = '⚠️ Cukup. Ada bagian penting yang perlu ditingkatkan.';
+    } else {
+      grade = 'E — Kurang';
+      color = '#f87171';
+      verdict = '❌ Perlu perbaikan besar. Pelajari kembali modul-modul dasar.';
+    }
+
+    scoreEl.style.color = color;
+    gradeEl.textContent = grade;
+    verdictEl.textContent = verdict;
+  }
+
+  // Initialize task progress
+  updateTaskProgress();
+</script>
+
+</body>
+</html>

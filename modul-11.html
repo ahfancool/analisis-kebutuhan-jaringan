@@ -1,0 +1,2179 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0f766e">
+<title>Modul 11 — Perancangan Kebutuhan Perangkat</title>
+<style>
+  :root{
+    --primary:#0f766e;
+    --primary-dark:#115e59;
+    --primary-light:#ccfbf1;
+    --accent:#f59e0b;
+    --danger:#dc2626;
+    --success:#16a34a;
+    --bg:#f8fafc;
+    --card:#ffffff;
+    --text:#0f172a;
+    --text-muted:#475569;
+    --border:#e2e8f0;
+    --radius:14px;
+    --shadow:0 1px 3px rgba(15,23,42,.06), 0 1px 2px rgba(15,23,42,.04);
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{margin:0;padding:0}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    line-height:1.6;
+    font-size:16px;
+    -webkit-font-smoothing:antialiased;
+    padding-bottom:env(safe-area-inset-bottom);
+  }
+
+  header.hero{
+    background:linear-gradient(135deg,var(--primary) 0%,var(--primary-dark) 100%);
+    color:#fff;
+    padding:28px 20px 32px;
+    border-radius:0 0 24px 24px;
+    position:relative;
+    overflow:hidden;
+  }
+  header.hero::after{
+    content:"";
+    position:absolute;
+    right:-40px;top:-40px;
+    width:160px;height:160px;
+    background:rgba(255,255,255,.08);
+    border-radius:50%;
+  }
+  .badge{
+    display:inline-block;
+    background:rgba(255,255,255,.18);
+    color:#fff;
+    padding:4px 12px;
+    border-radius:999px;
+    font-size:12px;
+    font-weight:600;
+    letter-spacing:.4px;
+    text-transform:uppercase;
+    margin-bottom:12px;
+    backdrop-filter:blur(4px);
+  }
+  header.hero h1{
+    font-size:22px;
+    margin:0 0 8px;
+    line-height:1.3;
+    font-weight:700;
+  }
+  header.hero p{
+    margin:0;
+    font-size:14px;
+    opacity:.9;
+  }
+
+  .tp-box{
+    background:#fff;
+    margin:-16px 16px 20px;
+    padding:16px 18px;
+    border-radius:var(--radius);
+    box-shadow:var(--shadow);
+    border-left:4px solid var(--accent);
+    position:relative;
+    z-index:1;
+  }
+  .tp-box .label{
+    font-size:11px;
+    font-weight:700;
+    letter-spacing:.6px;
+    text-transform:uppercase;
+    color:var(--accent);
+    margin-bottom:6px;
+    display:block;
+  }
+  .tp-box p{
+    margin:0;
+    font-size:14.5px;
+    color:var(--text);
+    font-weight:500;
+  }
+
+  nav.toc{
+    background:#fff;
+    margin:0 16px 24px;
+    padding:16px 18px;
+    border-radius:var(--radius);
+    box-shadow:var(--shadow);
+  }
+  nav.toc h2{
+    font-size:14px;
+    margin:0 0 12px;
+    color:var(--text-muted);
+    text-transform:uppercase;
+    letter-spacing:.5px;
+    font-weight:700;
+  }
+  nav.toc ol{
+    margin:0;
+    padding-left:20px;
+    font-size:14.5px;
+  }
+  nav.toc li{margin-bottom:6px}
+  nav.toc a{
+    color:var(--primary);
+    text-decoration:none;
+    font-weight:500;
+  }
+  nav.toc a:active{opacity:.6}
+
+  main{
+    padding:0 16px 40px;
+    max-width:720px;
+    margin:0 auto;
+  }
+
+  section{
+    background:#fff;
+    border-radius:var(--radius);
+    box-shadow:var(--shadow);
+    margin-bottom:16px;
+    overflow:hidden;
+    scroll-margin-top:16px;
+  }
+
+  details{
+    border-radius:var(--radius);
+    overflow:hidden;
+  }
+  details summary{
+    list-style:none;
+    cursor:pointer;
+    padding:16px 18px;
+    display:flex;
+    align-items:center;
+    gap:12px;
+    font-weight:600;
+    font-size:15px;
+    user-select:none;
+    transition:background .15s;
+  }
+  details summary::-webkit-details-marker{display:none}
+  details summary:active{background:var(--bg)}
+
+  .num{
+    flex-shrink:0;
+    width:32px;height:32px;
+    background:var(--primary-light);
+    color:var(--primary-dark);
+    border-radius:9px;
+    display:flex;align-items:center;justify-content:center;
+    font-weight:700;
+    font-size:14px;
+  }
+  .summary-text{
+    flex:1;
+    color:var(--text);
+    line-height:1.35;
+  }
+  .chev{
+    flex-shrink:0;
+    width:20px;height:20px;
+    transition:transform .2s;
+    color:var(--text-muted);
+  }
+  details[open] .chev{transform:rotate(180deg)}
+
+  .content{
+    padding:0 18px 20px;
+    font-size:15px;
+    color:var(--text);
+    border-top:1px solid var(--border);
+    padding-top:16px;
+    margin-top:0;
+  }
+
+  .content p{margin:0 0 12px}
+  .content p:last-child{margin-bottom:0}
+  .content h4{
+    font-size:14px;
+    margin:16px 0 8px;
+    color:var(--primary-dark);
+    font-weight:700;
+  }
+  .content ul,.content ol{
+    margin:0 0 12px;
+    padding-left:22px;
+  }
+  .content li{margin-bottom:6px}
+  .content strong{color:var(--text);font-weight:600}
+  .content code{
+    background:#f1f5f9;
+    padding:1px 6px;
+    border-radius:4px;
+    font-size:13px;
+    font-family:"SF Mono",Consolas,Monaco,monospace;
+    color:var(--primary-dark);
+  }
+
+  .callout{
+    border-radius:10px;
+    padding:12px 14px;
+    font-size:14px;
+    margin:12px 0;
+    border-left:3px solid;
+  }
+  .callout.tip{background:#ecfdf5;border-color:var(--success);color:#065f46}
+  .callout.warn{background:#fef2f2;border-color:var(--danger);color:#991b1b}
+  .callout.info{background:#eff6ff;border-color:#2563eb;color:#1e40af}
+  .callout .title{
+    font-weight:700;
+    font-size:12px;
+    text-transform:uppercase;
+    letter-spacing:.4px;
+    display:block;
+    margin-bottom:4px;
+  }
+
+  .table-wrap{
+    overflow-x:auto;
+    margin:12px -4px;
+    border-radius:10px;
+    -webkit-overflow-scrolling:touch;
+  }
+  table{
+    width:100%;
+    border-collapse:collapse;
+    font-size:13.5px;
+    min-width:480px;
+  }
+  th{
+    background:var(--primary-light);
+    color:var(--primary-dark);
+    padding:10px 12px;
+    text-align:left;
+    font-weight:700;
+    font-size:12px;
+    text-transform:uppercase;
+    letter-spacing:.3px;
+    white-space:nowrap;
+  }
+  td{
+    padding:10px 12px;
+    border-top:1px solid var(--border);
+    vertical-align:top;
+  }
+  tr:nth-child(even) td{background:#fafbfc}
+
+  .pill{
+    display:inline-block;
+    padding:2px 8px;
+    border-radius:6px;
+    font-size:11px;
+    font-weight:700;
+    letter-spacing:.3px;
+    text-transform:uppercase;
+  }
+  .pill.high{background:#fee2e2;color:#991b1b}
+  .pill.med{background:#fef3c7;color:#92400e}
+  .pill.low{background:#dcfce7;color:#166534}
+
+  /* Steps */
+  .steps{
+    counter-reset:step;
+    list-style:none;
+    padding:0;
+    margin:12px 0;
+  }
+  .steps li{
+    counter-increment:step;
+    position:relative;
+    padding:0 0 16px 40px;
+    font-size:14.5px;
+  }
+  .steps li::before{
+    content:counter(step);
+    position:absolute;
+    left:0;top:0;
+    width:28px;height:28px;
+    background:var(--primary);
+    color:#fff;
+    border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    font-size:13px;
+    font-weight:700;
+  }
+  .steps li:last-child{padding-bottom:0}
+
+  /* Formula box */
+  .formula{
+    background:#0f172a;
+    color:#e2e8f0;
+    border-radius:12px;
+    padding:14px 16px;
+    margin:12px 0;
+    font-family:"SF Mono",Consolas,Monaco,monospace;
+    font-size:13px;
+    line-height:1.7;
+    overflow-x:auto;
+    -webkit-overflow-scrolling:touch;
+  }
+  .formula .hl{color:#5eead4;font-weight:700}
+  .formula .cm{color:#94a3b8}
+
+  /* ==== CALCULATOR GENERAL ==== */
+  .calculator{
+    background:linear-gradient(135deg,#f0fdfa 0%,#ecfeff 100%);
+    border:1px solid #99f6e4;
+    border-radius:14px;
+    padding:16px;
+    margin:12px 0;
+  }
+  .calculator .calc-head{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom:14px;
+  }
+  .calculator .calc-icon{
+    width:36px;height:36px;
+    background:var(--primary);
+    color:#fff;
+    border-radius:10px;
+    display:flex;align-items:center;justify-content:center;
+    flex-shrink:0;
+  }
+  .calculator .calc-title{
+    font-size:14.5px;
+    font-weight:700;
+    color:var(--primary-dark);
+    line-height:1.3;
+  }
+  .calculator .calc-sub{
+    font-size:12px;
+    color:var(--text-muted);
+    margin-top:2px;
+  }
+
+  .calc-row{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:10px 0;
+    border-bottom:1px dashed rgba(15,118,110,.2);
+  }
+  .calc-row:last-of-type{border-bottom:none}
+  .calc-row .label{
+    flex:1;
+    font-size:13.5px;
+    color:var(--text);
+    font-weight:500;
+    min-width:0;
+  }
+  .calc-row .label small{
+    display:block;
+    font-size:11.5px;
+    color:var(--text-muted);
+    font-weight:400;
+    margin-top:2px;
+  }
+  .calc-row input[type="number"]{
+    flex-shrink:0;
+    width:84px;
+    padding:8px 10px;
+    border:1.5px solid var(--border);
+    border-radius:8px;
+    font-size:14px;
+    font-weight:600;
+    text-align:center;
+    background:#fff;
+    color:var(--text);
+    -moz-appearance:textfield;
+    transition:border-color .15s;
+  }
+  .calc-row input[type="number"]:focus{
+    outline:none;
+    border-color:var(--primary);
+  }
+  .calc-row input[type="number"]::-webkit-outer-spin-button,
+  .calc-row input[type="number"]::-webkit-inner-spin-button{
+    -webkit-appearance:none;margin:0;
+  }
+  .calc-row select{
+    flex-shrink:0;
+    padding:8px 10px;
+    border:1.5px solid var(--border);
+    border-radius:8px;
+    font-size:13px;
+    font-weight:600;
+    background:#fff;
+    color:var(--text);
+    max-width:130px;
+  }
+  .calc-row select:focus{outline:none;border-color:var(--primary)}
+
+  .calc-result{
+    background:#0f172a;
+    color:#fff;
+    border-radius:12px;
+    padding:16px;
+    margin-top:14px;
+  }
+  .calc-result .row{
+    display:flex;
+    justify-content:space-between;
+    align-items:baseline;
+    padding:6px 0;
+    font-size:13.5px;
+    border-bottom:1px solid rgba(255,255,255,.08);
+    gap:10px;
+  }
+  .calc-result .row:last-child{border-bottom:none}
+  .calc-result .row .k{color:#94a3b8;flex:0 0 auto;font-size:13px}
+  .calc-result .row .v{color:#e2e8f0;font-weight:600;font-family:"SF Mono",Consolas,monospace;text-align:right}
+  .calc-result .row.total{
+    border-top:2px solid #5eead4;
+    margin-top:8px;
+    padding-top:12px;
+  }
+  .calc-result .row.total .k{color:#5eead4;font-weight:700;font-size:14px}
+  .calc-result .row.total .v{color:#5eead4;font-weight:700;font-size:18px}
+
+  .btn-reset{
+    display:block;
+    width:100%;
+    margin-top:10px;
+    padding:10px;
+    background:transparent;
+    border:1.5px solid rgba(255,255,255,.25);
+    color:#e2e8f0;
+    border-radius:8px;
+    font-size:13px;
+    font-weight:600;
+    cursor:pointer;
+    transition:background .15s;
+  }
+  .btn-reset:active{background:rgba(255,255,255,.08)}
+
+  .calc-note{
+    font-size:12px;
+    color:var(--text-muted);
+    margin-top:10px;
+    font-style:italic;
+  }
+
+  /* ==== BOM TABLE ==== */
+  .bom{
+    background:#fff;
+    border:1px solid var(--border);
+    border-radius:14px;
+    overflow:hidden;
+    margin:12px 0;
+  }
+  .bom-head{
+    background:linear-gradient(135deg,#1e293b 0%,#0f172a 100%);
+    color:#fff;
+    padding:12px 16px;
+    font-size:12.5px;
+    font-weight:700;
+    letter-spacing:.4px;
+    text-transform:uppercase;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+  }
+  .bom-head .tag{
+    background:rgba(94,234,212,.2);
+    color:#5eead4;
+    padding:3px 10px;
+    border-radius:6px;
+    font-size:10.5px;
+    letter-spacing:.6px;
+  }
+  .bom-table{
+    width:100%;
+    border-collapse:collapse;
+    font-size:12.5px;
+  }
+  .bom-table thead th{
+    background:#f1f5f9;
+    color:var(--primary-dark);
+    padding:8px 8px;
+    text-align:left;
+    font-size:10.5px;
+    text-transform:uppercase;
+    letter-spacing:.3px;
+    font-weight:700;
+    border-bottom:1px solid var(--border);
+    white-space:nowrap;
+  }
+  .bom-table thead th.num-col{text-align:right}
+  .bom-table thead th.action-col{text-align:center;width:36px}
+  .bom-table tbody td{
+    padding:8px 8px;
+    border-bottom:1px solid var(--border);
+    vertical-align:middle;
+  }
+  .bom-table tbody tr:last-child td{border-bottom:none}
+  .bom-table input{
+    width:100%;
+    padding:6px 8px;
+    border:1px solid transparent;
+    background:transparent;
+    border-radius:6px;
+    font-size:12.5px;
+    font-family:inherit;
+    color:var(--text);
+    font-weight:500;
+    transition:border-color .15s,background .15s;
+    min-width:0;
+  }
+  .bom-table input:hover{
+    background:#f8fafc;
+  }
+  .bom-table input:focus{
+    outline:none;
+    border-color:var(--primary);
+    background:#fff;
+  }
+  .bom-table input.num{
+    text-align:right;
+    font-family:"SF Mono",Consolas,monospace;
+    font-weight:600;
+  }
+  .bom-table .total-col{
+    text-align:right;
+    padding-right:8px;
+    font-family:"SF Mono",Consolas,monospace;
+    font-weight:700;
+    font-size:12px;
+    color:var(--primary-dark);
+    white-space:nowrap;
+  }
+  .bom-table .action-btn{
+    background:transparent;
+    border:none;
+    color:var(--danger);
+    cursor:pointer;
+    font-size:18px;
+    font-weight:700;
+    padding:4px 6px;
+    border-radius:6px;
+    line-height:1;
+    transition:background .15s;
+  }
+  .bom-table .action-btn:active{background:#fee2e2}
+  .bom-table .action-btn:disabled{opacity:.25;cursor:not-allowed}
+
+  .bom-total{
+    background:#0f172a;
+    color:#fff;
+    padding:14px 16px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:10px;
+  }
+  .bom-total .label{
+    font-size:12.5px;
+    color:#94a3b8;
+    text-transform:uppercase;
+    letter-spacing:.4px;
+    font-weight:700;
+  }
+  .bom-total .value{
+    font-size:18px;
+    font-weight:700;
+    font-family:"SF Mono",Consolas,monospace;
+    color:#5eead4;
+  }
+  .bom-total .value.buffer{
+    color:#fbbf24;
+  }
+  .bom-footer{
+    padding:10px 16px;
+    background:#f8fafc;
+    border-top:1px solid var(--border);
+    display:flex;
+    gap:8px;
+  }
+  .btn-bom{
+    flex:1;
+    padding:9px 12px;
+    border-radius:8px;
+    font-size:12.5px;
+    font-weight:700;
+    cursor:pointer;
+    border:1.5px solid var(--primary);
+    background:transparent;
+    color:var(--primary);
+    transition:background .15s;
+  }
+  .btn-bom:active{background:var(--primary-light)}
+  .btn-bom.primary{
+    background:var(--primary);
+    color:#fff;
+  }
+  .btn-bom.primary:active{background:var(--primary-dark)}
+
+  /* Rack visual */
+  .rack-visual{
+    display:flex;
+    gap:16px;
+    align-items:flex-start;
+    margin:12px 0;
+    padding:14px;
+    background:var(--bg);
+    border-radius:12px;
+  }
+  .rack-frame{
+    flex-shrink:0;
+    width:80px;
+    background:#1e293b;
+    border-radius:6px;
+    padding:6px 4px;
+    display:flex;
+    flex-direction:column;
+    gap:2px;
+  }
+  .rack-unit{
+    height:8px;
+    background:#334155;
+    border-radius:2px;
+    position:relative;
+  }
+  .rack-unit.filled{
+    background:linear-gradient(90deg,#5eead4 0%,#14b8a6 100%);
+  }
+  .rack-unit.filled.partial{
+    background:linear-gradient(90deg,#5eead4 0%,#14b8a6 40%,#334155 40%);
+  }
+  .rack-info{
+    flex:1;
+    font-size:13px;
+    color:var(--text-muted);
+  }
+  .rack-info strong{
+    color:var(--text);
+    font-size:14px;
+    display:block;
+    margin-bottom:4px;
+  }
+
+  /* Tabs */
+  .calc-tabs{
+    display:flex;
+    gap:4px;
+    background:rgba(15,118,110,.08);
+    padding:4px;
+    border-radius:10px;
+    margin-bottom:14px;
+  }
+  .calc-tab{
+    flex:1;
+    padding:8px 4px;
+    text-align:center;
+    font-size:11.5px;
+    font-weight:700;
+    color:var(--primary-dark);
+    border-radius:8px;
+    cursor:pointer;
+    transition:background .15s,color .15s;
+    user-select:none;
+    line-height:1.3;
+  }
+  .calc-tab.active{
+    background:#fff;
+    box-shadow:0 1px 3px rgba(15,23,42,.08);
+  }
+
+  .calc-panel{display:none}
+  .calc-panel.active{display:block}
+
+  /* Compare grid */
+  .compare-grid{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:10px;
+    margin:12px 0;
+  }
+  .compare-card{
+    background:#fff;
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:14px;
+    border-top:4px solid var(--primary);
+  }
+  .compare-card h5{
+    margin:0 0 8px;
+    font-size:14px;
+    color:var(--text);
+    font-weight:700;
+  }
+  .compare-card ul{
+    margin:0;
+    padding-left:18px;
+    font-size:13.5px;
+    color:var(--text-muted);
+  }
+  .compare-card ul li{margin-bottom:4px}
+  .compare-card ul li:last-child{margin-bottom:0}
+
+  /* Case box */
+  .case-box{
+    background:linear-gradient(135deg,#f0fdfa 0%,#e0f2fe 100%);
+    border-radius:12px;
+    padding:14px 16px;
+    margin:12px 0;
+    border:1px solid #99f6e4;
+  }
+  .case-box .case-label{
+    font-size:11px;
+    font-weight:700;
+    letter-spacing:.5px;
+    text-transform:uppercase;
+    color:var(--primary-dark);
+    margin-bottom:6px;
+    display:block;
+  }
+  .case-box p{font-size:14px;margin:0 0 8px}
+  .case-box .question{
+    background:#fff;
+    border-radius:8px;
+    padding:10px 12px;
+    font-size:13.5px;
+    margin-top:8px;
+    border-left:3px solid var(--accent);
+  }
+  .case-box .question strong{color:var(--primary-dark)}
+
+  /* Takeaway */
+  .takeaway{
+    background:#0f172a;
+    color:#fff;
+    border-radius:var(--radius);
+    padding:20px;
+    margin:24px 0 0;
+  }
+  .takeaway h3{
+    margin:0 0 12px;
+    font-size:15px;
+    color:#5eead4;
+    text-transform:uppercase;
+    letter-spacing:.5px;
+  }
+  .takeaway ol{
+    margin:0;
+    padding-left:22px;
+    font-size:14.5px;
+  }
+  .takeaway li{margin-bottom:8px;color:#e2e8f0}
+  .takeaway li:last-child{margin-bottom:0}
+
+  footer{
+    text-align:center;
+    padding:24px 16px 40px;
+    font-size:12.5px;
+    color:var(--text-muted);
+  }
+  footer strong{color:var(--primary-dark)}
+
+  .back-top{
+    position:fixed;
+    right:16px;
+    bottom:calc(16px + env(safe-area-inset-bottom));
+    width:44px;height:44px;
+    border-radius:50%;
+    background:var(--primary);
+    color:#fff;
+    border:none;
+    box-shadow:0 4px 12px rgba(15,118,110,.35);
+    cursor:pointer;
+    display:none;
+    align-items:center;justify-content:center;
+    z-index:50;
+    transition:transform .15s,opacity .2s;
+  }
+  .back-top:active{transform:scale(.92)}
+  .back-top.show{display:flex}
+
+  @media (min-width:600px){
+    header.hero{padding:36px 28px 40px}
+    header.hero h1{font-size:26px}
+    .tp-box{margin:-20px 24px 24px}
+    nav.toc{margin:0 24px 28px}
+    main{padding:0 24px 60px}
+    .compare-grid{grid-template-columns:1fr 1fr}
+    .content{font-size:15.5px}
+    .bom-table{font-size:13.5px}
+    .bom-table input{font-size:13.5px}
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <span class="badge">Modul 11 · Kelas XI TKJ</span>
+  <h1>Perancangan Kebutuhan Perangkat</h1>
+  <p>Dari keputusan teknologi menjadi daftar belanja yang bisa dieksekusi.</p>
+</header>
+
+<div class="tp-box">
+  <span class="label">Tujuan Pembelajaran</span>
+  <p>Memahami kebutuhan teknis pengguna dan peralatan jaringan dengan teknologi yang sesuai.</p>
+</div>
+
+<nav class="toc">
+  <h2>Daftar Isi</h2>
+  <ol>
+    <li><a href="#m11-1">Menentukan Jumlah Perangkat</a></li>
+    <li><a href="#m11-2">Menghitung Jumlah Port Switch</a></li>
+    <li><a href="#m11-3">Menghitung Kebutuhan Access Point</a></li>
+    <li><a href="#m11-4">Menentukan Kebutuhan Uplink</a></li>
+    <li><a href="#m11-5">Menentukan Kebutuhan Kabel</a></li>
+    <li><a href="#m11-6">Menentukan Kebutuhan Rack</a></li>
+    <li><a href="#m11-7">Menentukan Perangkat Pendukung</a></li>
+    <li><a href="#m11-8">Menentukan Kebutuhan UPS</a></li>
+    <li><a href="#m11-9">Membuat Bill of Materials (BoM)</a></li>
+    <li><a href="#m11-10">Membuat Estimasi Biaya</a></li>
+  </ol>
+</nav>
+
+<main>
+
+  <!-- 11.1 -->
+  <section id="m11-1">
+    <details open>
+      <summary>
+        <span class="num">11.1</span>
+        <span class="summary-text">Menentukan Jumlah Perangkat</span>
+        <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </summary>
+      <div class="content">
+        <p>Setelah teknologi dipilih di Modul 10, sekarang kita <strong>menghitung jumlah</strong> setiap perangkat yang dibutuhkan. Ini tahap yang paling konkret — dari sini semua angka harus bisa dipertanggungjawabkan.</p>
+
+        <h4>Prinsip Umum</h4>
+        <ul>
+          <li><strong>Berbasis kebutuhan</strong> — setiap perangkat harus ada alasannya.</li>
+          <li><strong>Hitung per lokasi</strong> — jangan generalisasi satu area ke seluruh gedung.</li>
+          <li><strong>Selalu sisakan cadangan</strong> — 20% untuk port, 1 unit untuk switch cadangan.</li>
+          <li><strong>Konversi ke angka bulat</strong> — jumlah perangkat selalu bilangan bulat.</li>
+        </ul>
+
+        <h4>Alur Perhitungan</h4>
+        <div class="formula">
+          <span class="cm">1. Jumlah pengguna & perangkat</span>
+          <span class="hl">→</span>
+          <span class="cm">2. Jumlah port switch</span>
+          <span class="hl">→</span>
+          <span class="cm">3. Jumlah AP</span>
+          <br>
+          <span class="cm">4. Jumlah uplink</span>
+          <span class="hl">→</span>
+          <span class="cm">5. Kebutuhan kabel</span>
+          <span class="hl">→</span>
+          <span class="cm">6. Rack & pendukung</span>
+          <br>
+          <span class="cm">7. UPS</span>
+          <span class="hl">→</span>
+          <span class="cm">8. BoM & estimasi biaya</span>
+        </div>
+
+        <h4>Data yang Harus Dikumpulkan</h4>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Data</th><th>Contoh Sumber</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Jumlah PC / perangkat tetap</td><td>Inventaris lab, kantor</td></tr>
+              <tr><td>Jumlah pengguna mobile</td><td>Wawancara, kebijakan BYOD</td></tr>
+              <tr><td>Luas area & denah</td><td>Site survey, blueprint</td></tr>
+              <tr><td>Jumlah lantai / gedung</td><td>Observasi lapangan</td></tr>
+              <tr><td>Jarak antar titik</td><td>Pengukuran aktual</td></tr>
+              <tr><td>Titik yang butuh daya</td><td>AP, CCTV, VoIP</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="callout tip">
+          <span class="title">Tips</span>
+          <p style="margin:0">Buat <strong>tabel kerja</strong> per lokasi: baris = lokasi, kolom = jumlah perangkat. Ini yang nanti dijumlahkan untuk BoM.</p>
+        </div>
+      </div>
+    </details>
+  </section>
+
+  <!-- 11.2 -->
+  <section id="m11-2">
+    <details>
+      <summary>
+        <span class="num">11.2</span>
+        <span class="summary-text">Menghitung Jumlah Port Switch</span>
+        <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </summary>
+      <div class="content">
+        <p>Ini perhitungan paling dasar. Setiap perangkat kabel (PC, printer, server, AP, CCTV) butuh satu port switch.</p>
+
+        <h4>Rumus Dasar</h4>
+        <div class="formula">
+          <span class="hl">Port Total</span> = Σ perangkat kabel + cadangan 20%
+          <br><br>
+          <span class="cm">Perangkat kabel = PC + Printer + Server + AP + CCTV + VoIP</span>
+        </div>
+
+        <h4>Contoh Perhitungan</h4>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Perangkat</th><th>Jumlah</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>PC laboratorium</td><td>36</td></tr>
+              <tr><td>Printer jaringan</td><td>2</td></tr>
+              <tr><td>Access Point (PoE)</td><td>4</td></tr>
+              <tr><td>CCTV (PoE)</td><td>8</td></tr>
+              <tr><td>Server</td><td>1</td></tr>
+              <tr style="background:#f0fdfa"><td><strong>Subtotal</strong></td><td><strong>51</strong></td></tr>
+              <tr style="background:#f0fdfa"><td><strong>Cadangan 20%</strong></td><td><strong>10</strong></td></tr>
+              <tr style="background:#f0fdfa"><td><strong>Total port dibutuhkan</strong></td><td><strong>61</strong></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h4>Kalkulator Port Switch</h4>
+        <p>Masukkan jumlah perangkat kabel di jaringan Anda, biarkan kalkulator bekerja.</p>
+
+        <div class="calculator">
+          <div class="calc-head">
+            <div class="calc-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="2"/><line x1="6" y1="10" x2="6" y2="14"/><line x1="10" y1="10" x2="10" y2="14"/><line x1="14" y1="10" x2="14" y2="14"/><line x1="18" y1="10" x2="18" y2="14"/></svg>
+            </div>
+            <div>
+              <div class="calc-title">Kalkulator Port Switch</div>
+              <div class="calc-sub">Hitung total port + cadangan</div>
+            </div>
+          </div>
+
+          <div class="calc-row">
+            <div class="label">PC / Desktop
+              <small>Perangkat tetap berkabel</small>
+            </div>
+            <input type="number" id="pPC" value="36" min="0" inputmode="numeric">
+          </div>
+
+          <div class="calc-row">
+            <div class="label">Laptop (docked)
+              <small>Laptop yang pakai kabel LAN</small>
+            </div>
+            <input type="number" id="pLaptop" value="0" min="0" inputmode="numeric">
+          </div>
+
+          <div class="calc-row">
+            <div class="label">Printer jaringan</div>
+            <input type="number" id="pPrinter" value="2" min="0" inputmode="numeric">
+          </div>
+
+          <div class="calc-row">
+            <div class="label">Server</div>
+            <input type="number" id="pServer" value="1" min="0" inputmode="numeric">
+          </div>
+
+          <div class="calc-row">
+            <div class="label">Access Point (PoE)</div>
+            <input type="number" id="pAP" value="4" min="0" inputmode="numeric">
+          </div>
+
+          <div class="calc-row">
+            <div class="label">CCTV (PoE)</div>
+            <input type="number" id="pCCTV" value="8" min="0" inputmode="numeric">
+          </div>
+
+          <div class="calc-row">
+            <div class="label">Telepon VoIP</div>
+            <input type="number" id="pVoIP" value="0" min="0" inputmode="numeric">
+          </div>
+
+          <div class="calc-row">
+            <div class="label">Perangkat lain
+              <small>NVR, NAS, IoT, dsb.</small>
+            </div>
+            <input type="number" id="pOther" value="0" min="0" inputmode="numeric">
+          </div>
+
+          <div class="calc-row">
+            <div class="label">Cadangan
+              <small>Untuk pertumbuhan & port rusak</small>
+            </div>
+            <select id="pBuffer">
+              <option value="1.15">Ringan (15%)</option>
+              <option value="1.20" selected>Standar (20%)</option>
+              <option value="1.30">Konservatif (30%)</option>
+              <option value="1.50">Aman (50%)</option>
+            </select>
+          </div>
+
+          <div class="calc-result">
+            <div class="row">
+              <span class="k">Total perangkat</span>
+              <span class="v" id="portRaw">0</span>
+            </div>
+            <div class="row">
+              <span class="k">Cadangan</span>
+              <span class="v" id="portBuffer">+0</span>
+            </div>
+            <div class="row total">
+              <span class="k">Total port dibutuhkan</span>
+              <span class="v" id="portTotal">0</span>
+            </div>
+            <div class="row">
+              <span class="k">Rekomendasi switch</span>
+              <span class="v" id="portRec">—</span>
+            </div>
+            <button class="btn-reset" id="btnResetPort">Reset</button>
+          </div>
+          <div class="calc-note">Pilih switch dengan kapasitas terdekat di atas total port. Contoh: butuh 61 port → pilih 2× 48 port atau 48 + 24 port.</div>
+        </div>
+
+        <div class="callout warn">
+          <span class="title">Perhatian</span>
+          <p style="margin:0">Jangan beli switch 24 port kalau butuh 20 port. Selisih harga 24 vs 48 port biasanya kecil, tapi upgrade di masa depan jauh lebih mahal (harus beli baru lagi).</p>
+        </div>
+      </div>
+    </details>
+  </section>
+
+  <!-- 11.3 -->
+  <section id="m11-3">
+    <details>
+      <summary>
+        <span class="num">11.3</span>
+        <span class="summary-text">Menghitung Kebutuhan Access Point</span>
+        <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </summary>
+      <div class="content">
+        <p>Jumlah AP ditentukan oleh <strong>dua faktor</strong> yang harus dihitung terpisah: <em>coverage</em> (jangkauan) dan <em>kapasitas</em> (jumlah client). Ambil angka yang lebih besar.</p>
+
+        <h4>Dua Perhitungan, Satu Kesimpulan</h4>
+        <div class="formula">
+          <span class="hl">AP Coverage</span> = Luas area ÷ Coverage per AP
+          <br>
+          <span class="hl">AP Kapasitas</span> = Jumlah client aktif ÷ Kapasitas aman per AP
+          <br><br>
+          <span class="cm">Jumlah AP = max( AP Coverage , AP Kapasitas )</span>
+        </div>
+
+        <h4>Referensi Coverage per AP</h4>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Kondisi Ruangan</th><th>Coverage per AP</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Ruang terbuka (aula, hall)</td><td>~80–100 m²</td></tr>
+              <tr><td>Ruang kantor (sekat ringan)</td><td>~50–60 m²</td></tr>
+              <tr><td>Ruang kelas (dinding bata)</td><td>~40–50 m²</td></tr>
+              <tr><td>Ruang laboratorium (banyak alat)</td><td>~30–40 m²</td></tr>
+              <tr><td>Ruang server (banyak logam)</td><td>~15–20 m²</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h4>Referensi Kapasitas per AP</h4>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Kelas AP</th><th>Kapasitas Aman</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>AP consumer (rumah)</td><td>10–15 client aktif</td></tr>
+              <tr><td>AP SMB (Wi-Fi 5/6)</td><td>25–40 client aktif</td></tr>
+              <tr><td>AP enterprise (Wi-Fi 6)</td><td>50–80 client aktif</td></tr>
+              <tr><td>AP high-density (Wi-Fi 6/7)</td><td>100+ client aktif</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h4>Kalkulator AP</h4>
+        <p>Hitung dua-duanya sekaligus. Kalkulator akan rekomendasikan jumlah AP terbesar.</p>
+
+        <div class="calculator">
+          <div class="calc-head">
+            <div class="calc-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><circle cx="12" cy="20" r="1"/></svg>
+            </div>
+            <div>
+              <div class="calc-title">Kalkulator Jumlah AP</div>
+              <div class="calc-sub">Berdasarkan coverage & kapasitas</div>
+            </div>
+          </div>
+
+          <div class="calc-row">
+            <div class="label">Luas total area (m²)
+              <small>Total luas ruangan yang butuh Wi-Fi</small>
+            </div>
+            <input type="number" id="apArea" value="800" min="0" inputmode="numeric">
+          </div>
+
+          <div class="calc-row">
+            <div class="label">Coverage per AP (m²)
+              <small>Sesuaikan jenis ruangan</small>
+            </div>
+            <select id="apCoverage">
+              <option value="80">Ruang terbuka (80 m²)</option>
+              <option value="55" selected>Kantor (55 m²)</option>
+              <option value="45">Ruang kelas (45 m²)</option>
+              <option value="35">Lab (35 m²)</option>
+              <option value="20">Ruang server (20 m²)</option>
+            </select>
+          </div>
+
+          <div class="calc-row">
+            <div class="label">Jumlah client aktif total
+              <small>Concurrent users, bukan total</small>
+            </div>
+            <input type="number" id="apClient" value="80" min="0" inputmode="numeric">
+          </div>
+
+          <div class="calc-row">
+            <div class="label">Kapasitas aman per AP
+              <small>Sesuai kelas AP</small>
+            </div>
+            <select id="apCapacity">
+              <option value="15">AP consumer (15)</option>
+              <option value="30" selected>AP SMB Wi-Fi 6 (30)</option>
+              <option value="60">AP enterprise (60)</option>
+              <option value="100">High-density (100)</option>
+            </select>
+          </div>
+
+          <div class="calc-result">
+            <div class="row">
+              <span class="k">Kebutuhan coverage</span>
+              <span class="v" id="apCoverageResult">0 AP</span>
+            </div>
+            <div class="row">
+              <span class="k">Kebutuhan kapasitas</span>
+              <span class="v" id="apCapacityResult">0 AP</span>
+            </div>
+            <div class="row total">
+              <span class="k">Jumlah AP dibutuhkan</span>
+              <span class="v" id="apFinal">0 AP</span>
+            </div>
+            <div class="row">
+              <span class="k">Ditentukan oleh</span>
+              <span class="v" id="apDeciding">—</span>
+            </div>
+            <button class="btn-reset" id="btnResetAp">Reset</button>
+          </div>
+          <div class="calc-note">Jangan lupa tambah 1 AP cadangan jika budget memungkinkan. AP sering rusak mendadak.</div>
+        </div>
+
+        <div class="callout tip">
+          <span class="title">Tips</span>
+          <p style="margin:0">Kalau coverage yang menentukan → AP dipasang tersebar. Kalau kapasitas yang menentukan → AP dipasang di titik padat (aula, lab), tapi masih harus menjaga coverage.</p>
+        </div>
+      </div>
+    </details>
+  </section>
+
+  <!-- 11.4 -->
+  <section id="m11-4">
+    <details>
+      <summary>
+        <span class="num">11.4</span>
+        <span class="summary-text">Menentukan Kebutuhan Uplink</span>
+        <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </summary>
+      <div class="content">
+        <p>Uplink adalah jalur penghubung antar switch, atau dari switch ke router. Uplink adalah <em>bottleneck tersembunyi</em> yang sering diabaikan.</p>
+
+        <h4>Aturan Emas Uplink</h4>
+        <div class="formula">
+          <span class="hl">Uplink</span> ≥ 70% × total port aktif × kecepatan access
+          <br><br>
+          <span class="cm">Idealnya uplink ≥ 1 tingkat lebih cepat dari access.</span>
+        </div>
+
+        <h4>Rekomendasi Uplink</h4>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Skenario</th><th>Access Port</th><th>Uplink Ideal</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Lab 36 PC, standalone</td><td>1 Gbps</td><td>1 Gbps</td></tr>
+              <tr><td>3 switch bertingkat</td><td>1 Gbps</td><td>10 Gbps (fiber)</td></tr>
+              <tr><td>AP Wi-Fi 6 high-density</td><td>1 Gbps</td><td>2.5–5 Gbps</td></tr>
+              <tr><td>Server utama</td><td>1 Gbps</td><td>10 Gbps (teaming 2×1G minimum)</td></tr>
+              <tr><td>Backbone antar gedung</td><td>—</td><td>10 Gbps fiber</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h4>Konsekuensi Uplink Lemah</h4>
+        <ul>
+          <li>Akses ke internet terasa lambat meski bandwidth cukup.</li>
+          <li>Transfer file antar lantai lambat.</li>
+          <li>Banyak PC tidak bisa mengakses server bersamaan.</li>
+          <li>VoIP patah-patah meski link lokal lega.</li>
+        </ul>
+
+        <div class="callout warn">
+          <span class="title">Penting</span>
+          <p style="margin:0">Uplink 1 Gbps melayani ~30 client dengan pemakaian rata-rata. Kalau client lebih dari 30 dan aktif bersamaan, uplink jadi hambatan. Naikkan ke 10 Gbps (SFP+) untuk 30+ client.</p>
+        </div>
+
+        <h4>Hitung Uplink</h4>
+        <div class="formula">
+          <span class="cm">Contoh: 48 PC aktif × 1 Gbps × 70% = <span class="hl">33.6 Gbps</span></span>
+          <br>
+          <span class="cm">Tapi ini worst case (semua aktif penuh). Realistis: 48 × 100 Mbps = 4.8 Gbps → 10 Gbps uplink cukup.</span>
+        </div>
+      </div>
+    </details>
+  </section>
+
+  <!-- 11.5 -->
+  <section id="m11-5">
+    <details>
+      <summary>
+        <span class="num">11.5</span>
+        <span class="summary-text">Menentukan Kebutuhan Kabel</span>
+        <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </summary>
+      <div class="content">
+        <p>Kabel adalah komponen paling banyak di jaringan. Salah hitung, bisa kelebihan atau kehabisan di tengah instalasi.</p>
+
+        <h4>Rumus Kebutuhan Kabel</h4>
+        <div class="formula">
+          <span class="hl">Panjang total</span> = Σ (jarak per titik) + 10% cadangan teknis
+          <br><br>
+          <span class="cm">Jarak per titik = jarak horizontal + jarak vertikal + 2 m (service loop)</span>
+        </div>
+
+        <h4>Referensi Jarak per Kabel</h4>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Jenis Tarikan</th><th>Estimasi Jarak</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Horizontal dalam satu ruangan</td><td>15–25 m</td></tr>
+              <tr><td>Horizontal antar ruangan (satu lantai)</td><td>25–50 m</td></tr>
+              <tr><td>Vertikal antar lantai</td><td>5–10 m per lantai</td></tr>
+              <tr><td>Backbone antar gedung</td><td>50–500 m</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h4>Kalkulator Kabel</h4>
+
+        <div class="calculator">
+          <div class="calc-head">
+            <div class="calc-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4v16h16"/><path d="M4 12h8a4 4 0 0 0 4-4V4"/><circle cx="20" cy="4" r="1"/></svg>
+            </div>
+            <div>
+              <div class="calc-title">Kalkulator Kabel UTP</div>
+              <div class="calc-sub">Estimasi panjang & jumlah box</div>
+            </div>
+          </div>
+
+          <div class="calc-row">
+            <div class="label">Jumlah titik kabel
+              <small>Setiap titik = 1 kabel UTP</small>
+            </div>
+            <input type="number" id="cbPoints" value="50" min="0" inputmode="numeric">
+          </div>
+
+          <div class="calc-row">
+            <div class="label">Rata-rata jarak per titik (m)
+              <small>Horizontal + vertikal + service loop</small>
+            </div>
+            <input type="number" id="cbDistance" value="30" min="0" inputmode="numeric">
+          </div>
+
+          <div class="calc-row">
+            <div class="label">Cadangan teknis
+              <small>Untuk kesalahan pemotongan & terminasi</small>
+            </div>
+            <select id="cbBuffer">
+              <option value="1.05">Minimal (5%)</option>
+              <option value="1.10" selected>Standar (10%)</option>
+              <option value="1.15">Aman (15%)</option>
+            </select>
+          </div>
+
+          <div class="calc-result">
+            <div class="row">
+              <span class="k">Panjang dasar</span>
+              <span class="v" id="cbRaw">0 m</span>
+            </div>
+            <div class="row">
+              <span class="k">Dengan cadangan</span>
+              <span class="v" id="cbTotal">0 m</span>
+            </div>
+            <div class="row total">
+              <span class="k">Box (305 m/box)</span>
+              <span class="v" id="cbBox">0 box</span>
+            </div>
+            <div class="row">
+              <span class="k">Perkiraan biaya</span>
+              <span class="v" id="cbCost">Rp0</span>
+            </div>
+            <button class="btn-reset" id="btnResetCb">Reset</button>
+          </div>
+          <div class="calc-note">Harga asumsi: Rp1.500.000/box Cat6 305 m. Tambahkan konektor RJ45 (~2× jumlah titik) dan faceplate.</div>
+        </div>
+
+        <h4>Perangkat Kabel Pendukung</h4>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Item</th><th>Rumus</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Konektor RJ45</td><td>2× titik + 20% cadangan</td></tr>
+              <tr><td>Faceplate</td><td>= jumlah titik</td></tr>
+              <tr><td>Keystone jack</td><td>= jumlah titik</td></tr>
+              <tr><td>Cable ties / velcro</td><td>~5 pcs per titik</td></tr>
+              <tr><td>Patch panel</td><td>1 per 24 port switch</td></tr>
+              <tr><td>Patch cord</td><td>= jumlah port aktif + cadangan</td></tr>
+              <tr><td>Cable tester</td><td>1 untuk 1 tim instalasi</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </details>
+  </section>
+
+  <!-- 11.6 -->
+  <section id="m11-6">
+    <details>
+      <summary>
+        <span class="num">11.6</span>
+        <span class="summary-text">Menentukan Kebutuhan Rack</span>
+        <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </summary>
+      <div class="content">
+        <p>Rack adalah tempat menyimpan perangkat jaringan. Ukurannya dalam <strong>U</strong> (Unit Rack) — 1U = 44.45 mm tinggi.</p>
+
+        <h4>Standar Tinggi Perangkat</h4>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Perangkat</th><th>Tinggi</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Switch kecil (8–16 port)</td><td>1U atau desktop</td></tr>
+              <tr><td>Switch 24/48 port</td><td>1U</td></tr>
+              <tr><td>Router SMB</td><td>1U atau desktop</td></tr>
+              <tr><td>Patch panel 24 port</td><td>1U</td></tr>
+              <tr><td>Server 1U</td><td>1U</td></tr>
+              <tr><td>NVR CCTV</td><td>1–2U</td></tr>
+              <tr><td>UPS rack-mount</td><td>2U</td></tr>
+              <tr><td>Organizer / cable manager</td><td>1U</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h4>Menentukan Ukuran Rack</h4>
+        <div class="formula">
+          <span class="hl">Total U</span> = Σ tinggi perangkat + 2U (organizer) + cadangan 30%
+          <br><br>
+          <span class="cm">Pilih ukuran rack: 6U, 9U, 12U, 22U, 42U.</span>
+        </div>
+
+        <h4>Contoh Perhitungan</h4>
+        <ul>
+          <li>Switch 48 port: 1U</li>
+          <li>Patch panel 24 port × 2: 2U</li>
+          <li>Router: 1U</li>
+          <li>Server: 1U</li>
+          <li>NVR: 2U</li>
+          <li>UPS: 2U</li>
+          <li>Cable manager: 2U</li>
+          <li><strong>Total: 11U</strong></li>
+          <li><strong>+ 30% cadangan: ~15U</strong></li>
+          <li><strong>Pilih: Rack 22U</strong> (untuk ruang lega & upgrade)</li>
+        </ul>
+
+        <h4>Visualisasi Rack</h4>
+        <div class="rack-visual">
+          <div class="rack-frame" id="rackFrame"></div>
+          <div class="rack-info">
+            <strong>Rack 22U</strong>
+            <div>Terpakai: 11U (50%)</div>
+            <div>Kosong: 11U (50%)</div>
+            <div style="margin-top:8px">Warna hijau = slot terisi.</div>
+          </div>
+        </div>
+
+        <h4>Kriteria Tambahan Rack</h4>
+        <ul>
+          <li><strong>Kedalaman</strong> — server butuh 600–1000 mm.</li>
+          <li><strong>Ventilasi</strong> — rack tertutup butuh fan, rack terbuka lebih adem.</li>
+          <li><strong>Kunci</strong> — untuk keamanan fisik.</li>
+          <li><strong>Mobilitas</strong> — castor (roda) untuk rack kecil, dudukan lantai untuk rack besar.</li>
+          <li><strong>Manajemen kabel</strong> — vertikal & horizontal.</li>
+        </ul>
+      </div>
+    </details>
+  </section>
+
+  <!-- 11.7 -->
+  <section id="m11-7">
+    <details>
+      <summary>
+        <span class="num">11.7</span>
+        <span class="summary-text">Menentukan Perangkat Pendukung</span>
+        <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </summary>
+      <div class="content">
+        <p>Selain perangkat utama (switch, router, AP), banyak item kecil yang wajib ada. Kalau lupa, instalasi bisa terhenti.</p>
+
+        <h4>Checklist Perangkat Pendukung</h4>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Kategori</th><th>Item</th><th>Rumus</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Kabel & Konektor</strong></td>
+                <td>RJ45, keystone, faceplate, patch cord, cable ties</td>
+                <td>Sesuai titik</td>
+              </tr>
+              <tr>
+                <td><strong>Rack</strong></td>
+                <td>Rack, PDU, cable manager, fan, baut</td>
+                <td>Sesuai ukuran rack</td>
+              </tr>
+              <tr>
+                <td><strong>Daya</strong></td>
+                <td>UPS, stabilizer, stop kontak, MCB</td>
+                <td>Sesuai beban</td>
+              </tr>
+              <tr>
+                <td><strong>Instalasi</strong></td>
+                <td>Bor, tang crimping, cable tester, fish tape</td>
+                <td>1 set per tim</td>
+              </tr>
+              <tr>
+                <td><strong>Label</strong></td>
+                <td>Label kabel, label port, label perangkat</td>
+                <td>Sesuai jumlah titik</td>
+              </tr>
+              <tr>
+                <td><strong>Keamanan</strong></td>
+                <td>Kunci rack, CCTV ruang server</td>
+                <td>Sesuai kebijakan</td>
+              </tr>
+              <tr>
+                <td><strong>Monitoring</strong></td>
+                <td>NMS, kabel monitoring, PC monitoring</td>
+                <td>1 set</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h4>Estimasi Perangkat Pendukung</h4>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Item</th><th>Rumus</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Patch cord Cat6</td><td>Jumlah port aktif + 20%</td></tr>
+              <tr><td>Label kabel</td><td>2× jumlah titik</td></tr>
+              <tr><td>Velcro / cable ties</td><td>~5 per titik</td></tr>
+              <tr><td>Baut rack (M6)</td><td>4 per perangkat</td></tr>
+              <tr><td>Cable management horizontal</td><td>1 per 2 perangkat</td></tr>
+              <tr><td>Stop kontak rack (PDU)</td><td>1 per rack</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="callout tip">
+          <span class="title">Tips</span>
+          <p style="margin:0">Perangkat pendukung sering 15–25% dari total biaya proyek. Jangan lupa masukkan ke BoM supaya anggaran tidak jebol.</p>
+        </div>
+      </div>
+    </details>
+  </section>
+
+  <!-- 11.8 -->
+  <section id="m11-8">
+    <details>
+      <summary>
+        <span class="num">11.8</span>
+        <span class="summary-text">Menentukan Kebutuhan UPS</span>
+        <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </summary>
+      <div class="content">
+        <p>UPS melindungi perangkat dari mati listrik mendadak, tegangan tidak stabil, dan memberi waktu untuk shutdown bersih. Untuk server dan switch inti, UPS <strong>wajib</strong>.</p>
+
+        <h4>Rumus Kebutuhan UPS</h4>
+        <div class="formula">
+          <span class="hl">Beban total</span> = Σ (daya perangkat) × 1.3 (faktor rugi)
+          <br><br>
+          <span class="hl">Kapasitas UPS (VA)</span> = beban total ÷ 0.8 (power factor)
+          <br><br>
+          <span class="hl">Waktu backup</span> = (kapasitas baterai × tegangan) ÷ beban total
+        </div>
+
+        <h4>Daya Perangkat Umum</h4>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Perangkat</th><th>Daya</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Switch 24 port (tanpa PoE)</td><td>20–30 W</td></tr>
+              <tr><td>Switch 48 port (tanpa PoE)</td><td>40–60 W</td></tr>
+              <tr><td>Router SMB</td><td>15–25 W</td></tr>
+              <tr><td>AP Wi-Fi (tanpa PoE)</td><td>8–15 W</td></tr>
+              <tr><td>Server 1U</td><td>200–400 W</td></tr>
+              <tr><td>NVR CCTV</td><td>30–60 W</td></tr>
+              <tr><td>Modem / ONT</td><td>10–15 W</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h4>Kalkulator UPS</h4>
+
+        <div class="calculator">
+          <div class="calc-head">
+            <div class="calc-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="16" height="10" rx="2"/><line x1="22" y1="11" x2="22" y2="13"/><line x1="6" y1="11" x2="10" y2="11"/></svg>
+            </div>
+            <div>
+              <div class="calc-title">Kalkulator UPS</div>
+              <div class="calc-sub">Hitung kapasitas & waktu backup</div>
+            </div>
+          </div>
+
+          <div class="calc-row">
+            <div class="label">Switch (jumlah)
+              <small>~50W per switch</small>
+            </div>
+            <input type="number" id="upsSwitch" value="2" min="0" inputmode="numeric">
+          </div>
+
+          <div class="calc-row">
+            <div class="label">Router (jumlah)
+              <small>~20W per router</small>
+            </div>
+            <input type="number" id="upsRouter" value="1" min="0" inputmode="numeric">
+          </div>
+
+          <div class="calc-row">
+            <div class="label">Server (jumlah)
+              <small>~300W per server</small>
+            </div>
+            <input type="number" id="upsServer" value="1" min="0" inputmode="numeric">
+          </div>
+
+          <div class="calc-row">
+            <div class="label">NVR / storage (jumlah)
+              <small>~50W per NVR</small>
+            </div>
+            <input type="number" id="upsNVR" value="1" min="0" inputmode="numeric">
+          </div>
+
+          <div class="calc-row">
+            <div class="label">Modem / ONT (jumlah)
+              <small>~12W per modem</small>
+            </div>
+            <input type="number" id="upsModem" value="1" min="0" inputmode="numeric">
+          </div>
+
+          <div class="calc-result">
+            <div class="row">
+              <span class="k">Beban total</span>
+              <span class="v" id="upsLoad">0 W</span>
+            </div>
+            <div class="row">
+              <span class="k">Dengan faktor rugi 1.3</span>
+              <span class="v" id="upsLoadWithLoss">0 W</span>
+            </div>
+            <div class="row">
+              <span class="k">Kapasitas UPS minimum</span>
+              <span class="v" id="upsVA">0 VA</span>
+            </div>
+            <div class="row total">
+              <span class="k">Rekomendasi UPS</span>
+              <span class="v" id="upsRec">—</span>
+            </div>
+            <button class="btn-reset" id="btnResetUps">Reset</button>
+          </div>
+          <div class="calc-note">Rekomendasi dibulatkan ke ukuran UPS standar: 650VA, 1200VA, 1500VA, 2200VA, 3000VA.</div>
+        </div>
+
+        <h4>Jenis UPS</h4>
+        <div class="compare-grid">
+          <div class="compare-card">
+            <h5>Standby (Offline)</h5>
+            <ul>
+              <li>Termurah</li>
+              <li>Ada jeda saat listrik mati</li>
+              <li>Cocok: PC, printer, modem</li>
+              <li>Tidak cocok untuk server</li>
+            </ul>
+          </div>
+          <div class="compare-card">
+            <h5>Line Interactive</h5>
+            <ul>
+              <li>Harga menengah</li>
+              <li>Stabilizer otomatis (AVR)</li>
+              <li>Cocok: kantor kecil, router, switch</li>
+              <li>Umum di pasaran</li>
+            </ul>
+          </div>
+          <div class="compare-card">
+            <h5>Online (Double Conversion)</h5>
+            <ul>
+              <li>Termahal</li>
+              <li>Tanpa jeda, tegangan murni</li>
+              <li>Cocok: server, perangkat kritis</li>
+              <li>Umum di data center</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="callout warn">
+          <span class="title">Penting</span>
+          <p style="margin:0">Jangan hitung UPS berdasarkan <em>waktu backup lama</em>. UPS untuk jaringan biasanya hanya butuh 5–15 menit — cukup untuk shutdown bersih atau sampai genset menyala.</p>
+        </div>
+      </div>
+    </details>
+  </section>
+
+  <!-- 11.9 -->
+  <section id="m11-9">
+    <details>
+      <summary>
+        <span class="num">11.9</span>
+        <span class="summary-text">Membuat Bill of Materials (BoM)</span>
+        <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </summary>
+      <div class="content">
+        <p><strong>Bill of Materials (BoM)</strong> adalah daftar lengkap semua item yang dibutuhkan proyek, dengan jumlah dan estimasi harga. Ini dokumen inti dari Modul 11.</p>
+
+        <h4>Struktur BoM</h4>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Kolom</th><th>Isi</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>No</td><td>Nomor urut</td></tr>
+              <tr><td>Kategori</td><td>Perangkat inti / pendukung / kabel / instalasi</td></tr>
+              <tr><td>Item</td><td>Nama perangkat / material</td></tr>
+              <tr><td>Spesifikasi</td><td>Detail teknis singkat</td></tr>
+              <tr><td>Qty</td><td>Jumlah</td></tr>
+              <tr><td>Satuan</td><td>Unit / box / roll / set</td></tr>
+              <tr><td>Harga satuan</td><td>Estimasi per unit</td></tr>
+              <tr><td>Total</td><td>Qty × harga satuan</td></tr>
+              <tr><td>Keterangan</td><td>Catatan</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h4>Contoh BoM — Lab 36 PC</h4>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Item</th><th>Qty</th><th>Total</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Switch managed 48 port PoE+</td><td>2</td><td>Rp9.000.000</td></tr>
+              <tr><td>Router SMB dengan firewall</td><td>1</td><td>Rp3.500.000</td></tr>
+              <tr><td>Access Point Wi-Fi 6</td><td>4</td><td>Rp3.400.000</td></tr>
+              <tr><td>Kabel UTP Cat6 (box 305m)</td><td>6</td><td>Rp9.000.000</td></tr>
+              <tr><td>RJ45 + keystone + faceplate</td><td>1 set</td><td>Rp2.500.000</td></tr>
+              <tr><td>Patch panel 24 port</td><td>4</td><td>Rp1.200.000</td></tr>
+              <tr><td>Patch cord Cat6</td><td>70</td><td>Rp1.050.000</td></tr>
+              <tr><td>Rack 22U + PDU</td><td>1</td><td>Rp2.800.000</td></tr>
+              <tr><td>UPS 2200VA line interactive</td><td>1</td><td>Rp2.500.000</td></tr>
+              <tr><td>Instalasi & terminasi</td><td>1</td><td>Rp3.000.000</td></tr>
+              <tr style="background:#f0fdfa"><td><strong>Subtotal</strong></td><td></td><td><strong>Rp37.950.000</strong></td></tr>
+              <tr style="background:#f0fdfa"><td><strong>Cadangan 10%</strong></td><td></td><td><strong>Rp3.795.000</strong></td></tr>
+              <tr style="background:#0f172a;color:#5eead4"><td><strong>TOTAL</strong></td><td></td><td><strong>Rp41.745.000</strong></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="callout tip">
+          <span class="title">Tips</span>
+          <p style="margin:0">Buat BoM di spreadsheet dulu. Gunakan formula untuk total otomatis. Setelah matang, baru pindahkan ke dokumen proposal.</p>
+        </div>
+
+        <h4>Generator BoM Interaktif</h4>
+        <p>Isi daftar item di bawah ini. Total akan dihitung otomatis.</p>
+
+        <div class="bom">
+          <div class="bom-head">
+            <span>BoM Proyek</span>
+            <span class="tag">EDITABLE</span>
+          </div>
+          <div style="overflow-x:auto;-webkit-overflow-scrolling:touch">
+            <table class="bom-table" id="bomTable">
+              <thead>
+                <tr>
+                  <th style="min-width:130px">Item</th>
+                  <th style="width:50px">Qty</th>
+                  <th style="min-width:100px">Harga</th>
+                  <th class="num-col" style="min-width:90px">Total</th>
+                  <th class="action-col"></th>
+                </tr>
+              </thead>
+              <tbody id="bomBody"></tbody>
+            </table>
+          </div>
+          <div class="bom-total">
+            <span class="label">Subtotal</span>
+            <span class="value" id="bomSubtotal">Rp0</span>
+          </div>
+          <div class="bom-total" style="border-top:1px solid rgba(255,255,255,.08)">
+            <span class="label">Total + Cadangan 10%</span>
+            <span class="value buffer" id="bomGrandTotal">Rp0</span>
+          </div>
+          <div class="bom-footer">
+            <button class="btn-bom primary" id="bomAdd">+ Tambah Item</button>
+            <button class="btn-bom" id="bomReset">Reset</button>
+          </div>
+        </div>
+
+        <div class="callout info">
+          <span class="title">Catatan</span>
+          <p style="margin:0">Data BoM ini tidak tersimpan setelah halaman ditutup. Untuk proyek sungguhan, gunakan spreadsheet.</p>
+        </div>
+      </div>
+    </details>
+  </section>
+
+  <!-- 11.10 -->
+  <section id="m11-10">
+    <details>
+      <summary>
+        <span class="num">11.10</span>
+        <span class="summary-text">Membuat Estimasi Biaya</span>
+        <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </summary>
+      <div class="content">
+        <p>Estimasi biaya adalah kelanjutan dari BoM. Setelah daftar item selesai, saatnya menghitung total biaya proyek secara realistis.</p>
+
+        <h4>Komponen Estimasi Biaya</h4>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Kategori</th><th>Persentase Umum</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Perangkat inti (switch, router, AP)</td><td>45–55%</td></tr>
+              <tr><td>Kabel & konektor</td><td>15–20%</td></tr>
+              <tr><td>Rack & pendukung</td><td>8–12%</td></tr>
+              <tr><td>UPS & daya</td><td>5–10%</td></tr>
+              <tr><td>Instalasi & tenaga</td><td>8–15%</td></tr>
+              <tr><td>Cadangan tak terduga</td><td>5–15%</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h4>Rumus Estimasi</h4>
+        <div class="formula">
+          <span class="hl">Total Proyek</span> = BoM + Instalasi + Cadangan (10%)
+          <br><br>
+          <span class="cm">BoM = Σ (qty × harga satuan)</span>
+          <br>
+          <span class="cm">Instalasi = tenaga + alat (5–15% dari BoM)</span>
+          <br>
+          <span class="cm">Cadangan = 5–15% dari subtotal (untuk tak terduga)</span>
+        </div>
+
+        <h4>Strategi Menyusun Estimasi</h4>
+        <ol class="steps">
+          <li><strong>Kumpulkan harga dari 2–3 sumber</strong> — jangan hanya satu vendor.</li>
+          <li><strong>Kelompokkan per kategori</strong> — memudahkan evaluasi.</li>
+          <li><strong>Hitung subtotal per kategori</strong> — lihat proporsinya.</li>
+          <li><strong>Tambahkan biaya instalasi</strong> — termasuk tenaga kerja & alat.</li>
+          <li><strong>Sisakan cadangan 10%</strong> — untuk kebutuhan tak terduga.</li>
+          <li><strong>Presentasikan dalam tabel & diagram</strong> — agar mudah dibaca.</li>
+        </ol>
+
+        <h4>Format Estimasi Biaya</h4>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Kategori</th><th>Subtotal</th><th>%</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Perangkat inti</td><td>Rp15.900.000</td><td>38%</td></tr>
+              <tr><td>Kabel & konektor</td><td>Rp12.500.000</td><td>30%</td></tr>
+              <tr><td>Rack & pendukung</td><td>Rp2.800.000</td><td>7%</td></tr>
+              <tr><td>UPS & daya</td><td>Rp2.500.000</td><td>6%</td></tr>
+              <tr><td>Instalasi</td><td>Rp3.000.000</td><td>7%</td></tr>
+              <tr><td>Subtotal</td><td>Rp36.700.000</td><td>88%</td></tr>
+              <tr><td>Cadangan 10%</td><td>Rp3.670.000</td><td>9%</td></tr>
+              <tr style="background:#0f172a;color:#5eead4"><td><strong>TOTAL</strong></td><td><strong>Rp40.370.000</strong></td><td><strong>100%</strong></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="callout tip">
+          <span class="title">Tips Presentasi</span>
+          <p style="margin:0">Saat mempresentasikan estimasi ke manajemen, tampilkan <strong>total</strong> dan <strong>3–5 item terbesar</strong>. Detail BoM cukup jadi lampiran.</p>
+        </div>
+
+        <div class="callout warn">
+          <span class="title">Peringatan</span>
+          <p style="margin:0">Harga perangkat jaringan cepat berubah. Estimasi berlaku <strong>maksimal 30 hari</strong> sejak survei harga. Setelah itu, cek ulang.</p>
+        </div>
+
+        <h4>Output Modul 11: Bill of Materials + Estimasi Biaya</h4>
+        <p>Dua dokumen ini yang akan dilampirkan ke proposal di Modul 13.</p>
+
+        <div class="case-box">
+          <span class="case-label">Latihan</span>
+          <p>Buat BoM & estimasi biaya untuk proyek berikut:</p>
+          <ul style="margin:6px 0 8px;padding-left:20px;font-size:14px">
+            <li>Lab komputer 36 PC</li>
+            <li>Wi-Fi ruang guru (12 pengguna)</li>
+            <li>Server lokal file sharing</li>
+            <li>8 CCTV area koridor</li>
+            <li>Rack & UPS untuk perangkat inti</li>
+            <li>Anggaran maksimum: Rp40 juta</li>
+          </ul>
+          <div class="question">
+            <strong>Tugas:</strong> Susun BoM lengkap dengan kategori (inti / kabel / rack / UPS / instalasi), hitung estimasi biaya, dan pastikan total tidak melebihi anggaran.
+          </div>
+        </div>
+      </div>
+    </details>
+  </section>
+
+  <div class="takeaway">
+    <h3>Poin Kunci Modul 11</h3>
+    <ol>
+      <li>Semua angka perangkat harus bisa dipertanggungjawabkan.</li>
+      <li><strong>Port switch</strong> = Σ perangkat kabel + cadangan 20%.</li>
+      <li><strong>Jumlah AP</strong> = max(kebutuhan coverage, kebutuhan kapasitas).</li>
+      <li><strong>Uplink</strong> harus ≥ 70% × traffic port aktif. Idealnya 1 tingkat lebih cepat dari access.</li>
+      <li><strong>Kabel</strong> = Σ jarak + cadangan 10%. Hitung konektor 2× titik.</li>
+      <li><strong>Rack</strong> = Σ tinggi perangkat + cadangan 30%. Pilih ukuran terdekat di atas.</li>
+      <li><strong>UPS</strong> = kapasitas minimum untuk shutdown bersih (5–15 menit).</li>
+      <li><strong>BoM</strong> = daftar lengkap semua item + estimasi biaya.</li>
+      <li><strong>Estimasi biaya</strong> = BoM + instalasi + cadangan 10%.</li>
+      <li>Harga berlaku maksimum 30 hari. Cek ulang jika proyek mundur.</li>
+    </ol>
+  </div>
+
+</main>
+
+<button class="back-top" id="backTop" aria-label="Kembali ke atas">
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>
+</button>
+
+<footer>
+  <strong>Modul 11 — Perancangan Kebutuhan Perangkat</strong><br>
+  Kelas XI TKJ · TP: Memahami kebutuhan teknis pengguna dan peralatan jaringan dengan teknologi yang sesuai.
+</footer>
+
+<script>
+  // Smooth scroll
+  document.querySelectorAll('nav.toc a').forEach(a=>{
+    a.addEventListener('click', e=>{
+      const el = document.querySelector(a.getAttribute('href'));
+      if(el){ e.preventDefault(); el.scrollIntoView({behavior:'smooth', block:'start'}); }
+    });
+  });
+
+  // Back to top
+  const btn = document.getElementById('backTop');
+  window.addEventListener('scroll', ()=>{
+    if(window.scrollY > 400) btn.classList.add('show');
+    else btn.classList.remove('show');
+  });
+  btn.addEventListener('click', ()=>window.scrollTo({top:0, behavior:'smooth'}));
+
+  // ===== FORMAT RUPIAH =====
+  function formatRp(n){
+    return 'Rp' + Math.round(n).toLocaleString('id-ID');
+  }
+
+  // ===== 1. KALKULATOR PORT SWITCH =====
+  const portInputs = {
+    PC: document.getElementById('pPC'),
+    Laptop: document.getElementById('pLaptop'),
+    Printer: document.getElementById('pPrinter'),
+    Server: document.getElementById('pServer'),
+    AP: document.getElementById('pAP'),
+    CCTV: document.getElementById('pCCTV'),
+    VoIP: document.getElementById('pVoIP'),
+    Other: document.getElementById('pOther')
+  };
+  const portBuffer = document.getElementById('pBuffer');
+  const portRawEl = document.getElementById('portRaw');
+  const portBufferEl = document.getElementById('portBuffer');
+  const portTotalEl = document.getElementById('portTotal');
+  const portRecEl = document.getElementById('portRec');
+
+  function calcPort(){
+    let total = 0;
+    Object.values(portInputs).forEach(el=>{
+      total += parseInt(el.value) || 0;
+    });
+    const buf = parseFloat(portBuffer.value);
+    const buffer = Math.ceil(total * (buf - 1));
+    const totalPort = total + buffer;
+
+    portRawEl.textContent = total;
+    portBufferEl.textContent = '+' + buffer;
+    portTotalEl.textContent = totalPort;
+
+    // Rekomendasi switch
+    let rec = '—';
+    if(totalPort <= 0) rec = '—';
+    else if(totalPort <= 8) rec = '1× switch 8 port';
+    else if(totalPort <= 16) rec = '1× switch 16 port';
+    else if(totalPort <= 24) rec = '1× switch 24 port';
+    else if(totalPort <= 48) rec = '1× switch 48 port';
+    else if(totalPort <= 72) rec = '2× switch 48 port';
+    else if(totalPort <= 96) rec = '2× switch 48 port + 1× 24 port';
+    else if(totalPort <= 144) rec = '3× switch 48 port';
+    else {
+      const n = Math.ceil(totalPort / 48);
+      rec = n + '× switch 48 port';
+    }
+    portRecEl.textContent = rec;
+  }
+  Object.values(portInputs).forEach(el=>el.addEventListener('input', calcPort));
+  portBuffer.addEventListener('change', calcPort);
+  document.getElementById('btnResetPort').addEventListener('click', ()=>{
+    Object.values(portInputs).forEach(el=>el.value = 0);
+    portBuffer.value = '1.20';
+    calcPort();
+  });
+  calcPort();
+
+  // ===== 2. KALKULATOR AP =====
+  const apArea = document.getElementById('apArea');
+  const apCoverage = document.getElementById('apCoverage');
+  const apClient = document.getElementById('apClient');
+  const apCapacity = document.getElementById('apCapacity');
+  const apCoverageResult = document.getElementById('apCoverageResult');
+  const apCapacityResult = document.getElementById('apCapacityResult');
+  const apFinal = document.getElementById('apFinal');
+  const apDeciding = document.getElementById('apDeciding');
+
+  function calcAp(){
+    const area = parseFloat(apArea.value) || 0;
+    const cov = parseFloat(apCoverage.value) || 1;
+    const clients = parseFloat(apClient.value) || 0;
+    const cap = parseFloat(apCapacity.value) || 1;
+
+    const byCoverage = Math.ceil(area / cov);
+    const byCapacity = Math.ceil(clients / cap);
+    const final = Math.max(byCoverage, byCapacity);
+
+    apCoverageResult.textContent = byCoverage + ' AP';
+    apCapacityResult.textContent = byCapacity + ' AP';
+    apFinal.textContent = final + ' AP';
+
+    if(byCoverage > byCapacity) apDeciding.textContent = 'Coverage';
+    else if(byCapacity > byCoverage) apDeciding.textContent = 'Kapasitas';
+    else if(final > 0) apDeciding.textContent = 'Seimbang';
+    else apDeciding.textContent = '—';
+  }
+  [apArea, apCoverage, apClient, apCapacity].forEach(el=>{
+    el.addEventListener('input', calcAp);
+    el.addEventListener('change', calcAp);
+  });
+  document.getElementById('btnResetAp').addEventListener('click', ()=>{
+    apArea.value = 0;
+    apClient.value = 0;
+    calcAp();
+  });
+  calcAp();
+
+  // ===== 3. KALKULATOR KABEL =====
+  const cbPoints = document.getElementById('cbPoints');
+  const cbDistance = document.getElementById('cbDistance');
+  const cbBuffer = document.getElementById('cbBuffer');
+  const cbRawEl = document.getElementById('cbRaw');
+  const cbTotalEl = document.getElementById('cbTotal');
+  const cbBoxEl = document.getElementById('cbBox');
+  const cbCostEl = document.getElementById('cbCost');
+
+  const PRICE_PER_BOX = 1500000;
+
+  function calcCb(){
+    const pts = parseFloat(cbPoints.value) || 0;
+    const dist = parseFloat(cbDistance.value) || 0;
+    const buf = parseFloat(cbBuffer.value) || 1;
+
+    const raw = pts * dist;
+    const total = raw * buf;
+    const boxes = Math.ceil(total / 305);
+    const cost = boxes * PRICE_PER_BOX;
+
+    cbRawEl.textContent = raw.toLocaleString('id-ID') + ' m';
+    cbTotalEl.textContent = Math.round(total).toLocaleString('id-ID') + ' m';
+    cbBoxEl.textContent = boxes + ' box';
+    cbCostEl.textContent = formatRp(cost);
+  }
+  [cbPoints, cbDistance, cbBuffer].forEach(el=>{
+    el.addEventListener('input', calcCb);
+    el.addEventListener('change', calcCb);
+  });
+  document.getElementById('btnResetCb').addEventListener('click', ()=>{
+    cbPoints.value = 0;
+    cbDistance.value = 0;
+    cbBuffer.value = '1.10';
+    calcCb();
+  });
+  calcCb();
+
+  // ===== 4. RACK VISUAL =====
+  function buildRack(){
+    const frame = document.getElementById('rackFrame');
+    const filled = 11;
+    const total = 22;
+    frame.innerHTML = '';
+    for(let i = 0; i < total; i++){
+      const u = document.createElement('div');
+      u.className = 'rack-unit' + (i < filled ? ' filled' : '');
+      frame.appendChild(u);
+    }
+  }
+  buildRack();
+
+  // ===== 5. KALKULATOR UPS =====
+  const upsSwitch = document.getElementById('upsSwitch');
+  const upsRouter = document.getElementById('upsRouter');
+  const upsServer = document.getElementById('upsServer');
+  const upsNVR = document.getElementById('upsNVR');
+  const upsModem = document.getElementById('upsModem');
+  const upsLoadEl = document.getElementById('upsLoad');
+  const upsLoadWithLossEl = document.getElementById('upsLoadWithLoss');
+  const upsVAEl = document.getElementById('upsVA');
+  const upsRecEl = document.getElementById('upsRec');
+
+  function calcUps(){
+    const sw = (parseFloat(upsSwitch.value) || 0) * 50;
+    const rt = (parseFloat(upsRouter.value) || 0) * 20;
+    const sv = (parseFloat(upsServer.value) || 0) * 300;
+    const nvr = (parseFloat(upsNVR.value) || 0) * 50;
+    const md = (parseFloat(upsModem.value) || 0) * 12;
+
+    const load = sw + rt + sv + nvr + md;
+    const withLoss = load * 1.3;
+    const va = withLoss / 0.8;
+
+    upsLoadEl.textContent = load + ' W';
+    upsLoadWithLossEl.textContent = Math.round(withLoss) + ' W';
+    upsVAEl.textContent = Math.round(va) + ' VA';
+
+    // Rekomendasi UPS standar
+    const sizes = [650, 1200, 1500, 2200, 3000, 5000, 10000];
+    let rec = '—';
+    for(const s of sizes){
+      if(s >= va){ rec = s + ' VA'; break; }
+    }
+    if(rec === '—' && va > 10000) rec = 'Multiple UPS 10.000 VA';
+    upsRecEl.textContent = rec;
+  }
+  [upsSwitch, upsRouter, upsServer, upsNVR, upsModem].forEach(el=>el.addEventListener('input', calcUps));
+  document.getElementById('btnResetUps').addEventListener('click', ()=>{
+    upsSwitch.value = 0;
+    upsRouter.value = 0;
+    upsServer.value = 0;
+    upsNVR.value = 0;
+    upsModem.value = 0;
+    calcUps();
+  });
+  calcUps();
+
+  // ===== 6. BOM GENERATOR =====
+  const bomBody = document.getElementById('bomBody');
+  const bomSubtotalEl = document.getElementById('bomSubtotal');
+  const bomGrandTotalEl = document.getElementById('bomGrandTotal');
+
+  const defaultBom = [
+    { name: 'Switch managed 48 port PoE+', qty: 2, price: 4500000 },
+    { name: 'Router SMB', qty: 1, price: 3500000 },
+    { name: 'Access Point Wi-Fi 6', qty: 4, price: 850000 },
+    { name: 'Kabel UTP Cat6 (box 305m)', qty: 6, price: 1500000 },
+    { name: 'Rack 22U + PDU', qty: 1, price: 2800000 },
+    { name: 'UPS 2200VA', qty: 1, price: 2500000 },
+    { name: 'Instalasi & terminasi', qty: 1, price: 3000000 }
+  ];
+
+  function addBomRow(item = { name: '', qty: 1, price: 0 }){
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td><input type="text" class="bom-name" value="${item.name.replace(/"/g,'&quot;')}" placeholder="Nama item"></td>
+      <td><input type="number" class="bom-qty num" value="${item.qty}" min="0" inputmode="numeric"></td>
+      <td><input type="number" class="bom-price num" value="${item.price}" min="0" inputmode="numeric"></td>
+      <td class="total-col bom-line-total">Rp0</td>
+      <td><button class="action-btn bom-del" aria-label="Hapus">×</button></td>
+    `;
+    bomBody.appendChild(tr);
+
+    const nameEl = tr.querySelector('.bom-name');
+    const qtyEl = tr.querySelector('.bom-qty');
+    const priceEl = tr.querySelector('.bom-price');
+    const delBtn = tr.querySelector('.bom-del');
+
+    [nameEl, qtyEl, priceEl].forEach(el=>{
+      el.addEventListener('input', calcBom);
+    });
+
+    delBtn.addEventListener('click', ()=>{
+      if(bomBody.children.length <= 1){
+        alert('Minimal harus ada 1 item.');
+        return;
+      }
+      tr.remove();
+      calcBom();
+    });
+  }
+
+  function calcBom(){
+    let subtotal = 0;
+    const rows = bomBody.querySelectorAll('tr');
+    rows.forEach(tr=>{
+      const qty = parseFloat(tr.querySelector('.bom-qty').value) || 0;
+      const price = parseFloat(tr.querySelector('.bom-price').value) || 0;
+      const lineTotal = qty * price;
+      subtotal += lineTotal;
+      tr.querySelector('.bom-line-total').textContent = formatRp(lineTotal);
+    });
+    const grand = subtotal * 1.1;
+    bomSubtotalEl.textContent = formatRp(subtotal);
+    bomGrandTotalEl.textContent = formatRp(grand);
+  }
+
+  function resetBom(){
+    bomBody.innerHTML = '';
+    defaultBom.forEach(item => addBomRow(item));
+    calcBom();
+  }
+
+  document.getElementById('bomAdd').addEventListener('click', ()=>{
+    addBomRow();
+    calcBom();
+  });
+  document.getElementById('bomReset').addEventListener('click', resetBom);
+
+  // Init BoM
+  resetBom();
+</script>
+
+</body>
+</html>

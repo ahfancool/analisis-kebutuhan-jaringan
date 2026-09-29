@@ -1,0 +1,1985 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0f766e">
+<title>Modul 10 — Pemilihan Teknologi yang Sesuai</title>
+<style>
+  :root{
+    --primary:#0f766e;
+    --primary-dark:#115e59;
+    --primary-light:#ccfbf1;
+    --accent:#f59e0b;
+    --danger:#dc2626;
+    --success:#16a34a;
+    --bg:#f8fafc;
+    --card:#ffffff;
+    --text:#0f172a;
+    --text-muted:#475569;
+    --border:#e2e8f0;
+    --radius:14px;
+    --shadow:0 1px 3px rgba(15,23,42,.06), 0 1px 2px rgba(15,23,42,.04);
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{margin:0;padding:0}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    line-height:1.6;
+    font-size:16px;
+    -webkit-font-smoothing:antialiased;
+    padding-bottom:env(safe-area-inset-bottom);
+  }
+
+  header.hero{
+    background:linear-gradient(135deg,var(--primary) 0%,var(--primary-dark) 100%);
+    color:#fff;
+    padding:28px 20px 32px;
+    border-radius:0 0 24px 24px;
+    position:relative;
+    overflow:hidden;
+  }
+  header.hero::after{
+    content:"";
+    position:absolute;
+    right:-40px;top:-40px;
+    width:160px;height:160px;
+    background:rgba(255,255,255,.08);
+    border-radius:50%;
+  }
+  .badge{
+    display:inline-block;
+    background:rgba(255,255,255,.18);
+    color:#fff;
+    padding:4px 12px;
+    border-radius:999px;
+    font-size:12px;
+    font-weight:600;
+    letter-spacing:.4px;
+    text-transform:uppercase;
+    margin-bottom:12px;
+    backdrop-filter:blur(4px);
+  }
+  header.hero h1{
+    font-size:22px;
+    margin:0 0 8px;
+    line-height:1.3;
+    font-weight:700;
+  }
+  header.hero p{
+    margin:0;
+    font-size:14px;
+    opacity:.9;
+  }
+
+  .tp-box{
+    background:#fff;
+    margin:-16px 16px 20px;
+    padding:16px 18px;
+    border-radius:var(--radius);
+    box-shadow:var(--shadow);
+    border-left:4px solid var(--accent);
+    position:relative;
+    z-index:1;
+  }
+  .tp-box .label{
+    font-size:11px;
+    font-weight:700;
+    letter-spacing:.6px;
+    text-transform:uppercase;
+    color:var(--accent);
+    margin-bottom:6px;
+    display:block;
+  }
+  .tp-box p{
+    margin:0;
+    font-size:14.5px;
+    color:var(--text);
+    font-weight:500;
+  }
+
+  nav.toc{
+    background:#fff;
+    margin:0 16px 24px;
+    padding:16px 18px;
+    border-radius:var(--radius);
+    box-shadow:var(--shadow);
+  }
+  nav.toc h2{
+    font-size:14px;
+    margin:0 0 12px;
+    color:var(--text-muted);
+    text-transform:uppercase;
+    letter-spacing:.5px;
+    font-weight:700;
+  }
+  nav.toc ol{
+    margin:0;
+    padding-left:20px;
+    font-size:14.5px;
+  }
+  nav.toc li{margin-bottom:6px}
+  nav.toc a{
+    color:var(--primary);
+    text-decoration:none;
+    font-weight:500;
+  }
+  nav.toc a:active{opacity:.6}
+
+  main{
+    padding:0 16px 40px;
+    max-width:720px;
+    margin:0 auto;
+  }
+
+  section{
+    background:#fff;
+    border-radius:var(--radius);
+    box-shadow:var(--shadow);
+    margin-bottom:16px;
+    overflow:hidden;
+    scroll-margin-top:16px;
+  }
+
+  details{
+    border-radius:var(--radius);
+    overflow:hidden;
+  }
+  details summary{
+    list-style:none;
+    cursor:pointer;
+    padding:16px 18px;
+    display:flex;
+    align-items:center;
+    gap:12px;
+    font-weight:600;
+    font-size:15px;
+    user-select:none;
+    transition:background .15s;
+  }
+  details summary::-webkit-details-marker{display:none}
+  details summary:active{background:var(--bg)}
+
+  .num{
+    flex-shrink:0;
+    width:32px;height:32px;
+    background:var(--primary-light);
+    color:var(--primary-dark);
+    border-radius:9px;
+    display:flex;align-items:center;justify-content:center;
+    font-weight:700;
+    font-size:14px;
+  }
+  .summary-text{
+    flex:1;
+    color:var(--text);
+    line-height:1.35;
+  }
+  .chev{
+    flex-shrink:0;
+    width:20px;height:20px;
+    transition:transform .2s;
+    color:var(--text-muted);
+  }
+  details[open] .chev{transform:rotate(180deg)}
+
+  .content{
+    padding:0 18px 20px;
+    font-size:15px;
+    color:var(--text);
+    border-top:1px solid var(--border);
+    padding-top:16px;
+    margin-top:0;
+  }
+
+  .content p{margin:0 0 12px}
+  .content p:last-child{margin-bottom:0}
+  .content h4{
+    font-size:14px;
+    margin:16px 0 8px;
+    color:var(--primary-dark);
+    font-weight:700;
+  }
+  .content ul,.content ol{
+    margin:0 0 12px;
+    padding-left:22px;
+  }
+  .content li{margin-bottom:6px}
+  .content strong{color:var(--text);font-weight:600}
+  .content code{
+    background:#f1f5f9;
+    padding:1px 6px;
+    border-radius:4px;
+    font-size:13px;
+    font-family:"SF Mono",Consolas,Monaco,monospace;
+    color:var(--primary-dark);
+  }
+
+  .callout{
+    border-radius:10px;
+    padding:12px 14px;
+    font-size:14px;
+    margin:12px 0;
+    border-left:3px solid;
+  }
+  .callout.tip{background:#ecfdf5;border-color:var(--success);color:#065f46}
+  .callout.warn{background:#fef2f2;border-color:var(--danger);color:#991b1b}
+  .callout.info{background:#eff6ff;border-color:#2563eb;color:#1e40af}
+  .callout .title{
+    font-weight:700;
+    font-size:12px;
+    text-transform:uppercase;
+    letter-spacing:.4px;
+    display:block;
+    margin-bottom:4px;
+  }
+
+  .table-wrap{
+    overflow-x:auto;
+    margin:12px -4px;
+    border-radius:10px;
+    -webkit-overflow-scrolling:touch;
+  }
+  table{
+    width:100%;
+    border-collapse:collapse;
+    font-size:13.5px;
+    min-width:480px;
+  }
+  th{
+    background:var(--primary-light);
+    color:var(--primary-dark);
+    padding:10px 12px;
+    text-align:left;
+    font-weight:700;
+    font-size:12px;
+    text-transform:uppercase;
+    letter-spacing:.3px;
+    white-space:nowrap;
+  }
+  td{
+    padding:10px 12px;
+    border-top:1px solid var(--border);
+    vertical-align:top;
+  }
+  tr:nth-child(even) td{background:#fafbfc}
+
+  .pill{
+    display:inline-block;
+    padding:2px 8px;
+    border-radius:6px;
+    font-size:11px;
+    font-weight:700;
+    letter-spacing:.3px;
+    text-transform:uppercase;
+  }
+  .pill.high{background:#fee2e2;color:#991b1b}
+  .pill.med{background:#fef3c7;color:#92400e}
+  .pill.low{background:#dcfce7;color:#166534}
+
+  /* Flowchart */
+  .flow{
+    background:#fff;
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:16px;
+    margin:12px 0;
+  }
+  .flow .flow-title{
+    font-size:12px;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:.5px;
+    color:var(--text-muted);
+    margin-bottom:12px;
+    text-align:center;
+  }
+  .flow-node{
+    background:var(--primary-light);
+    border:1.5px solid var(--primary);
+    color:var(--primary-dark);
+    border-radius:10px;
+    padding:10px 14px;
+    font-size:13.5px;
+    font-weight:600;
+    text-align:center;
+    margin:0 auto 4px;
+    max-width:320px;
+  }
+  .flow-node.question{
+    background:#fef3c7;
+    border-color:var(--accent);
+    color:#92400e;
+  }
+  .flow-node.answer{
+    background:#ecfdf5;
+    border-color:var(--success);
+    color:#065f46;
+  }
+  .flow-arrow{
+    text-align:center;
+    color:var(--primary);
+    font-size:20px;
+    line-height:1;
+    margin:2px 0;
+    font-weight:700;
+  }
+  .flow-branches{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:8px;
+    margin-top:4px;
+  }
+  .flow-branch{
+    text-align:center;
+  }
+  .flow-branch .branch-label{
+    font-size:11px;
+    font-weight:700;
+    color:var(--text-muted);
+    text-transform:uppercase;
+    letter-spacing:.4px;
+    margin-bottom:4px;
+  }
+  .flow-branch .branch-value{
+    background:#fff;
+    border:1.5px solid var(--border);
+    border-radius:8px;
+    padding:8px 10px;
+    font-size:12.5px;
+    font-weight:600;
+    color:var(--text);
+    line-height:1.3;
+  }
+
+  /* Compare cards */
+  .compare-grid{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:10px;
+    margin:12px 0;
+  }
+  .compare-card{
+    background:#fff;
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:14px;
+    border-top:4px solid var(--primary);
+  }
+  .compare-card.alt1{border-top-color:var(--primary)}
+  .compare-card.alt2{border-top-color:var(--accent)}
+  .compare-card.alt3{border-top-color:#6366f1}
+  .compare-card h5{
+    margin:0 0 8px;
+    font-size:14px;
+    color:var(--text);
+    font-weight:700;
+  }
+  .compare-card ul{
+    margin:0;
+    padding-left:18px;
+    font-size:13.5px;
+    color:var(--text-muted);
+  }
+  .compare-card ul li{margin-bottom:4px}
+  .compare-card ul li:last-child{margin-bottom:0}
+
+  /* Steps */
+  .steps{
+    counter-reset:step;
+    list-style:none;
+    padding:0;
+    margin:12px 0;
+  }
+  .steps li{
+    counter-increment:step;
+    position:relative;
+    padding:0 0 16px 40px;
+    font-size:14.5px;
+  }
+  .steps li::before{
+    content:counter(step);
+    position:absolute;
+    left:0;top:0;
+    width:28px;height:28px;
+    background:var(--primary);
+    color:#fff;
+    border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    font-size:13px;
+    font-weight:700;
+  }
+  .steps li:last-child{padding-bottom:0}
+
+  /* Formula box */
+  .formula{
+    background:#0f172a;
+    color:#e2e8f0;
+    border-radius:12px;
+    padding:14px 16px;
+    margin:12px 0;
+    font-family:"SF Mono",Consolas,Monaco,monospace;
+    font-size:13.5px;
+    line-height:1.7;
+    overflow-x:auto;
+    -webkit-overflow-scrolling:touch;
+  }
+  .formula .hl{color:#5eead4;font-weight:700}
+  .formula .cm{color:#94a3b8}
+
+  /* ==== DECISION MATRIX INTERACTIVE ==== */
+  .dm{
+    background:linear-gradient(135deg,#f0fdfa 0%,#ecfeff 100%);
+    border:1px solid #99f6e4;
+    border-radius:14px;
+    padding:16px;
+    margin:12px 0;
+  }
+  .dm .dm-head{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom:14px;
+  }
+  .dm .dm-icon{
+    width:36px;height:36px;
+    background:var(--primary);
+    color:#fff;
+    border-radius:10px;
+    display:flex;align-items:center;justify-content:center;
+    flex-shrink:0;
+  }
+  .dm .dm-title{
+    font-size:14.5px;
+    font-weight:700;
+    color:var(--primary-dark);
+    line-height:1.3;
+  }
+  .dm .dm-sub{
+    font-size:12px;
+    color:var(--text-muted);
+    margin-top:2px;
+  }
+
+  .dm-section-title{
+    font-size:11px;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:.5px;
+    color:var(--text-muted);
+    margin:14px 0 8px;
+    display:flex;
+    align-items:center;
+    gap:6px;
+  }
+  .dm-section-title::before{
+    content:"";
+    width:3px;height:14px;
+    background:var(--primary);
+    border-radius:2px;
+  }
+
+  .criteria-row{
+    background:#fff;
+    border-radius:10px;
+    padding:10px 12px;
+    margin-bottom:8px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  .criteria-row .crit-name{
+    flex:1;
+    font-size:13.5px;
+    font-weight:600;
+    color:var(--text);
+  }
+  .criteria-row input[type="range"]{
+    -webkit-appearance:none;
+    appearance:none;
+    flex:0 0 100px;
+    height:6px;
+    background:#e2e8f0;
+    border-radius:3px;
+    outline:none;
+    cursor:pointer;
+  }
+  .criteria-row input[type="range"]::-webkit-slider-thumb{
+    -webkit-appearance:none;
+    appearance:none;
+    width:20px;height:20px;
+    background:var(--primary);
+    border-radius:50%;
+    cursor:pointer;
+    box-shadow:0 2px 4px rgba(15,118,110,.35);
+  }
+  .criteria-row input[type="range"]::-moz-range-thumb{
+    width:20px;height:20px;
+    background:var(--primary);
+    border-radius:50%;
+    cursor:pointer;
+    border:none;
+    box-shadow:0 2px 4px rgba(15,118,110,.35);
+  }
+  .criteria-row .crit-value{
+    flex:0 0 40px;
+    text-align:right;
+    font-size:13.5px;
+    font-weight:700;
+    color:var(--primary-dark);
+    font-family:"SF Mono",Consolas,monospace;
+  }
+
+  .dm-total-weight{
+    font-size:12.5px;
+    text-align:right;
+    color:var(--text-muted);
+    margin-bottom:14px;
+    padding-right:4px;
+  }
+  .dm-total-weight.warn{color:var(--danger);font-weight:700}
+
+  .alt-tabs{
+    display:flex;
+    gap:4px;
+    background:rgba(15,118,110,.08);
+    padding:4px;
+    border-radius:10px;
+    margin-bottom:12px;
+  }
+  .alt-tab{
+    flex:1;
+    padding:8px 6px;
+    text-align:center;
+    font-size:12px;
+    font-weight:700;
+    color:var(--primary-dark);
+    border-radius:8px;
+    cursor:pointer;
+    transition:background .15s,color .15s;
+    user-select:none;
+    line-height:1.2;
+  }
+  .alt-tab.active{
+    background:#fff;
+    box-shadow:0 1px 3px rgba(15,23,42,.08);
+  }
+
+  .alt-panel{display:none}
+  .alt-panel.active{display:block}
+
+  .score-row{
+    background:#fff;
+    border-radius:10px;
+    padding:10px 12px;
+    margin-bottom:8px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  .score-row .score-name{
+    flex:1;
+    font-size:13px;
+    font-weight:500;
+    color:var(--text);
+  }
+  .score-row input[type="range"]{
+    -webkit-appearance:none;
+    appearance:none;
+    flex:0 0 110px;
+    height:6px;
+    background:#e2e8f0;
+    border-radius:3px;
+    outline:none;
+    cursor:pointer;
+  }
+  .score-row input[type="range"]::-webkit-slider-thumb{
+    -webkit-appearance:none;
+    appearance:none;
+    width:20px;height:20px;
+    background:var(--accent);
+    border-radius:50%;
+    cursor:pointer;
+    box-shadow:0 2px 4px rgba(245,158,11,.35);
+  }
+  .score-row input[type="range"]::-moz-range-thumb{
+    width:20px;height:20px;
+    background:var(--accent);
+    border-radius:50%;
+    cursor:pointer;
+    border:none;
+    box-shadow:0 2px 4px rgba(245,158,11,.35);
+  }
+  .score-row .score-value{
+    flex:0 0 30px;
+    text-align:right;
+    font-size:13.5px;
+    font-weight:700;
+    color:#b45309;
+    font-family:"SF Mono",Consolas,monospace;
+  }
+
+  .dm-result{
+    background:#0f172a;
+    color:#fff;
+    border-radius:12px;
+    padding:16px;
+    margin-top:16px;
+  }
+  .dm-result .result-title{
+    font-size:11px;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:.5px;
+    color:#94a3b8;
+    margin-bottom:12px;
+  }
+  .dm-result .result-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:10px 12px;
+    margin-bottom:8px;
+    border-radius:8px;
+    background:rgba(255,255,255,.05);
+    transition:background .2s;
+  }
+  .dm-result .result-row.winner{
+    background:rgba(94,234,212,.15);
+    border:1.5px solid #5eead4;
+  }
+  .dm-result .result-row .name{
+    font-size:13.5px;
+    font-weight:600;
+    color:#e2e8f0;
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  .dm-result .result-row.winner .name{
+    color:#5eead4;
+  }
+  .dm-result .result-row .name .trophy{
+    font-size:16px;
+    display:none;
+  }
+  .dm-result .result-row.winner .name .trophy{
+    display:inline;
+  }
+  .dm-result .result-row .score{
+    font-size:16px;
+    font-weight:700;
+    color:#e2e8f0;
+    font-family:"SF Mono",Consolas,monospace;
+  }
+  .dm-result .result-row.winner .score{
+    color:#5eead4;
+    font-size:18px;
+  }
+  .dm-result .result-verdict{
+    margin-top:12px;
+    padding-top:12px;
+    border-top:1px solid rgba(255,255,255,.1);
+    font-size:12.5px;
+    color:#94a3b8;
+    text-align:center;
+    line-height:1.5;
+  }
+
+  .dm-note{
+    font-size:12px;
+    color:var(--text-muted);
+    margin-top:10px;
+    font-style:italic;
+  }
+
+  /* Spec warning cards */
+  .spec-warn{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:10px;
+    margin:12px 0;
+  }
+  .spec-warn-card{
+    border-radius:12px;
+    padding:14px;
+    border-left:4px solid;
+  }
+  .spec-warn-card.over{background:#fef2f2;border-color:var(--danger)}
+  .spec-warn-card.under{background:#fef3c7;border-color:var(--accent)}
+  .spec-warn-card.right{background:#ecfdf5;border-color:var(--success)}
+  .spec-warn-card h5{
+    margin:0 0 6px;
+    font-size:13.5px;
+    font-weight:700;
+  }
+  .spec-warn-card.over h5{color:#991b1b}
+  .spec-warn-card.under h5{color:#92400e}
+  .spec-warn-card.right h5{color:#065f46}
+  .spec-warn-card p{
+    margin:0 0 6px;
+    font-size:13px;
+    color:var(--text);
+  }
+  .spec-warn-card p:last-child{margin-bottom:0}
+
+  /* Case box */
+  .case-box{
+    background:linear-gradient(135deg,#f0fdfa 0%,#e0f2fe 100%);
+    border-radius:12px;
+    padding:14px 16px;
+    margin:12px 0;
+    border:1px solid #99f6e4;
+  }
+  .case-box .case-label{
+    font-size:11px;
+    font-weight:700;
+    letter-spacing:.5px;
+    text-transform:uppercase;
+    color:var(--primary-dark);
+    margin-bottom:6px;
+    display:block;
+  }
+  .case-box p{font-size:14px;margin:0 0 8px}
+  .case-box .question{
+    background:#fff;
+    border-radius:8px;
+    padding:10px 12px;
+    font-size:13.5px;
+    margin-top:8px;
+    border-left:3px solid var(--accent);
+  }
+  .case-box .question strong{color:var(--primary-dark)}
+
+  /* Takeaway */
+  .takeaway{
+    background:#0f172a;
+    color:#fff;
+    border-radius:var(--radius);
+    padding:20px;
+    margin:24px 0 0;
+  }
+  .takeaway h3{
+    margin:0 0 12px;
+    font-size:15px;
+    color:#5eead4;
+    text-transform:uppercase;
+    letter-spacing:.5px;
+  }
+  .takeaway ol{
+    margin:0;
+    padding-left:22px;
+    font-size:14.5px;
+  }
+  .takeaway li{margin-bottom:8px;color:#e2e8f0}
+  .takeaway li:last-child{margin-bottom:0}
+
+  footer{
+    text-align:center;
+    padding:24px 16px 40px;
+    font-size:12.5px;
+    color:var(--text-muted);
+  }
+  footer strong{color:var(--primary-dark)}
+
+  .back-top{
+    position:fixed;
+    right:16px;
+    bottom:calc(16px + env(safe-area-inset-bottom));
+    width:44px;height:44px;
+    border-radius:50%;
+    background:var(--primary);
+    color:#fff;
+    border:none;
+    box-shadow:0 4px 12px rgba(15,118,110,.35);
+    cursor:pointer;
+    display:none;
+    align-items:center;justify-content:center;
+    z-index:50;
+    transition:transform .15s,opacity .2s;
+  }
+  .back-top:active{transform:scale(.92)}
+  .back-top.show{display:flex}
+
+  @media (min-width:600px){
+    header.hero{padding:36px 28px 40px}
+    header.hero h1{font-size:26px}
+    .tp-box{margin:-20px 24px 24px}
+    nav.toc{margin:0 24px 28px}
+    main{padding:0 24px 60px}
+    .compare-grid{grid-template-columns:1fr 1fr}
+    .spec-warn{grid-template-columns:1fr 1fr 1fr}
+    .content{font-size:15.5px}
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <span class="badge">Modul 10 · Kelas XI TKJ</span>
+  <h1>Pemilihan Teknologi yang Sesuai</h1>
+  <p>Bukan yang termahal, bukan yang tercanggih — tapi yang paling tepat untuk kebutuhan.</p>
+</header>
+
+<div class="tp-box">
+  <span class="label">Tujuan Pembelajaran</span>
+  <p>Memahami kebutuhan teknis pengguna dan peralatan jaringan dengan teknologi yang sesuai.</p>
+</div>
+
+<nav class="toc">
+  <h2>Daftar Isi</h2>
+  <ol>
+    <li><a href="#m10-1">Prinsip "Right Technology for the Requirement"</a></li>
+    <li><a href="#m10-2">Memilih Media Transmisi</a></li>
+    <li><a href="#m10-3">Memilih Topologi</a></li>
+    <li><a href="#m10-4">Memilih Teknologi Ethernet</a></li>
+    <li><a href="#m10-5">Memilih Teknologi Wireless</a></li>
+    <li><a href="#m10-6">Memilih Switch</a></li>
+    <li><a href="#m10-7">Memilih Router</a></li>
+    <li><a href="#m10-8">Memilih Access Point</a></li>
+    <li><a href="#m10-9">Memilih Firewall</a></li>
+    <li><a href="#m10-10">Menyesuaikan dengan Anggaran</a></li>
+    <li><a href="#m10-11">Menyesuaikan dengan Kemampuan Pengelola</a></li>
+    <li><a href="#m10-12">Over-specification & Under-specification</a></li>
+  </ol>
+</nav>
+
+<main>
+
+  <!-- 10.1 -->
+  <section id="m10-1">
+    <details open>
+      <summary>
+        <span class="num">10.1</span>
+        <span class="summary-text">Prinsip "Right Technology for the Requirement"</span>
+        <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </summary>
+      <div class="content">
+        <p>Ini adalah prinsip inti dari seluruh TP. Teknologi yang dipilih <strong>bukan</strong> yang paling canggih, paling murah, atau paling populer — tapi yang <strong>paling sesuai</strong> dengan kebutuhan, anggaran, dan konteks.</p>
+
+        <div class="callout info">
+          <span class="title">Prinsip Dasar</span>
+          <p style="margin:0">
+            <strong>Right technology</strong> = teknologi yang:<br>
+            • Menjawab kebutuhan (bukan menciptakan kebutuhan baru)<br>
+            • Sesuai anggaran<br>
+            • Dapat dikelola oleh SDM yang ada<br>
+            • Tidak berlebihan (over-spec)<br>
+            • Tidak kurang (under-spec)
+          </p>
+        </div>
+
+        <h4>Tiga Pertanyaan Sebelum Memilih</h4>
+        <ol class="steps">
+          <li><strong>Untuk apa?</strong> — Apa kebutuhan yang harus dijawab? (dari URL, ARL, NSS)</li>
+          <li><strong>Dengan apa?</strong> — Teknologi apa yang bisa menjawabnya?</li>
+          <li><strong>Sanggup tidak?</strong> — Anggaran, SDM, dan waktu tersedia?</li>
+        </ol>
+
+        <h4>Kesalahan yang Sering Terjadi</h4>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Pola Salah</th><th>Akibat</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Beli "yang paling bagus"</td><td>Over-budget, fitur tak terpakai</td></tr>
+              <tr><td>Beli "yang paling murah"</td><td>Under-spec, cepat rusak, upgrade terus</td></tr>
+              <tr><td>Ikut tetangga / tren</td><td>Solusi tidak cocok dengan kebutuhan lokal</td></tr>
+              <tr><td>Dengar sales saja</td><td>Dibeli yang mahal, bukan yang tepat</td></tr>
+              <tr><td>Langsung setting</td><td>Tidak paham alasan, sulit troubleshooting</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="callout tip">
+          <span class="title">Kunci</span>
+          <p style="margin:0">Teknisi yang baik bisa <strong>menjelaskan mengapa</strong> memilih sesuatu, bukan hanya <strong>apa</strong> yang dipilih.</p>
+        </div>
+      </div>
+    </details>
+  </section>
+
+  <!-- 10.2 -->
+  <section id="m10-2">
+    <details>
+      <summary>
+        <span class="num">10.2</span>
+        <span class="summary-text">Memilih Media Transmisi</span>
+        <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </summary>
+      <div class="content">
+        <p>Media transmisi adalah "jalan" data. Pilihannya menentukan kecepatan, jarak, dan biaya.</p>
+
+        <h4>Pohon Keputusan Media Transmisi</h4>
+        <div class="flow">
+          <div class="flow-title">Pilih media berdasarkan kondisi</div>
+          <div class="flow-node question">Perangkat berpindah-pindah?</div>
+          <div class="flow-branches">
+            <div class="flow-branch">
+              <div class="branch-label">Ya</div>
+              <div class="branch-value">Wireless (Wi-Fi)</div>
+            </div>
+            <div class="flow-branch">
+              <div class="branch-label">Tidak</div>
+              <div class="branch-value">Lanjut ke bawah ↓</div>
+            </div>
+          </div>
+          <div class="flow-arrow">↓</div>
+          <div class="flow-node question">Jarak &gt; 100 m atau butuh &gt; 1 Gbps?</div>
+          <div class="flow-branches">
+            <div class="flow-branch">
+              <div class="branch-label">Ya</div>
+              <div class="branch-value">Fiber Optic (SM/MM)</div>
+            </div>
+            <div class="flow-branch">
+              <div class="branch-label">Tidak</div>
+              <div class="branch-value">UTP Cat5e/6</div>
+            </div>
+          </div>
+        </div>
+
+        <h4>Perbandingan Tiga Media Utama</h4>
+        <div class="compare-grid">
+          <div class="compare-card alt1">
+            <h5>Kabel Tembaga (UTP)</h5>
+            <ul>
+              <li><strong>Max 100 m</strong> per segmen</li>
+              <li>1–10 Gbps (tergantung kategori)</li>
+              <li>Murah, mudah dipasang</li>
+              <li>Cocok untuk: PC, printer, AP indoor</li>
+            </ul>
+          </div>
+          <div class="compare-card alt2">
+            <h5>Fiber Optic</h5>
+            <ul>
+              <li><strong>Hingga kilometer</strong></li>
+              <li>1–100 Gbps+</li>
+              <li>Mahal, butuh alat khusus</li>
+              <li>Cocok untuk: backbone antar gedung, uplink</li>
+            </ul>
+          </div>
+          <div class="compare-card alt3">
+            <h5>Wireless (Wi-Fi)</h5>
+            <ul>
+              <li>Coverage terbatas (10–50 m)</li>
+              <li>100 Mbps–9.6 Gbps (teoretis)</li>
+              <li>Fleksibel, tidak butuh kabel</li>
+              <li>Cocok untuk: laptop, HP, area publik</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="callout warn">
+          <span class="title">Aturan Emas</span>
+          <p style="margin:0">Perangkat tetap dengan kebutuhan bandwidth tinggi = kabel. Perangkat mobile atau tidak bisa ditarik kabel = wireless. <strong>Jangan kompromi</strong> di sini.</p>
+        </div>
+      </div>
+    </details>
+  </section>
+
+  <!-- 10.3 -->
+  <section id="m10-3">
+    <details>
+      <summary>
+        <span class="num">10.3</span>
+        <span class="summary-text">Memilih Topologi</span>
+        <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </summary>
+      <div class="content">
+        <p>Topologi adalah "bentuk" jaringan — bagaimana perangkat saling terhubung. Untuk TKJ, topologi yang relevan adalah <strong>star, tree (hierarkis), mesh,</strong> dan variasinya.</p>
+
+        <h4>Topologi Umum di Jaringan Modern</h4>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Topologi</th><th>Ciri</th><th>Cocok untuk</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Star</strong></td>
+                <td>Semua terhubung ke switch pusat</td>
+                <td>Ruang tunggal, lab, kantor kecil</td>
+              </tr>
+              <tr>
+                <td><strong>Tree / Hierarkis</strong></td>
+                <td>Switch inti → switch distribusi → access</td>
+                <td>Sekolah, kantor bertingkat</td>
+              </tr>
+              <tr>
+                <td><strong>Mesh (Wireless)</strong></td>
+                <td>AP saling terhubung tanpa kabel</td>
+                <td>Rumah besar, area luas tanpa kabel</td>
+              </tr>
+              <tr>
+                <td><strong>Ring</strong></td>
+                <td>Perangkat terhubung membentuk lingkaran</td>
+                <td>Backbone fiber dengan redundansi</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h4>Pohon Keputusan Topologi</h4>
+        <div class="flow">
+          <div class="flow-node question">Satu ruangan / satu lantai?</div>
+          <div class="flow-branches">
+            <div class="flow-branch">
+              <div class="branch-label">Ya</div>
+              <div class="branch-value">Star (1 switch)</div>
+            </div>
+            <div class="flow-branch">
+              <div class="branch-label">Tidak</div>
+              <div class="branch-value">Tree (switch bertingkat)</div>
+            </div>
+          </div>
+          <div class="flow-arrow">↓</div>
+          <div class="flow-node question">Butuh redundansi tinggi?</div>
+          <div class="flow-branches">
+            <div class="flow-branch">
+              <div class="branch-label">Ya</div>
+              <div class="branch-value">Ring / Mesh</div>
+            </div>
+            <div class="flow-branch">
+              <div class="branch-label">Tidak</div>
+              <div class="branch-value">Star / Tree</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout tip">
+          <span class="title">Praktis</span>
+          <p style="margin:0">95% jaringan kecil–menengah pakai <strong>star</strong> atau <strong>tree</strong>. Jangan memaksakan topologi rumit kalau tidak perlu.</p>
+        </div>
+      </div>
+    </details>
+  </section>
+
+  <!-- 10.4 -->
+  <section id="m10-4">
+    <details>
+      <summary>
+        <span class="num">10.4</span>
+        <span class="summary-text">Memilih Teknologi Ethernet</span>
+        <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </summary>
+      <div class="content">
+        <p>Ethernet punya banyak "kecepatan": 100 Mbps, 1 Gbps, 2.5G, 5G, 10G. Mana yang harus dipilih?</p>
+
+        <h4>Kapan Pilih Kecepatan Berapa?</h4>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Kecepatan</th><th>Dipakai untuk</th><th>Status</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>100 Mbps (FastEthernet)</td><td>Perangkat lama, printer</td><td><span class="pill high">Legacy</span></td></tr>
+              <tr><td>1 Gbps (GigabitEthernet)</td><td>Standar minimum sekarang</td><td><span class="pill low">Baseline</span></td></tr>
+              <tr><td>2.5G / 5G (Multi-Gig)</td><td>Uplink Wi-Fi 6 AP, PC modern</td><td><span class="pill med">Menaik</span></td></tr>
+              <tr><td>10 Gbps (10GbE)</td><td>Server, backbone, NAS</td><td><span class="pill med">Enterprise</span></td></tr>
+              <tr><td>25G / 40G / 100G</td><td>Data center, backbone besar</td><td><span class="pill med">Data center</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h4>Prinsip Pemilihan</h4>
+        <ul>
+          <li><strong>Access port</strong> — 1 Gbps cukup untuk 95% kasus.</li>
+          <li><strong>Uplink</strong> — minimal 1 Gbps, idealnya 10 Gbps jika ada banyak client.</li>
+          <li><strong>Server</strong> — 1 Gbps minimal, 10 Gbps kalau diakses banyak client.</li>
+          <li><strong>AP Wi-Fi 6</strong> — butuh uplink 2.5G/5G agar tidak jadi bottleneck.</li>
+          <li><strong>Jangan campur kecepatan uplink lebih lambat</strong> dari access.</li>
+        </ul>
+
+        <div class="callout warn">
+          <span class="title">Bottleneck Tersembunyi</span>
+          <p style="margin:0">Switch 1 Gbps dengan uplink 100 Mbps akan membatasi <em>semua</em> client saat akses ke jaringan luar. Cek uplink sebelum beli!</p>
+        </div>
+      </div>
+    </details>
+  </section>
+
+  <!-- 10.5 -->
+  <section id="m10-5">
+    <details>
+      <summary>
+        <span class="num">10.5</span>
+        <span class="summary-text">Memilih Teknologi Wireless</span>
+        <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </summary>
+      <div class="content">
+        <p>Wi-Fi bukan satu teknologi — ada banyak generasi. Memilih yang tepat menentukan kualitas pengalaman pengguna.</p>
+
+        <h4>Generasi Wi-Fi</h4>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Generasi</th><th>Standar</th><th>Band</th><th>Max Teoretis</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Wi-Fi 4</td><td>802.11n</td><td>2.4 / 5 GHz</td><td>600 Mbps</td></tr>
+              <tr><td>Wi-Fi 5</td><td>802.11ac</td><td>5 GHz</td><td>3.5 Gbps</td></tr>
+              <tr><td>Wi-Fi 6</td><td>802.11ax</td><td>2.4 / 5 GHz</td><td>9.6 Gbps</td></tr>
+              <tr><td>Wi-Fi 6E</td><td>802.11ax</td><td>+ 6 GHz</td><td>9.6 Gbps</td></tr>
+              <tr><td>Wi-Fi 7</td><td>802.11be</td><td>2.4 / 5 / 6 GHz</td><td>46 Gbps</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h4>Pohon Keputusan Wi-Fi</h4>
+        <div class="flow">
+          <div class="flow-node question">Berapa jumlah client aktif?</div>
+          <div class="flow-branches">
+            <div class="flow-branch">
+              <div class="branch-label">&lt; 20 client</div>
+              <div class="branch-value">Wi-Fi 5 (AC) cukup</div>
+            </div>
+            <div class="flow-branch">
+              <div class="branch-label">20–100 client</div>
+              <div class="branch-value">Wi-Fi 6 (AX)</div>
+            </div>
+          </div>
+          <div class="flow-arrow">↓</div>
+          <div class="flow-node question">&gt; 100 client atau butuh future-proof?</div>
+          <div class="flow-branches">
+            <div class="flow-branch">
+              <div class="branch-label">Ya</div>
+              <div class="branch-value">Wi-Fi 6E / Wi-Fi 7</div>
+            </div>
+            <div class="flow-branch">
+              <div class="branch-label">Tidak</div>
+              <div class="branch-value">Wi-Fi 6 cukup</div>
+            </div>
+          </div>
+        </div>
+
+        <h4>Pertimbangan Band</h4>
+        <ul>
+          <li><strong>2.4 GHz</strong> — jangkauan jauh, tapi lambat & ramai.</li>
+          <li><strong>5 GHz</strong> — cepat, tapi jangkauan sedang.</li>
+          <li><strong>6 GHz (Wi-Fi 6E/7)</strong> — paling cepat & sepi, tapi jangkauan pendek.</li>
+          <li><strong>Strategi terbaik</strong>: dual-band (2.4 + 5), client otomatis pilih band terbaik.</li>
+        </ul>
+
+        <div class="callout tip">
+          <span class="title">Aturan Praktis</span>
+          <p style="margin:0">Jangan langsung Wi-Fi 7. Untuk sebagian besar sekolah dan kantor, <strong>Wi-Fi 6 dual-band</strong> sudah sangat memadai. Wi-Fi 7 baru masuk akal kalau kliennya juga sudah Wi-Fi 7.</p>
+        </div>
+      </div>
+    </details>
+  </section>
+
+  <!-- 10.6 -->
+  <section id="m10-6">
+    <details>
+      <summary>
+        <span class="num">10.6</span>
+        <span class="summary-text">Memilih Switch</span>
+        <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </summary>
+      <div class="content">
+        <p>Switch adalah perangkat paling banyak di jaringan. Pilih dengan tepat supaya tidak over-budget atau cepat usang.</p>
+
+        <h4>Kriteria Pemilihan Switch</h4>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Kriteria</th><th>Pilihan</th><th>Kapan Dipakai</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Jenis</strong></td>
+                <td>Unmanaged / Managed</td>
+                <td>Managed jika butuh VLAN, QoS, monitoring</td>
+              </tr>
+              <tr>
+                <td><strong>Jumlah port</strong></td>
+                <td>8 / 16 / 24 / 48</td>
+                <td>Sisakan 20% untuk pertumbuhan</td>
+              </tr>
+              <tr>
+                <td><strong>Kecepatan</strong></td>
+                <td>1G / 2.5G / 10G</td>
+                <td>1G minimum, uplink 10G untuk banyak client</td>
+              </tr>
+              <tr>
+                <td><strong>PoE</strong></td>
+                <td>Tanpa / af / at / bt</td>
+                <td>Jika ada AP, CCTV, VoIP</td>
+              </tr>
+              <tr>
+                <td><strong>Uplink</strong></td>
+                <td>RJ45 / SFP / SFP+</td>
+                <td>SFP untuk fiber / antar gedung</td>
+              </tr>
+              <tr>
+                <td><strong>Layer</strong></td>
+                <td>L2 / L2+ / L3</td>
+                <td>L3 untuk routing internal / VLAN routing</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h4>Checklist Sebelum Membeli Switch</h4>
+        <ol class="steps">
+          <li>Butuh berapa port sekarang? <strong>Tambah 20%.</strong></li>
+          <li>Ada perangkat PoE? Hitung total watt-nya.</li>
+          <li>Butuh VLAN? Kalau ya, wajib managed.</li>
+          <li>Butuh uplink fiber? Pilih yang ada SFP.</li>
+          <li>Rack-mount atau desktop?</li>
+          <li>Ada garansi & spare part di Indonesia?</li>
+        </ol>
+
+        <div class="callout info">
+          <span class="title">Contoh</span>
+          <p style="margin:0">Lab dengan 36 PC + 8 AP + 4 CCTV = butuh ≥ 48 port. Rekomendasi: <strong>switch managed 48-port 1G dengan 4× SFP+ uplink dan PoE+ budget ≥ 240W</strong>.</p>
+        </div>
+      </div>
+    </details>
+  </section>
+
+  <!-- 10.7 -->
+  <section id="m10-7">
+    <details>
+      <summary>
+        <span class="num">10.7</span>
+        <span class="summary-text">Memilih Router</span>
+        <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </summary>
+      <div class="content">
+        <p>Router adalah "pintu gerbang" ke internet. Kesalahan memilih router bisa membuat seluruh jaringan terasa lambat meski bandwidth berlimpah.</p>
+
+        <h4>Kriteria Pemilihan Router</h4>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Kriteria</th><th>Perhatian</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Routing throughput</strong></td>
+                <td>Harus ≥ bandwidth ISP. Bukan bandwidth port!</td>
+              </tr>
+              <tr>
+                <td><strong>Firewall throughput</strong></td>
+                <td>Kalau firewall aktif, throughput turun drastis</td>
+              </tr>
+              <tr>
+                <td><strong>Jumlah WAN</strong></td>
+                <td>Multi-WAN untuk backup ISP / load balance</td>
+              </tr>
+              <tr>
+                <td><strong>VPN</strong></td>
+                <td>IPSec, OpenVPN, WireGuard. Cek throughput VPN</td>
+              </tr>
+              <tr>
+                <td><strong>User management</strong></td>
+                <td>Hotspot, PPPoE, DHCP server, VLAN</td>
+              </tr>
+              <tr>
+                <td><strong>Bandwidth management</strong></td>
+                <td>QoS, limit per user, priority traffic</td>
+              </tr>
+              <tr>
+                <td><strong>Kapasitas client</strong></td>
+                <td>Cek angka realistis, bukan hanya datasheet</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h4>Skala Router Berdasarkan Konteks</h4>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Konteks</th><th>Jenis Router</th><th>Contoh Kelas</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Rumah</td><td>Router Wi-Fi consumer</td><td>Router kelas AX1800–AX3000</td></tr>
+              <tr><td>Kantor kecil</td><td>Router SMB</td><td>Router dengan multi-WAN & VPN</td></tr>
+              <tr><td>Sekolah</td><td>Router SMB / enterprise</td><td>Router dengan user management</td></tr>
+              <tr><td>Enterprise</td><td>Router enterprise</td><td>Router modular, BGP/OSPF</td></tr>
+              <tr><td>Data center</td><td>Router core</td><td>Router dengan throughput ratusan Gbps</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="callout warn">
+          <span class="title">Jebakan Umum</span>
+          <p style="margin:0">Router dengan port 1 Gbps belum tentu bisa routing 1 Gbps. Banyak router kelas menengah hanya mampu 300–500 Mbps saat firewall aktif.</p>
+        </div>
+      </div>
+    </details>
+  </section>
+
+  <!-- 10.8 -->
+  <section id="m10-8">
+    <details>
+      <summary>
+        <span class="num">10.8</span>
+        <span class="summary-text">Memilih Access Point</span>
+        <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </summary>
+      <div class="content">
+        <p>AP menentukan kualitas Wi-Fi. Pilih dengan mempertimbangkan jumlah client, coverage, dan integrasi dengan sistem manajemen.</p>
+
+        <h4>Kriteria Pemilihan AP</h4>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Kriteria</th><th>Rumah/Kecil</th><th>Kantor/Sekolah</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Standar Wi-Fi</strong></td>
+                <td>Wi-Fi 5 atau 6</td>
+                <td>Wi-Fi 6 minimum</td>
+              </tr>
+              <tr>
+                <td><strong>Band</strong></td>
+                <td>Dual-band (2.4 + 5)</td>
+                <td>Dual-band atau tri-band</td>
+              </tr>
+              <tr>
+                <td><strong>Client max</strong></td>
+                <td>30–50</td>
+                <td>100–250</td>
+              </tr>
+              <tr>
+                <td><strong>PoE</strong></td>
+                <td>Optional</td>
+                <td>Wajib (802.3af/at)</td>
+              </tr>
+              <tr>
+                <td><strong>Manajemen</strong></td>
+                <td>Standalone</td>
+                <td>Controller / cloud</td>
+              </tr>
+              <tr>
+                <td><strong>Roaming</strong></td>
+                <td>Tidak penting</td>
+                <td>Wajib (802.11k/v/r)</td>
+              </tr>
+              <tr>
+                <td><strong>Keamanan</strong></td>
+                <td>WPA2 minimum</td>
+                <td>WPA3, RADIUS, guest isolation</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h4>Menghitung Jumlah AP</h4>
+        <div class="formula">
+          <span class="hl">Jumlah AP</span> = max( kebutuhan coverage , kebutuhan kapasitas )
+          <br><br>
+          <span class="cm">Coverage: luas area ÷ coverage per AP</span>
+          <br>
+          <span class="cm">Kapasitas: jumlah client ÷ kapasitas aman AP</span>
+        </div>
+
+        <div class="callout tip">
+          <span class="title">Contoh</span>
+          <p style="margin:0">Ruang guru 10×8 m = 80 m². Coverage AP di ruang berkabinet ~40 m² per AP → butuh 2 AP. Kapasitas: 12 client ÷ 30 = 1 AP cukup. Jadi jumlah AP = 2 (karena coverage yang menentukan).</p>
+        </div>
+      </div>
+    </details>
+  </section>
+
+  <!-- 10.9 -->
+  <section id="m10-9">
+    <details>
+      <summary>
+        <span class="num">10.9</span>
+        <span class="summary-text">Memilih Firewall</span>
+        <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </summary>
+      <div class="content">
+        <p>Firewall melindungi jaringan dari ancaman luar. Tapi tidak semua jaringan butuh firewall khusus — beberapa bisa digabung ke router.</p>
+
+        <h4>Jenis Firewall</h4>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Jenis</th><th>Fungsi</th><th>Cocok untuk</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Packet filtering</strong></td>
+                <td>Filter berdasarkan IP/port</td>
+                <td>Rumah, kantor kecil</td>
+              </tr>
+              <tr>
+                <td><strong>Stateful inspection</strong></td>
+                <td>Melacak koneksi aktif</td>
+                <td>Kantor SMB</td>
+              </tr>
+              <tr>
+                <td><strong>UTM / NGFW</strong></td>
+                <td>Antivirus, IPS, content filter</td>
+                <td>Sekolah, kantor menengah</td>
+              </tr>
+              <tr>
+                <td><strong>WAF</strong></td>
+                <td>Khusus aplikasi web</td>
+                <td>Organisasi dengan web server</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h4>Kapan Butuh Firewall Khusus?</h4>
+        <ul>
+          <li>Ada data sensitif (nilai siswa, data keuangan).</li>
+          <li>Ada aturan pembatasan akses (URL filtering, block aplikasi).</li>
+          <li>Ada server yang terbuka ke internet.</li>
+          <li>Butuh log aktivitas untuk audit.</li>
+          <li>Butuh IPS/IDS untuk deteksi serangan.</li>
+        </ul>
+
+        <div class="callout info">
+          <span class="title">Catatan</span>
+          <p style="margin:0">Firewall bisa berupa perangkat khusus (appliance) atau fitur di router. Untuk jaringan kecil–menengah, <strong>router dengan fitur firewall sudah cukup</strong>. Firewall khusus baru diperlukan di jaringan yang butuh proteksi lebih tinggi.</p>
+        </div>
+
+        <div class="callout warn">
+          <span class="title">Perhatian</span>
+          <p style="margin:0">Firewall UTM/NGFW biasanya butuh <strong>lisensi tahunan</strong> untuk update signature. Jangan hanya lihat harga beli — hitung juga biaya lisensinya.</p>
+        </div>
+      </div>
+    </details>
+  </section>
+
+  <!-- 10.10 -->
+  <section id="m10-10">
+    <details>
+      <summary>
+        <span class="num">10.10</span>
+        <span class="summary-text">Menyesuaikan Teknologi dengan Anggaran</span>
+        <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </summary>
+      <div class="content">
+        <p>Anggaran adalah <em>constraint</em> paling nyata dalam proyek jaringan. Teknisi yang baik bisa memberi solusi terbaik di dalam batasan anggaran.</p>
+
+        <h4>Prinsip Anggaran</h4>
+        <ul>
+          <li><strong>Hitung TCO</strong> (Total Cost of Ownership), bukan hanya harga beli.</li>
+          <li><strong>Prioritaskan yang wajib</strong> (Must) sebelum yang nice-to-have (Should/Could).</li>
+          <li><strong>Sisakan 10–15%</strong> untuk tak terduga.</li>
+          <li><strong>Perangkat inti jangan dikompromikan</strong> — lebih baik hemat di access.</li>
+        </ul>
+
+        <h4>Komponen TCO</h4>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Komponen</th><th>Contoh</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Pengadaan</td><td>Perangkat, kabel, konektor, rack</td></tr>
+              <tr><td>Instalasi</td><td>Tenaga, alat, terminasi kabel</td></tr>
+              <tr><td>Lisensi</td><td>Software, subscription, support</td></tr>
+              <tr><td>Operasional</td><td>Listrik, ISP, maintenance</td></tr>
+              <tr><td>Pelatihan</td><td>Training SDM pengelola</td></tr>
+              <tr><td>Penggantian</td><td>Cadangan untuk perangkat rusak</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h4>Strategi Menghemat Tanpa Mengorbankan Kualitas</h4>
+        <ol class="steps">
+          <li><strong>Prioritaskan inti</strong> — investasi di switch inti & router. Access bisa standar.</li>
+          <li><strong>Manfaatkan PoE switch</strong> untuk AP/CCTV — hemat adapter listrik.</li>
+          <li><strong>Beli perangkat modular</strong> — bisa ditambah SFP di masa depan.</li>
+          <li><strong>Pilih satu vendor</strong> untuk kemudahan manajemen & garansi.</li>
+          <li><strong>Beli spare</strong> — 1 switch cadangan untuk 5 switch aktif.</li>
+        </ol>
+
+        <div class="callout tip">
+          <span class="title">Tips</span>
+          <p style="margin:0">Harga perangkat jaringan turun drastis 1–2 tahun setelah rilis. Beli generasi sebelumnya (tapi masih didukung) untuk menghemat 30–50%.</p>
+        </div>
+      </div>
+    </details>
+  </section>
+
+  <!-- 10.11 -->
+  <section id="m10-11">
+    <details>
+      <summary>
+        <span class="num">10.11</span>
+        <span class="summary-text">Menyesuaikan dengan Kemampuan Pengelola</span>
+        <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </summary>
+      <div class="content">
+        <p>Ini faktor paling sering diabaikan. Jaringan paling canggih sekalipun akan bermasalah kalau tidak ada yang bisa mengelola.</p>
+
+        <h4>Tiga Tingkat Kemampuan Pengelola</h4>
+        <div class="compare-grid">
+          <div class="compare-card alt1">
+            <h5>Level Dasar</h5>
+            <ul>
+              <li>Bisa restart perangkat</li>
+              <li>Ganti kabel LAN</li>
+              <li>Setting dasar web UI</li>
+              <li>Cocok: unmanaged switch, router consumer</li>
+            </ul>
+          </div>
+          <div class="compare-card alt2">
+            <h5>Level Menengah</h5>
+            <ul>
+              <li>Setting VLAN dasar</li>
+              <li>Konfigurasi Wi-Fi</li>
+              <li>Basic troubleshooting</li>
+              <li>Cocok: managed switch, router SMB</li>
+            </ul>
+          </div>
+          <div class="compare-card alt3">
+            <h5>Level Lanjut</h5>
+            <ul>
+              <li>Konfigurasi routing lanjut</li>
+              <li>Setup VPN, firewall</li>
+              <li>Monitoring & tuning</li>
+              <li>Cocok: enterprise gear</li>
+            </ul>
+          </div>
+        </div>
+
+        <h4>Pertanyaan Sebelum Beli Perangkat Canggih</h4>
+        <ul>
+          <li>Siapa yang akan mengelola sehari-hari?</li>
+          <li>Apakah bisa <em>troubleshoot</em> kalau ada masalah?</li>
+          <li>Apakah bisa <em>update firmware</em> rutin?</li>
+          <li>Apakah bisa set VLAN, QoS, atau firewall kalau butuh?</li>
+          <li>Kalau tidak, apakah ada dana untuk training atau outsourcing?</li>
+        </ul>
+
+        <div class="callout warn">
+          <span class="title">Bahaya Tersembunyi</span>
+          <p style="margin:0">Perangkat enterprise tanpa admin yang terlatih = <strong>pemborosan</strong>. Fitur canggih tidak terpakai, dan konfigurasi default berisiko keamanan.</p>
+        </div>
+
+        <div class="callout tip">
+          <span class="title">Solusi</span>
+          <p style="margin:0">Kalau SDM terbatas, pilih perangkat dengan <strong>manajemen terpusat</strong> (cloud controller) atau <strong>unified management</strong>. Lebih mudah dikelola dari satu dashboard.</p>
+        </div>
+      </div>
+    </details>
+  </section>
+
+  <!-- 10.12 -->
+  <section id="m10-12">
+    <details>
+      <summary>
+        <span class="num">10.12</span>
+        <span class="summary-text">Over-specification & Under-specification</span>
+        <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </summary>
+      <div class="content">
+        <p>Dua jebakan yang sering terjadi di proyek jaringan. Keduanya sama-sama merugikan.</p>
+
+        <div class="spec-warn">
+          <div class="spec-warn-card over">
+            <h5>❌ Over-specification</h5>
+            <p>Beli perangkat jauh di atas kebutuhan. Fitur canggih tidak terpakai, biaya membengkak.</p>
+            <p><strong>Contoh:</strong> Beli switch 10G + Wi-Fi 7 untuk 5 pengguna.</p>
+            <p><strong>Akibat:</strong> Anggaran habis, tidak ada dana untuk komponen lain.</p>
+          </div>
+          <div class="spec-warn-card under">
+            <h5>⚠ Under-specification</h5>
+            <p>Beli perangkat di bawah kebutuhan. Cepat lambat, harus upgrade terus.</p>
+            <p><strong>Contoh:</strong> Switch 16-port untuk 30 PC.</p>
+            <p><strong>Akibat:</strong> Beli ulang dalam 6 bulan, biaya jadi dobel.</p>
+          </div>
+          <div class="spec-warn-card right">
+            <h5>✓ Right-specification</h5>
+            <p>Perangkat sesuai kebutuhan sekarang + cadangan wajar 20–50%.</p>
+            <p><strong>Contoh:</strong> Butuh 24 port → beli 48 port managed.</p>
+            <p><strong>Akibat:</strong> Hemat, siap tumbuh, tidak usang cepat.</p>
+          </div>
+        </div>
+
+        <h4>Cara Menghindari Keduanya</h4>
+        <ol class="steps">
+          <li><strong>Selalu kembali ke kebutuhan</strong> — jangan tergoda fitur.</li>
+          <li><strong>Hitung kebutuhan konkret</strong> — berapa port, berapa client, berapa Mbps.</li>
+          <li><strong>Tambah cadangan 20–50%</strong> — bukan 200%.</li>
+          <li><strong>Bandingkan 3 kandidat</strong> — jangan langsung pilih satu.</li>
+          <li><strong>Pertimbangkan 3–5 tahun</strong> — jangan hanya kebutuhan hari ini.</li>
+          <li><strong>Diskusikan dengan pengelola</strong> — apakah mereka siap mengelola?</li>
+        </ol>
+
+        <h4>Kalkulator Decision Matrix</h4>
+        <p>Sekarang, saatnya Anda memilih. Isi bobot kriteria, beri skor tiap alternatif, dan lihat mana yang menang. <strong>Coba geser bobotnya</strong> — pemenang bisa berubah sesuai prioritas!</p>
+
+        <div class="dm">
+          <div class="dm-head">
+            <div class="dm-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+            </div>
+            <div>
+              <div class="dm-title">Decision Matrix Interaktif</div>
+              <div class="dm-sub">Geser bobot & skor untuk melihat pengaruhnya</div>
+            </div>
+          </div>
+
+          <div class="dm-section-title">1. Bobot Kriteria</div>
+
+          <div class="criteria-row">
+            <div class="crit-name">Kesesuaian kebutuhan</div>
+            <input type="range" class="crit-weight" data-crit="0" min="0" max="50" value="30">
+            <div class="crit-value" id="wv0">30%</div>
+          </div>
+          <div class="criteria-row">
+            <div class="crit-name">Biaya</div>
+            <input type="range" class="crit-weight" data-crit="1" min="0" max="50" value="25">
+            <div class="crit-value" id="wv1">25%</div>
+          </div>
+          <div class="criteria-row">
+            <div class="crit-name">Kemudahan pengelolaan</div>
+            <input type="range" class="crit-weight" data-crit="2" min="0" max="50" value="15">
+            <div class="crit-value" id="wv2">15%</div>
+          </div>
+          <div class="criteria-row">
+            <div class="crit-name">Skalabilitas</div>
+            <input type="range" class="crit-weight" data-crit="3" min="0" max="50" value="15">
+            <div class="crit-value" id="wv3">15%</div>
+          </div>
+          <div class="criteria-row">
+            <div class="crit-name">Dukungan & garansi</div>
+            <input type="range" class="crit-weight" data-crit="4" min="0" max="50" value="15">
+            <div class="crit-value" id="wv4">15%</div>
+          </div>
+
+          <div class="dm-total-weight" id="totalWeight">Total bobot: 100%</div>
+
+          <div class="dm-section-title">2. Skor Alternatif (1–5)</div>
+
+          <div class="alt-tabs">
+            <div class="alt-tab active" data-alt="0">Alt A</div>
+            <div class="alt-tab" data-alt="1">Alt B</div>
+            <div class="alt-tab" data-alt="2">Alt C</div>
+          </div>
+
+          <!-- Alt A -->
+          <div class="alt-panel active" data-panel="0">
+            <div class="score-row">
+              <div class="score-name">Kesesuaian kebutuhan</div>
+              <input type="range" class="score" data-alt="0" data-crit="0" min="1" max="5" value="4">
+              <div class="score-value" id="sv0-0">4</div>
+            </div>
+            <div class="score-row">
+              <div class="score-name">Biaya</div>
+              <input type="range" class="score" data-alt="0" data-crit="1" min="1" max="5" value="5">
+              <div class="score-value" id="sv0-1">5</div>
+            </div>
+            <div class="score-row">
+              <div class="score-name">Kemudahan pengelolaan</div>
+              <input type="range" class="score" data-alt="0" data-crit="2" min="1" max="5" value="3">
+              <div class="score-value" id="sv0-2">3</div>
+            </div>
+            <div class="score-row">
+              <div class="score-name">Skalabilitas</div>
+              <input type="range" class="score" data-alt="0" data-crit="3" min="1" max="5" value="3">
+              <div class="score-value" id="sv0-3">3</div>
+            </div>
+            <div class="score-row">
+              <div class="score-name">Dukungan & garansi</div>
+              <input type="range" class="score" data-alt="0" data-crit="4" min="1" max="5" value="3">
+              <div class="score-value" id="sv0-4">3</div>
+            </div>
+          </div>
+
+          <!-- Alt B -->
+          <div class="alt-panel" data-panel="1">
+            <div class="score-row">
+              <div class="score-name">Kesesuaian kebutuhan</div>
+              <input type="range" class="score" data-alt="1" data-crit="0" min="1" max="5" value="5">
+              <div class="score-value" id="sv1-0">5</div>
+            </div>
+            <div class="score-row">
+              <div class="score-name">Biaya</div>
+              <input type="range" class="score" data-alt="1" data-crit="1" min="1" max="5" value="3">
+              <div class="score-value" id="sv1-1">3</div>
+            </div>
+            <div class="score-row">
+              <div class="score-name">Kemudahan pengelolaan</div>
+              <input type="range" class="score" data-alt="1" data-crit="2" min="1" max="5" value="5">
+              <div class="score-value" id="sv1-2">5</div>
+            </div>
+            <div class="score-row">
+              <div class="score-name">Skalabilitas</div>
+              <input type="range" class="score" data-alt="1" data-crit="3" min="1" max="5" value="4">
+              <div class="score-value" id="sv1-3">4</div>
+            </div>
+            <div class="score-row">
+              <div class="score-name">Dukungan & garansi</div>
+              <input type="range" class="score" data-alt="1" data-crit="4" min="1" max="5" value="4">
+              <div class="score-value" id="sv1-4">4</div>
+            </div>
+          </div>
+
+          <!-- Alt C -->
+          <div class="alt-panel" data-panel="2">
+            <div class="score-row">
+              <div class="score-name">Kesesuaian kebutuhan</div>
+              <input type="range" class="score" data-alt="2" data-crit="0" min="1" max="5" value="5">
+              <div class="score-value" id="sv2-0">5</div>
+            </div>
+            <div class="score-row">
+              <div class="score-name">Biaya</div>
+              <input type="range" class="score" data-alt="2" data-crit="1" min="1" max="5" value="2">
+              <div class="score-value" id="sv2-1">2</div>
+            </div>
+            <div class="score-row">
+              <div class="score-name">Kemudahan pengelolaan</div>
+              <input type="range" class="score" data-alt="2" data-crit="2" min="1" max="5" value="4">
+              <div class="score-value" id="sv2-2">4</div>
+            </div>
+            <div class="score-row">
+              <div class="score-name">Skalabilitas</div>
+              <input type="range" class="score" data-alt="2" data-crit="3" min="1" max="5" value="5">
+              <div class="score-value" id="sv2-3">5</div>
+            </div>
+            <div class="score-row">
+              <div class="score-name">Dukungan & garansi</div>
+              <input type="range" class="score" data-alt="2" data-crit="4" min="1" max="5" value="5">
+              <div class="score-value" id="sv2-4">5</div>
+            </div>
+          </div>
+
+          <!-- Result -->
+          <div class="dm-result">
+            <div class="result-title">Hasil Penilaian</div>
+            <div class="result-row" id="resRow0">
+              <div class="name"><span class="trophy">🏆</span> Alternatif A</div>
+              <div class="score" id="resScore0">0.00</div>
+            </div>
+            <div class="result-row" id="resRow1">
+              <div class="name"><span class="trophy">🏆</span> Alternatif B</div>
+              <div class="score" id="resScore1">0.00</div>
+            </div>
+            <div class="result-row" id="resRow2">
+              <div class="name"><span class="trophy">🏆</span> Alternatif C</div>
+              <div class="score" id="resScore2">0.00</div>
+            </div>
+            <div class="result-verdict" id="verdict">—</div>
+          </div>
+
+          <button class="btn-reset" id="dmReset" style="margin-top:14px;background:rgba(15,118,110,.08);border-color:rgba(15,118,110,.3);color:var(--primary-dark);">Reset ke Nilai Awal</button>
+        </div>
+
+        <div class="dm-note">Rumus: Skor Akhir = Σ (bobot kriteria × skor alternatif). Alternatif dengan skor tertinggi menjadi rekomendasi.</div>
+
+        <h4>Output Modul 10: Technology Selection Document</h4>
+        <p>Setelah menyelesaikan Modul 10, Anda menghasilkan <strong>Technology Selection Document</strong> — dokumen yang menjelaskan pilihan teknologi beserta alasannya.</p>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Komponen</th><th>Pilihan</th><th>Alasan</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Media transmisi</td><td>UTP Cat6 + Fiber backbone</td><td>Jarak antar gedung butuh fiber</td></tr>
+              <tr><td>Topologi</td><td>Tree (hierarkis)</td><td>Multi-lantai dengan switch inti</td></tr>
+              <tr><td>Ethernet</td><td>1 Gbps access, 10 Gbps uplink</td><td>Cukup untuk kebutuhan, siap tumbuh</td></tr>
+              <tr><td>Wi-Fi</td><td>Wi-Fi 6 dual-band</td><td>Mendukung 100+ client, future-proof</td></tr>
+              <tr><td>Switch</td><td>Managed 48-port + PoE+</td><td>Butuh VLAN & daya AP/CCTV</td></tr>
+              <tr><td>Router</td><td>SMB dengan VPN & QoS</td><td>Butuh bandwidth management</td></tr>
+              <tr><td>AP</td><td>Wi-Fi 6, 4 unit</td><td>Coverage 4 area utama</td></tr>
+              <tr><td>Firewall</td><td>Fitur di router</td><td>Cukup untuk skala sekolah</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="case-box">
+          <span class="case-label">Proyek Mini</span>
+          <p>Sekolah akan membangun jaringan baru untuk:</p>
+          <ul style="margin:6px 0 8px;padding-left:20px;font-size:14px">
+            <li>Lab komputer 36 PC</li>
+            <li>Ruang guru 12 pengguna + Wi-Fi</li>
+            <li>Server lokal untuk file sharing</li>
+            <li>4 CCTV area koridor</li>
+            <li>Anggaran: Rp25 juta</li>
+          </ul>
+          <div class="question">
+            <strong>Tugas:</strong> Tentukan pilihan teknologi untuk setiap komponen di atas. Gunakan decision matrix — jika butuh. Setiap pilihan harus disertai <strong>alasan teknis</strong> dan <strong>alasan anggaran</strong>.
+          </div>
+        </div>
+      </div>
+    </details>
+  </section>
+
+  <div class="takeaway">
+    <h3>Poin Kunci Modul 10</h3>
+    <ol>
+      <li><strong>Right technology</strong> = yang sesuai, bukan yang termahal atau terbaru.</li>
+      <li>Media transmisi ditentukan oleh mobilitas dan jarak, bukan selera.</li>
+      <li>Topologi star/tree cocok untuk 95% kasus. Jangan over-engineer.</li>
+      <li>1 Gbps access sudah cukup untuk hampir semua kasus. Uplink harus ≥ access.</li>
+      <li>Wi-Fi 6 sudah sangat memadai untuk sekolah/kantor. Wi-Fi 7 belum perlu.</li>
+      <li>Switch: cek port, PoE budget, managed vs unmanaged, uplink.</li>
+      <li>Router: cek routing throughput (bukan bandwidth port), fitur WAN/VPN.</li>
+      <li>Firewall bisa menyatu dengan router untuk skala kecil–menengah.</li>
+      <li>Hitung <strong>TCO</strong>, bukan hanya harga beli.</li>
+      <li>Perangkat canggih tanpa pengelola terlatih = pemborosan.</li>
+      <li>Hindari over-spec (boros) dan under-spec (cepat usang).</li>
+      <li>Gunakan <strong>decision matrix</strong> dengan bobot kriteria untuk keputusan objektif.</li>
+      <li>Output Modul 10: <strong>Technology Selection Document</strong>.</li>
+    </ol>
+  </div>
+
+</main>
+
+<button class="back-top" id="backTop" aria-label="Kembali ke atas">
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>
+</button>
+
+<footer>
+  <strong>Modul 10 — Pemilihan Teknologi yang Sesuai</strong><br>
+  Kelas XI TKJ · TP: Memahami kebutuhan teknis pengguna dan peralatan jaringan dengan teknologi yang sesuai.
+</footer>
+
+<script>
+  // Smooth scroll
+  document.querySelectorAll('nav.toc a').forEach(a=>{
+    a.addEventListener('click', e=>{
+      const el = document.querySelector(a.getAttribute('href'));
+      if(el){ e.preventDefault(); el.scrollIntoView({behavior:'smooth', block:'start'}); }
+    });
+  });
+
+  // Back to top
+  const btn = document.getElementById('backTop');
+  window.addEventListener('scroll', ()=>{
+    if(window.scrollY > 400) btn.classList.add('show');
+    else btn.classList.remove('show');
+  });
+  btn.addEventListener('click', ()=>window.scrollTo({top:0, behavior:'smooth'}));
+
+  // ===== DECISION MATRIX =====
+  const weightSliders = document.querySelectorAll('.crit-weight');
+  const scoreSliders = document.querySelectorAll('.score');
+  const totalWeightEl = document.getElementById('totalWeight');
+  const resScores = [
+    document.getElementById('resScore0'),
+    document.getElementById('resScore1'),
+    document.getElementById('resScore2')
+  ];
+  const resRows = [
+    document.getElementById('resRow0'),
+    document.getElementById('resRow1'),
+    document.getElementById('resRow2')
+  ];
+  const verdictEl = document.getElementById('verdict');
+
+  // Initial values untuk reset
+  const initialWeights = [30, 25, 15, 15, 15];
+  const initialScores = [
+    [4, 5, 3, 3, 3],
+    [5, 3, 5, 4, 4],
+    [5, 2, 4, 5, 5]
+  ];
+
+  function updateMatrix(){
+    // Baca bobot
+    const weights = [];
+    let totalW = 0;
+    weightSliders.forEach((sl, i)=>{
+      const v = parseFloat(sl.value);
+      weights.push(v);
+      totalW += v;
+      document.getElementById('wv'+i).textContent = v + '%';
+    });
+
+    // Update label total bobot
+    if(Math.abs(totalW - 100) < 0.1){
+      totalWeightEl.textContent = 'Total bobot: 100%';
+      totalWeightEl.classList.remove('warn');
+    } else {
+      totalWeightEl.textContent = 'Total bobot: ' + totalW + '% (ideal = 100%)';
+      totalWeightEl.classList.add('warn');
+    }
+
+    // Baca skor
+    const scores = [[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0]];
+    scoreSliders.forEach(sl=>{
+      const alt = parseInt(sl.dataset.alt);
+      const crit = parseInt(sl.dataset.crit);
+      const v = parseFloat(sl.value);
+      scores[alt][crit] = v;
+      document.getElementById('sv'+alt+'-'+crit).textContent = v;
+    });
+
+    // Hitung skor akhir (dikalikan bobot, dibagi 100)
+    const finals = [0, 0, 0];
+    for(let alt = 0; alt < 3; alt++){
+      let sum = 0;
+      for(let c = 0; c < 5; c++){
+        sum += weights[c] * scores[alt][c];
+      }
+      finals[alt] = sum / 100;
+    }
+
+    // Update tampilan hasil
+    let maxIdx = 0;
+    for(let i = 0; i < 3; i++){
+      resScores[i].textContent = finals[i].toFixed(2);
+      if(finals[i] > finals[maxIdx]) maxIdx = i;
+    }
+
+    // Tandai pemenang
+    resRows.forEach((r, i)=>{
+      if(i === maxIdx) r.classList.add('winner');
+      else r.classList.remove('winner');
+    });
+
+    // Verdict
+    const names = ['A', 'B', 'C'];
+    const diff = finals[maxIdx] - Math.max(...finals.filter((_,i)=>i!==maxIdx));
+    if(diff < 0.05){
+      verdictEl.textContent = '⚖️ Hasil sangat dekat — pilih berdasarkan preferensi tambahan (dukungan vendor, kemudahan, dsb.)';
+    } else {
+      verdictEl.textContent = '✅ Rekomendasi: Alternatif ' + names[maxIdx] + ' (skor tertinggi: ' + finals[maxIdx].toFixed(2) + ')';
+    }
+  }
+
+  weightSliders.forEach(sl=>{
+    sl.addEventListener('input', updateMatrix);
+  });
+  scoreSliders.forEach(sl=>{
+    sl.addEventListener('input', updateMatrix);
+  });
+
+  // Tab switching alternatif
+  document.querySelectorAll('.alt-tab').forEach(tab=>{
+    tab.addEventListener('click', ()=>{
+      document.querySelectorAll('.alt-tab').forEach(t=>t.classList.remove('active'));
+      document.querySelectorAll('.alt-panel').forEach(p=>p.classList.remove('active'));
+      tab.classList.add('active');
+      document.querySelector('.alt-panel[data-panel="'+tab.dataset.alt+'"]').classList.add('active');
+    });
+  });
+
+  // Reset
+  document.getElementById('dmReset').addEventListener('click', ()=>{
+    weightSliders.forEach((sl, i)=>{
+      sl.value = initialWeights[i];
+    });
+    scoreSliders.forEach(sl=>{
+      const alt = parseInt(sl.dataset.alt);
+      const crit = parseInt(sl.dataset.crit);
+      sl.value = initialScores[alt][crit];
+    });
+    updateMatrix();
+  });
+
+  // Init
+  updateMatrix();
+</script>
+
+</body>
+</html>
