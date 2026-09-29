@@ -1,0 +1,2004 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0f766e">
+<title>Modul 5 — Media Transmisi Jaringan</title>
+<style>
+  :root{
+    --primary:#0f766e;
+    --primary-dark:#115e59;
+    --primary-light:#ccfbf1;
+    --accent:#f59e0b;
+    --accent-dark:#b45309;
+    --danger:#dc2626;
+    --success:#16a34a;
+    --bg:#f8fafc;
+    --card:#ffffff;
+    --text:#0f172a;
+    --text-muted:#475569;
+    --border:#e2e8f0;
+    --radius:14px;
+    --shadow:0 1px 3px rgba(15,23,42,.06), 0 1px 2px rgba(15,23,42,.04);
+    --shadow-md:0 4px 12px rgba(15,23,42,.08);
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{margin:0;padding:0}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    line-height:1.6;
+    font-size:16px;
+    -webkit-font-smoothing:antialiased;
+    padding-bottom:env(safe-area-inset-bottom);
+  }
+
+  header.hero{
+    background:linear-gradient(135deg,var(--primary) 0%,var(--primary-dark) 100%);
+    color:#fff;
+    padding:28px 20px 32px;
+    border-radius:0 0 24px 24px;
+    position:relative;
+    overflow:hidden;
+  }
+  header.hero::after{
+    content:"";
+    position:absolute;
+    right:-40px;top:-40px;
+    width:160px;height:160px;
+    background:rgba(255,255,255,.08);
+    border-radius:50%;
+  }
+  header.hero::before{
+    content:"🔗";
+    position:absolute;
+    right:20px;bottom:-15px;
+    font-size:100px;
+    opacity:.08;
+    transform:rotate(-15deg);
+  }
+  .badge{
+    display:inline-block;
+    background:rgba(255,255,255,.18);
+    color:#fff;
+    padding:4px 12px;
+    border-radius:999px;
+    font-size:12px;
+    font-weight:600;
+    letter-spacing:.4px;
+    text-transform:uppercase;
+    margin-bottom:12px;
+    backdrop-filter:blur(4px);
+  }
+  header.hero h1{
+    font-size:22px;
+    margin:0 0 8px;
+    line-height:1.3;
+    font-weight:700;
+    position:relative;
+    z-index:1;
+  }
+  header.hero p{
+    margin:0;
+    font-size:14px;
+    opacity:.9;
+    position:relative;
+    z-index:1;
+    max-width:520px;
+  }
+
+  .tp-box{
+    background:#fff;
+    margin:-16px 16px 20px;
+    padding:16px 18px;
+    border-radius:var(--radius);
+    box-shadow:var(--shadow);
+    border-left:4px solid var(--accent);
+    position:relative;
+    z-index:1;
+  }
+  .tp-box .label{
+    font-size:11px;
+    font-weight:700;
+    letter-spacing:.6px;
+    text-transform:uppercase;
+    color:var(--accent);
+    margin-bottom:6px;
+    display:block;
+  }
+  .tp-box p{
+    margin:0;
+    font-size:14.5px;
+    color:var(--text);
+    font-weight:500;
+  }
+
+  nav.toc{
+    background:#fff;
+    margin:0 16px 24px;
+    padding:16px 18px;
+    border-radius:var(--radius);
+    box-shadow:var(--shadow);
+  }
+  nav.toc h2{
+    font-size:14px;
+    margin:0 0 12px;
+    color:var(--text-muted);
+    text-transform:uppercase;
+    letter-spacing:.5px;
+    font-weight:700;
+  }
+  nav.toc ol{
+    margin:0;
+    padding-left:20px;
+    font-size:14.5px;
+  }
+  nav.toc li{margin-bottom:6px}
+  nav.toc a{
+    color:var(--primary);
+    text-decoration:none;
+    font-weight:500;
+  }
+  nav.toc a:active{opacity:.6}
+
+  main{
+    padding:0 16px 40px;
+    max-width:720px;
+    margin:0 auto;
+  }
+
+  section{
+    background:#fff;
+    border-radius:var(--radius);
+    box-shadow:var(--shadow);
+    margin-bottom:16px;
+    overflow:hidden;
+    scroll-margin-top:16px;
+  }
+
+  details{
+    border-radius:var(--radius);
+    overflow:hidden;
+  }
+  details summary{
+    list-style:none;
+    cursor:pointer;
+    padding:16px 18px;
+    display:flex;
+    align-items:center;
+    gap:12px;
+    font-weight:600;
+    font-size:15px;
+    user-select:none;
+    transition:background .15s;
+  }
+  details summary::-webkit-details-marker{display:none}
+  details summary:active{background:var(--bg)}
+
+  .num{
+    flex-shrink:0;
+    width:32px;height:32px;
+    background:var(--primary-light);
+    color:var(--primary-dark);
+    border-radius:9px;
+    display:flex;align-items:center;justify-content:center;
+    font-weight:700;
+    font-size:13px;
+  }
+  .summary-text{
+    flex:1;
+    color:var(--text);
+    line-height:1.35;
+  }
+  .chev{
+    flex-shrink:0;
+    width:20px;height:20px;
+    transition:transform .2s;
+    color:var(--text-muted);
+  }
+  details[open] .chev{transform:rotate(180deg)}
+
+  .content{
+    padding:0 18px 20px;
+    font-size:15px;
+    color:var(--text);
+    border-top:1px solid var(--border);
+    padding-top:16px;
+    margin-top:0;
+  }
+
+  .content p{margin:0 0 12px}
+  .content p:last-child{margin-bottom:0}
+  .content h4{
+    font-size:14px;
+    margin:16px 0 8px;
+    color:var(--primary-dark);
+    font-weight:700;
+  }
+  .content ul,.content ol{
+    margin:0 0 12px;
+    padding-left:22px;
+  }
+  .content li{margin-bottom:6px}
+  .content strong{color:var(--text);font-weight:600}
+  .content code{
+    background:#f1f5f9;
+    padding:1px 6px;
+    border-radius:4px;
+    font-size:13px;
+    font-family:"SF Mono",Consolas,Monaco,monospace;
+    color:var(--primary-dark);
+  }
+
+  .callout{
+    border-radius:10px;
+    padding:12px 14px;
+    font-size:14px;
+    margin:12px 0;
+    border-left:3px solid;
+  }
+  .callout.tip{background:#ecfdf5;border-color:var(--success);color:#065f46}
+  .callout.warn{background:#fef2f2;border-color:var(--danger);color:#991b1b}
+  .callout.info{background:#eff6ff;border-color:#2563eb;color:#1e40af}
+  .callout.gold{background:#fffbeb;border-color:var(--accent);color:#78350f}
+  .callout .title{
+    font-weight:700;
+    font-size:12px;
+    text-transform:uppercase;
+    letter-spacing:.4px;
+    display:block;
+    margin-bottom:4px;
+  }
+
+  .table-wrap{
+    overflow-x:auto;
+    margin:12px -4px;
+    border-radius:10px;
+    -webkit-overflow-scrolling:touch;
+  }
+  table{
+    width:100%;
+    border-collapse:collapse;
+    font-size:13.5px;
+    min-width:480px;
+  }
+  th{
+    background:var(--primary-light);
+    color:var(--primary-dark);
+    padding:10px 12px;
+    text-align:left;
+    font-weight:700;
+    font-size:12px;
+    text-transform:uppercase;
+    letter-spacing:.3px;
+    white-space:nowrap;
+  }
+  td{
+    padding:10px 12px;
+    border-top:1px solid var(--border);
+    vertical-align:top;
+  }
+  tr:nth-child(even) td{background:#fafbfc}
+
+  .pill{
+    display:inline-block;
+    padding:2px 8px;
+    border-radius:6px;
+    font-size:11px;
+    font-weight:700;
+    letter-spacing:.3px;
+    text-transform:uppercase;
+  }
+  .pill.high{background:#fee2e2;color:#991b1b}
+  .pill.med{background:#fef3c7;color:#92400e}
+  .pill.low{background:#dcfce7;color:#166534}
+  .pill.blue{background:#dbeafe;color:#1e40af}
+
+  /* ===== MEDIA HERO ===== */
+  .media-hero{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    background:linear-gradient(135deg,#f0fdfa 0%,#ecfeff 100%);
+    border:1px solid #99f6e4;
+    border-radius:14px;
+    padding:14px;
+    margin:4px 0 16px;
+  }
+  .media-icon{
+    flex-shrink:0;
+    width:56px;height:56px;
+    background:var(--primary);
+    color:#fff;
+    border-radius:14px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:26px;
+    box-shadow:0 4px 12px rgba(15,118,110,.25);
+  }
+  .media-icon.copper{background:linear-gradient(135deg,#b45309,#d97706);box-shadow:0 4px 12px rgba(180,83,9,.25)}
+  .media-icon.fiber{background:linear-gradient(135deg,#2563eb,#3b82f6);box-shadow:0 4px 12px rgba(37,99,235,.25)}
+  .media-icon.wireless{background:linear-gradient(135deg,#7c3aed,#a855f7);box-shadow:0 4px 12px rgba(124,58,237,.25)}
+  .media-hero .media-meta{
+    flex:1;
+    min-width:0;
+  }
+  .media-hero .media-name{
+    font-size:15px;
+    font-weight:800;
+    color:var(--primary-dark);
+    line-height:1.25;
+    margin-bottom:2px;
+  }
+  .media-hero .media-tagline{
+    font-size:12.5px;
+    color:var(--text-muted);
+    line-height:1.35;
+  }
+
+  /* Spec cards */
+  .spec-grid{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:10px;
+    margin:12px 0;
+  }
+  .spec-card{
+    background:#fff;
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:14px;
+  }
+  .spec-card h5{
+    margin:0 0 8px;
+    font-size:14px;
+    color:var(--primary-dark);
+    font-weight:700;
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  .spec-card h5::before{
+    content:"";
+    width:8px;height:8px;
+    background:var(--accent);
+    border-radius:2px;
+    transform:rotate(45deg);
+  }
+  .spec-card ul{
+    margin:0;
+    padding-left:18px;
+    font-size:13.5px;
+    color:var(--text-muted);
+  }
+  .spec-card ul li{margin-bottom:4px}
+  .spec-card ul li:last-child{margin-bottom:0}
+
+  /* Steps */
+  .steps{
+    counter-reset:step;
+    list-style:none;
+    padding:0;
+    margin:12px 0;
+  }
+  .steps li{
+    counter-increment:step;
+    position:relative;
+    padding:0 0 16px 40px;
+    font-size:14.5px;
+  }
+  .steps li::before{
+    content:counter(step);
+    position:absolute;
+    left:0;top:0;
+    width:28px;height:28px;
+    background:var(--primary);
+    color:#fff;
+    border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    font-size:13px;
+    font-weight:700;
+  }
+  .steps li:last-child{padding-bottom:0}
+
+  /* Formula */
+  .formula{
+    background:#0f172a;
+    color:#e2e8f0;
+    border-radius:12px;
+    padding:14px 16px;
+    margin:12px 0;
+    font-family:"SF Mono",Consolas,Monaco,monospace;
+    font-size:12.5px;
+    line-height:1.7;
+    overflow-x:auto;
+    -webkit-overflow-scrolling:touch;
+  }
+  .formula .hl{color:#5eead4;font-weight:700}
+  .formula .cm{color:#94a3b8}
+
+  /* VS block */
+  .vs{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:10px;
+    margin:12px 0;
+  }
+  .vs-col{
+    background:#f8fafc;
+    border-radius:12px;
+    padding:14px;
+    border-top:4px solid var(--primary);
+  }
+  .vs-col.alt{
+    border-top-color:var(--accent);
+  }
+  .vs-col.blue{
+    border-top-color:#3b82f6;
+  }
+  .vs-col.purple{
+    border-top-color:#a855f7;
+  }
+  .vs-col h5{
+    margin:0 0 8px;
+    font-size:13.5px;
+    font-weight:800;
+    color:var(--primary-dark);
+    text-transform:uppercase;
+    letter-spacing:.3px;
+  }
+  .vs-col.alt h5{color:#b45309}
+  .vs-col.blue h5{color:#1e40af}
+  .vs-col.purple h5{color:#6b21a8}
+  .vs-col ul{
+    margin:0;
+    padding-left:18px;
+    font-size:13.5px;
+    color:var(--text-muted);
+  }
+  .vs-col ul li{margin-bottom:4px}
+  .vs-col ul li:last-child{margin-bottom:0}
+
+  /* ===== VISUAL CABLE ===== */
+  .cable-visual{
+    background:#fff;
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:16px;
+    margin:12px 0;
+    text-align:center;
+  }
+  .cable-visual .cable-label{
+    font-size:12px;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:.5px;
+    color:var(--text-muted);
+    margin-bottom:12px;
+  }
+  .cable-layers{
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+    max-width:280px;
+    margin:0 auto;
+  }
+  .cable-layer{
+    padding:8px 12px;
+    border-radius:8px;
+    font-size:12px;
+    font-weight:600;
+    color:#fff;
+    position:relative;
+  }
+  .cable-layer.l1{background:#78350f;border-radius:14px 14px 8px 8px}
+  .cable-layer.l2{background:#d97706}
+  .cable-layer.l3{background:#fbbf24;color:#78350f}
+  .cable-layer.l4{background:#fef3c7;color:#78350f;border:1px dashed #d97706}
+  .cable-layer.l5{background:#92400e;border-radius:8px 8px 14px 14px}
+  .cable-layer small{
+    display:block;
+    font-size:10.5px;
+    font-weight:400;
+    opacity:.85;
+    margin-top:1px;
+  }
+  .cable-note{
+    font-size:11.5px;
+    color:var(--text-muted);
+    margin-top:12px;
+    font-style:italic;
+    line-height:1.5;
+  }
+
+  /* Fiber visual */
+  .fiber-visual{
+    background:#fff;
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:16px;
+    margin:12px 0;
+  }
+  .fiber-visual .fiber-title{
+    font-size:12px;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:.5px;
+    color:var(--text-muted);
+    margin-bottom:12px;
+    text-align:center;
+  }
+  .fiber-comp{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px;
+  }
+  .fiber-part{
+    text-align:center;
+  }
+  .fiber-part .fp-circle{
+    width:70px;height:70px;
+    border-radius:50%;
+    margin:0 auto 8px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:22px;
+    color:#fff;
+    border:3px solid #fff;
+    box-shadow:0 4px 12px rgba(15,23,42,.15);
+  }
+  .fiber-part.sm .fp-circle{background:linear-gradient(135deg,#2563eb,#3b82f6)}
+  .fiber-part.mm .fp-circle{background:linear-gradient(135deg,#7c3aed,#a855f7)}
+  .fiber-part .fp-name{
+    font-size:13px;
+    font-weight:800;
+    color:var(--text);
+    margin-bottom:2px;
+  }
+  .fiber-part .fp-desc{
+    font-size:11.5px;
+    color:var(--text-muted);
+    line-height:1.4;
+  }
+
+  /* ===== MEDIA PICKER (interactive) ===== */
+  .picker{
+    background:linear-gradient(135deg,#f0fdfa 0%,#ecfeff 100%);
+    border:1px solid #99f6e4;
+    border-radius:14px;
+    padding:16px;
+    margin:12px 0;
+  }
+  .picker-head{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom:14px;
+  }
+  .picker-icon{
+    width:36px;height:36px;
+    background:var(--primary);
+    color:#fff;
+    border-radius:10px;
+    display:flex;align-items:center;justify-content:center;
+    flex-shrink:0;
+    font-size:18px;
+  }
+  .picker-title{
+    font-size:14.5px;
+    font-weight:700;
+    color:var(--primary-dark);
+    line-height:1.3;
+  }
+  .picker-sub{
+    font-size:12px;
+    color:var(--text-muted);
+    margin-top:2px;
+  }
+  .picker-step{
+    background:#fff;
+    border-radius:10px;
+    padding:12px 14px;
+    margin-bottom:10px;
+  }
+  .picker-step:last-of-type{margin-bottom:0}
+  .picker-q{
+    font-size:13.5px;
+    font-weight:700;
+    color:var(--text);
+    margin-bottom:10px;
+    display:flex;
+    align-items:flex-start;
+    gap:8px;
+  }
+  .picker-q .qnum{
+    flex-shrink:0;
+    width:22px;height:22px;
+    background:var(--primary-light);
+    color:var(--primary-dark);
+    border-radius:6px;
+    display:flex;align-items:center;justify-content:center;
+    font-size:11.5px;
+    font-weight:800;
+  }
+  .picker-opts{
+    display:flex;
+    flex-wrap:wrap;
+    gap:6px;
+  }
+  .picker-opts button{
+    flex:1;
+    min-width:90px;
+    padding:9px 10px;
+    border-radius:8px;
+    border:1.5px solid var(--border);
+    background:#fff;
+    font-family:inherit;
+    font-size:12.5px;
+    font-weight:600;
+    color:var(--text);
+    cursor:pointer;
+    transition:all .15s;
+    line-height:1.3;
+  }
+  .picker-opts button:hover{
+    border-color:var(--primary);
+    color:var(--primary-dark);
+  }
+  .picker-opts button.active{
+    background:var(--primary);
+    border-color:var(--primary);
+    color:#fff;
+    box-shadow:0 2px 6px rgba(15,118,110,.25);
+  }
+  .picker-result{
+    background:#0f172a;
+    color:#fff;
+    border-radius:12px;
+    padding:16px;
+    margin-top:12px;
+    text-align:center;
+  }
+  .picker-result .pr-label{
+    font-size:11px;
+    color:#94a3b8;
+    text-transform:uppercase;
+    letter-spacing:.5px;
+    font-weight:700;
+    margin-bottom:6px;
+  }
+  .picker-result .pr-name{
+    font-size:20px;
+    font-weight:800;
+    color:#5eead4;
+    margin-bottom:6px;
+    line-height:1.2;
+  }
+  .picker-result .pr-desc{
+    font-size:12.5px;
+    color:#cbd5e1;
+    line-height:1.5;
+  }
+
+  /* ===== COMPARISON CHART (bar) ===== */
+  .bar-chart{
+    background:#fff;
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:16px;
+    margin:12px 0;
+  }
+  .bar-chart .chart-title{
+    font-size:12px;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:.4px;
+    color:var(--text-muted);
+    margin-bottom:14px;
+    text-align:center;
+  }
+  .bar-row{
+    margin-bottom:12px;
+  }
+  .bar-row:last-child{margin-bottom:0}
+  .bar-row .bar-label{
+    font-size:12.5px;
+    font-weight:700;
+    color:var(--text);
+    margin-bottom:4px;
+    display:flex;
+    justify-content:space-between;
+    align-items:baseline;
+  }
+  .bar-row .bar-label .bar-val{
+    font-size:11.5px;
+    color:var(--text-muted);
+    font-weight:600;
+    font-family:"SF Mono",Consolas,monospace;
+  }
+  .bar-track{
+    background:#f1f5f9;
+    border-radius:6px;
+    overflow:hidden;
+    height:14px;
+    position:relative;
+  }
+  .bar-fill{
+    height:100%;
+    border-radius:6px;
+    transition:width .6s ease;
+  }
+  .bar-fill.copper{background:linear-gradient(90deg,#d97706,#f59e0b)}
+  .bar-fill.fiber{background:linear-gradient(90deg,#2563eb,#3b82f6)}
+  .bar-fill.wireless{background:linear-gradient(90deg,#7c3aed,#a855f7)}
+
+  /* Case box */
+  .case-box{
+    background:linear-gradient(135deg,#f0fdfa 0%,#e0f2fe 100%);
+    border-radius:12px;
+    padding:14px 16px;
+    margin:12px 0;
+    border:1px solid #99f6e4;
+  }
+  .case-box .case-label{
+    font-size:11px;
+    font-weight:700;
+    letter-spacing:.5px;
+    text-transform:uppercase;
+    color:var(--primary-dark);
+    margin-bottom:6px;
+    display:block;
+  }
+  .case-box p{font-size:14px;margin:0 0 8px}
+  .case-box .question{
+    background:#fff;
+    border-radius:8px;
+    padding:10px 12px;
+    font-size:13.5px;
+    margin-top:8px;
+    border-left:3px solid var(--accent);
+  }
+  .case-box .question strong{color:var(--primary-dark)}
+
+  /* Takeaway */
+  .takeaway{
+    background:#0f172a;
+    color:#fff;
+    border-radius:var(--radius);
+    padding:20px;
+    margin:24px 0 0;
+  }
+  .takeaway h3{
+    margin:0 0 12px;
+    font-size:15px;
+    color:#5eead4;
+    text-transform:uppercase;
+    letter-spacing:.5px;
+  }
+  .takeaway ol{
+    margin:0;
+    padding-left:22px;
+    font-size:14.5px;
+  }
+  .takeaway li{margin-bottom:8px;color:#e2e8f0}
+  .takeaway li:last-child{margin-bottom:0}
+
+  footer{
+    text-align:center;
+    padding:24px 16px 40px;
+    font-size:12.5px;
+    color:var(--text-muted);
+  }
+  footer strong{color:var(--primary-dark)}
+
+  .back-top{
+    position:fixed;
+    right:16px;
+    bottom:calc(16px + env(safe-area-inset-bottom));
+    width:44px;height:44px;
+    border-radius:50%;
+    background:var(--primary);
+    color:#fff;
+    border:none;
+    box-shadow:0 4px 12px rgba(15,118,110,.35);
+    cursor:pointer;
+    display:none;
+    align-items:center;justify-content:center;
+    z-index:50;
+    transition:transform .15s,opacity .2s;
+  }
+  .back-top:active{transform:scale(.92)}
+  .back-top.show{display:flex}
+
+  @media (min-width:600px){
+    header.hero{padding:36px 28px 40px}
+    header.hero h1{font-size:26px}
+    .tp-box{margin:-20px 24px 24px}
+    nav.toc{margin:0 24px 28px}
+    main{padding:0 24px 60px}
+    .spec-grid{grid-template-columns:1fr 1fr}
+    .vs{grid-template-columns:1fr 1fr}
+    .content{font-size:15.5px}
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <span class="badge">Modul 5 · Kelas XI TKJ</span>
+  <h1>Media Transmisi Jaringan</h1>
+  <p>Jalan tempat data mengalir — pilih yang tepat, jaringan lancar.</p>
+</header>
+
+<div class="tp-box">
+  <span class="label">Tujuan Pembelajaran</span>
+  <p>Memahami kebutuhan teknis pengguna dan peralatan jaringan dengan teknologi yang sesuai.</p>
+</div>
+
+<nav class="toc">
+  <h2>Daftar Isi</h2>
+  <ol>
+    <li><a href="#m5-1">Konsep Media Transmisi</a></li>
+    <li><a href="#m5-2">Kabel Twisted Pair</a></li>
+    <li><a href="#m5-3">UTP dan STP</a></li>
+    <li><a href="#m5-4">Kategori Kabel Ethernet</a></li>
+    <li><a href="#m5-5">Fiber Optic</a></li>
+    <li><a href="#m5-6">Single-mode dan Multimode</a></li>
+    <li><a href="#m5-7">Wireless</a></li>
+    <li><a href="#m5-8">Perbandingan Tembaga, Fiber, Wireless</a></li>
+    <li><a href="#m5-9">Jarak & Karakteristik Media</a></li>
+    <li><a href="#m5-10">Pemilihan Media Berdasarkan Kebutuhan</a></li>
+  </ol>
+</nav>
+
+<main>
+
+  <!-- 5.1 -->
+  <section id="m5-1">
+    <details open>
+      <summary>
+        <span class="num">5.1</span>
+        <span class="summary-text">Konsep Media Transmisi</span>
+        <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </summary>
+      <div class="content">
+        <p><strong>Media transmisi</strong> adalah "jalan" yang dilalui data dari satu perangkat ke perangkat lain. Tanpa media, komputer hanyalah kotak yang tidak bisa bicara dengan komputer lain.</p>
+
+        <div class="callout info">
+          <span class="title">Analoginya</span>
+          <p style="margin:0">Kalau data adalah kendaraan, media transmisi adalah jalannya. Jalan tol (fiber) cepat & lancar, jalan kampung (UTP) terbatas jaraknya, dan jalan udara (wireless) fleksibel tapi bisa "macet" kalau banyak yang pakai.</p>
+        </div>
+
+        <h4>Dua Kategori Besar</h4>
+        <div class="vs">
+          <div class="vs-col">
+            <h5>Guided (Terarah)</h5>
+            <ul>
+              <li>Data melewati jalur fisik</li>
+              <li>Sinyal "dipandu" oleh media</li>
+              <li>Contoh: kabel UTP, fiber optik</li>
+              <li>Lebih stabil & aman</li>
+            </ul>
+          </div>
+          <div class="vs-col purple">
+            <h5>Unguided (Tak Terarah)</h5>
+            <ul>
+              <li>Data menyebar lewat udara</li>
+              <li>Tidak ada jalur fisik</li>
+              <li>Contoh: Wi-Fi, Bluetooth</li>
+              <li>Fleksibel tapi rentan gangguan</li>
+            </ul>
+          </div>
+        </div>
+
+        <h4>Tiga Jenis Media Utama</h4>
+        <div class="spec-grid">
+          <div class="spec-card">
+            <h5>Kabel Tembaga</h5>
+            <ul>
+              <li>UTP, STP, Coaxial</li>
+              <li>Murah, mudah dipasang</li>
+              <li>Jarak terbatas (max 100 m)</li>
+              <li>Rentan interferensi elektromagnetik</li>
+            </ul>
+          </div>
+          <div class="spec-card">
+            <h5>Fiber Optik</h5>
+            <ul>
+              <li>Menggunakan cahaya, bukan listrik</li>
+              <li>Jarak sangat jauh (km)</li>
+              <li>Kecepatan sangat tinggi</li>
+              <li>Mahal & butuh keahlian khusus</li>
+            </ul>
+          </div>
+          <div class="spec-card">
+            <h5>Wireless</h5>
+            <ul>
+              <li>Gelombang radio</li>
+              <li>Tidak butuh kabel</li>
+              <li>Cocok untuk mobilitas</li>
+              <li>Rentan interferensi & gangguan fisik</li>
+            </ul>
+          </div>
+        </div>
+
+        <h4>Faktor Pemilihan Media</h4>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Faktor</th><th>Pengaruh</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>Jarak</strong></td><td>Semakin jauh, semakin butuh media "berkualitas"</td></tr>
+              <tr><td><strong>Bandwidth</strong></td><td>Kebutuhan data menentukan jenis media</td></tr>
+              <tr><td><strong>Lingkungan</strong></td><td>Area industri butuh tahan interferensi</td></tr>
+              <tr><td><strong>Biaya</strong></td><td>Budget menentukan opsi realistis</td></tr>
+              <tr><td><strong>Mobilitas</strong></td><td>Perangkat berpindah = butuh wireless</td></tr>
+              <tr><td><strong>Keamanan</strong></td><td>Data sensitif butuh media yang lebih aman</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="callout tip">
+          <span class="title">Prinsip</span>
+          <p style="margin:0">Pilih media paling <strong>sederhana</strong> yang bisa memenuhi kebutuhan. Jangan pakai fiber kalau UTP cukup. Jangan pakai wireless kalau kabel lebih baik.</p>
+        </div>
+      </div>
+    </details>
+  </section>
+
+  <!-- 5.2 -->
+  <section id="m5-2">
+    <details>
+      <summary>
+        <span class="num">5.2</span>
+        <span class="summary-text">Kabel Twisted Pair</span>
+        <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </summary>
+      <div class="content">
+        <div class="media-hero">
+          <div class="media-icon copper">🧵</div>
+          <div class="media-meta">
+            <div class="media-name">Kabel Twisted Pair</div>
+            <div class="media-tagline">Kabel tembaga dengan pasangan kawat yang dipilin</div>
+          </div>
+        </div>
+
+        <p><strong>Twisted pair</strong> adalah kabel yang terdiri dari 4 pasang kawat tembaga (8 kabel), di mana setiap pasang dipilin (twisted) untuk mengurangi interferensi elektromagnetik.</p>
+
+        <h4>Kenapa Harus Dipilin?</h4>
+        <p>Dua kawat yang dipilin akan saling "membatalkan" interferensi dari luar. Semakin rapat pilinannya, semakin tinggi kategori kabel dan semakin tahan terhadap gangguan.</p>
+
+        <h4>Struktur Kabel UTP</h4>
+        <div class="cable-visual">
+          <div class="cable-label">Cross-section UTP</div>
+          <div class="cable-layers">
+            <div class="cable-layer l1">Jaket Luar (PVC)<small>Pelindung fisik kabel</small></div>
+            <div class="cable-layer l2">Aluminium Foil<small>Beberapa kabel saja</small></div>
+            <div class="cable-layer l3">4 Pasang Kawat Berpilin<small>Total 8 kabel tembaga</small></div>
+            <div class="cable-layer l4">Kawat Tembaga (Conductor)<small>Mengalirkan sinyal listrik</small></div>
+            <div class="cable-layer l5">Isolator Per Kawat<small>Kode warna: O, P, H, B</small></div>
+          </div>
+          <div class="cable-note">Kode warna: Orange, Putih-Orange, Hijau, Putih-Hijau, Biru, Putih-Biru, Coklat, Putih-Coklat.</div>
+        </div>
+
+        <h4>Jenis Twisted Pair</h4>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Jenis</th><th>Deskripsi</th><th>Umum di</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>UTP</strong></td>
+                <td>Unshielded Twisted Pair — tanpa pelindung</td>
+                <td>Kantor, sekolah (paling umum)</td>
+              </tr>
+              <tr>
+                <td><strong>STP</strong></td>
+                <td>Shielded Twisted Pair — ada foil pelindung</td>
+                <td>Lingkungan industri, area ber-interferensi</td>
+              </tr>
+              <tr>
+                <td><strong>FTP</strong></td>
+                <td>Foiled Twisted Pair — foil di luar semua pasang</td>
+                <td>Kantor dengan interferensi sedang</td>
+              </tr>
+              <tr>
+                <td><strong>S/FTP</strong></td>
+                <td>Screen + Foil per pasang — perlindungan maksimal</td>
+                <td>Data center, industri berat</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="callout warn">
+          <span class="title">Batas 100 Meter</span>
+          <p style="margin:0">Kabel twisted pair memiliki batas maksimum <strong>100 meter</strong> per segmen. Lebih dari itu, sinyal melemah dan data rusak. Untuk jarak lebih jauh, gunakan <strong>switch perantara</strong> atau ganti ke <strong>fiber optik</strong>.</p>
+        </div>
+      </div>
+    </details>
+  </section>
+
+  <!-- 5.3 -->
+  <section id="m5-3">
+    <details>
+      <summary>
+        <span class="num">5.3</span>
+        <span class="summary-text">UTP dan STP</span>
+        <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </summary>
+      <div class="content">
+        <p>Dua jenis twisted pair yang paling sering dibandingkan adalah <strong>UTP</strong> dan <strong>STP</strong>. Perbedaan utamanya ada pada <em>pelindung elektromagnetik</em>.</p>
+
+        <div class="vs">
+          <div class="vs-col">
+            <h5>UTP (Unshielded)</h5>
+            <ul>
+              <li>Tanpa pelindung foil</li>
+              <li>Lebih murah</li>
+              <li>Lebih fleksibel & tipis</li>
+              <li>Rentan interferensi</li>
+              <li>Cocok: kantor, sekolah, rumah</li>
+            </ul>
+          </div>
+          <div class="vs-col alt">
+            <h5>STP (Shielded)</h5>
+            <ul>
+              <li>Ada foil pelindung per pasang</li>
+              <li>Lebih mahal</li>
+              <li>Lebih kaku & tebal</li>
+              <li>Tahan interferensi elektromagnetik</li>
+              <li>Cocok: industri, area dengan motor listrik</li>
+            </ul>
+          </div>
+        </div>
+
+        <h4>Perbandingan Detail</h4>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Aspek</th><th>UTP</th><th>STP</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Pelindung</td><td>Tidak ada</td><td>Foil per pasang</td></tr>
+              <tr><td>Harga</td><td>Lebih murah</td><td>30–100% lebih mahal</td></tr>
+              <tr><td>Diameter</td><td>Lebih tipis</td><td>Lebih tebal</td></tr>
+              <tr><td>Fleksibilitas</td><td>Lebih fleksibel</td><td>Kaku</td></tr>
+              <tr><td>Instalasi</td><td>Lebih mudah</td><td>Butuh grounding yang benar</td></tr>
+              <tr><td>Ketahanan interferensi</td><td>Rendah–sedang</td><td>Tinggi</td></tr>
+              <tr><td>Jarak maksimum</td><td>100 m</td><td>100 m</td></tr>
+              <tr><td>Kecepatan</td><td>Sama dengan STP</td><td>Sama dengan UTP</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="callout warn">
+          <span class="title">Jangan Sembarangan Pakai STP</span>
+          <p style="margin:0">STP <strong>harus</strong> digrounding dengan benar. Kalau tidak, foil pelindungnya justru jadi "antena" yang menangkap gangguan dan mengganggu sinyal. Untuk kebanyakan kantor & sekolah, <strong>UTP sudah cukup</strong>.</p>
+        </div>
+
+        <h4>Kapan Pilih STP?</h4>
+        <ul>
+          <li>Area pabrik dengan banyak motor listrik.</li>
+          <li>Dekat kabel listrik tegangan tinggi.</li>
+          <li>Ruang server dengan banyak perangkat.</li>
+          <li>Lingkungan dengan interferensi elektromagnetik tinggi (EMI).</li>
+        </ul>
+      </div>
+    </details>
+  </section>
+
+  <!-- 5.4 -->
+  <section id="m5-4">
+    <details>
+      <summary>
+        <span class="num">5.4</span>
+        <span class="summary-text">Kategori Kabel Ethernet</span>
+        <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </summary>
+      <div class="content">
+        <p>Kabel twisted pair dibedakan berdasarkan <strong>kategori (Cat)</strong> — semakin tinggi kategorinya, semakin tinggi kecepatan & frekuensi yang didukung.</p>
+
+        <h4>Tabel Kategori Kabel</h4>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Kategori</th><th>Kecepatan</th><th>Frekuensi</th><th>Jarak</th><th>Status</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Cat 3</strong></td>
+                <td>10 Mbps</td>
+                <td>16 MHz</td>
+                <td>100 m</td>
+                <td><span class="pill high">Legacy</span></td>
+              </tr>
+              <tr>
+                <td><strong>Cat 5</strong></td>
+                <td>100 Mbps</td>
+                <td>100 MHz</td>
+                <td>100 m</td>
+                <td><span class="pill high">Legacy</span></td>
+              </tr>
+              <tr>
+                <td><strong>Cat 5e</strong></td>
+                <td>1 Gbps</td>
+                <td>100 MHz</td>
+                <td>100 m</td>
+                <td><span class="pill med">Masih Umum</span></td>
+              </tr>
+              <tr>
+                <td><strong>Cat 6</strong></td>
+                <td>1 Gbps / 10 Gbps</td>
+                <td>250 MHz</td>
+                <td>100 m (1G)<br>55 m (10G)</td>
+                <td><span class="pill low">Standar Sekarang</span></td>
+              </tr>
+              <tr>
+                <td><strong>Cat 6a</strong></td>
+                <td>10 Gbps</td>
+                <td>500 MHz</td>
+                <td>100 m</td>
+                <td><span class="pill low">Direkomendasikan</span></td>
+              </tr>
+              <tr>
+                <td><strong>Cat 7</strong></td>
+                <td>10 Gbps</td>
+                <td>600 MHz</td>
+                <td>100 m</td>
+                <td><span class="pill blue">Data Center</span></td>
+              </tr>
+              <tr>
+                <td><strong>Cat 8</strong></td>
+                <td>25–40 Gbps</td>
+                <td>2000 MHz</td>
+                <td>30 m</td>
+                <td><span class="pill blue">Data Center</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h4>Kapan Pilih Kategori Apa?</h4>
+        <div class="spec-grid">
+          <div class="spec-card">
+            <h5>Cat 5e</h5>
+            <ul>
+              <li>Jaringan rumah sederhana</li>
+              <li>Kantor kecil dengan kebutuhan dasar</li>
+              <li>Anggaran ketat</li>
+              <li>Sudah mulai ditinggalkan</li>
+            </ul>
+          </div>
+          <div class="spec-card">
+            <h5>Cat 6</h5>
+            <ul>
+              <li>Standar minimum sekarang</li>
+              <li>Kantor, sekolah, rumah baru</li>
+              <li>1 Gbps jarak 100 m</li>
+              <li>10 Gbps jarak 55 m</li>
+            </ul>
+          </div>
+          <div class="spec-card">
+            <h5>Cat 6a</h5>
+            <ul>
+              <li>Recommended untuk installasi baru</li>
+              <li>10 Gbps jarak penuh 100 m</li>
+              <li>Future-proof untuk 5–10 tahun</li>
+              <li>Lebih tebal & kaku</li>
+            </ul>
+          </div>
+          <div class="spec-card">
+            <h5>Cat 7 / Cat 8</h5>
+            <ul>
+              <li>Data center</li>
+              <li>Backbone internal rack</li>
+              <li>Koneksi antar server</li>
+              <li>Butuh konektor khusus (bukan RJ45)</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="callout tip">
+          <span class="title">Rekomendasi</span>
+          <p style="margin:0">Untuk instalasi baru di sekolah atau kantor, pilih <strong>Cat 6</strong> minimal. Kalau budget memungkinkan, pilih <strong>Cat 6a</strong> — selisih harganya tidak terlalu besar tapi future-proof sampai 10 Gbps.</p>
+        </div>
+
+        <h4>Jangan Tertipu Label</h4>
+        <ul>
+          <li>Cek tulisan di jaket kabel — pastikan tertulis "Cat 6" atau "Cat 6a".</li>
+          <li>Banyak kabel murah mengklaim Cat 6 tapi kualitasnya Cat 5e.</li>
+          <li>Beli dari merek terpercaya (Belden, Panduit, AMP, dll.) atau distributor resmi.</li>
+          <li>Cek apakah kabel <strong>solid copper</strong> atau <strong>CCA</strong> (Copper Clad Aluminium) — CCA lebih murah tapi tidak sebaik copper murni.</li>
+        </ul>
+      </div>
+    </details>
+  </section>
+
+  <!-- 5.5 -->
+  <section id="m5-5">
+    <details>
+      <summary>
+        <span class="num">5.5</span>
+        <span class="summary-text">Fiber Optic</span>
+        <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </summary>
+      <div class="content">
+        <div class="media-hero">
+          <div class="media-icon fiber">💫</div>
+          <div class="media-meta">
+            <div class="media-name">Fiber Optic</div>
+            <div class="media-tagline">Menggunakan cahaya — bukan listrik — untuk mengirim data</div>
+          </div>
+        </div>
+
+        <p><strong>Fiber optik</strong> adalah kabel yang terbuat dari serat kaca atau plastik sangat halus, yang mengirimkan data dalam bentuk <strong>pulsa cahaya</strong>. Karena menggunakan cahaya, fiber optik <strong>tidak terpengaruh interferensi elektromagnetik</strong>.</p>
+
+        <h4>Struktur Fiber Optik</h4>
+        <div class="spec-grid">
+          <div class="spec-card">
+            <h5>Core (Inti)</h5>
+            <ul>
+              <li>Bagian terdalam</li>
+              <li>Terbuat dari kaca sangat murni</li>
+              <li>Tempat cahaya mengalir</li>
+              <li>Diameter 8–62.5 mikron</li>
+            </ul>
+          </div>
+          <div class="spec-card">
+            <h5>Cladding</h5>
+            <ul>
+              <li>Lapisan pembungkus core</li>
+              <li>Memantulkan cahaya ke dalam core</li>
+              <li>Indeks bias lebih rendah dari core</li>
+            </ul>
+          </div>
+          <div class="spec-card">
+            <h5>Coating (Buffer)</h5>
+            <ul>
+              <li>Melindungi core & cladding</li>
+              <li>Terbuat dari plastik</li>
+              <li>Mencegah kerusakan fisik</li>
+            </ul>
+          </div>
+          <div class="spec-card">
+            <h5>Jacket (Jaket Luar)</h5>
+            <ul>
+              <li>Pelindung terluar</li>
+              <li>Bisa berlapis-lapis</li>
+              <li>Kode warna untuk identifikasi</li>
+            </ul>
+          </div>
+        </div>
+
+        <h4>Keunggulan Fiber Optik</h4>
+        <ul>
+          <li><strong>Bandwidth sangat besar</strong> — bisa ratusan Gbps.</li>
+          <li><strong>Jarak sangat jauh</strong> — puluhan km tanpa repeater.</li>
+          <li><strong>Imun terhadap interferensi</strong> — tidak terpengaruh motor listrik, petir, dll.</li>
+          <li><strong>Aman</strong> — sangat sulit disadap tanpa terdeteksi.</li>
+          <li><strong>Tidak ada kebocoran sinyal</strong> — tidak memancarkan sinyal keluar kabel.</li>
+          <li><strong>Ringan & tipis</strong> — hemat ruang.</li>
+        </ul>
+
+        <h4>Kekurangan Fiber Optik</h4>
+        <ul>
+          <li><strong>Harga lebih mahal</strong> — kabel, konektor, dan alat khusus.</li>
+          <li><strong>Sulit dipasang</strong> — butuh keahlian khusus (fusion splicer, OTDR).</li>
+          <li><strong>Rentan tekukan</strong> — kalau ditekuk terlalu tajam, bisa pecah.</li>
+          <li><strong>Reparasi lebih rumit</strong> — butuh alat & teknisi khusus.</li>
+        </ul>
+
+        <div class="callout info">
+          <span class="title">Kapan Pakai Fiber?</span>
+          <p style="margin:0">Pakai fiber jika:<br>
+          • Jarak <strong>lebih dari 100 m</strong><br>
+          • Butuh <strong>bandwidth sangat tinggi</strong> (10 Gbps+ ke atas)<br>
+          • Melewati area dengan <strong>interferensi elektromagnetik tinggi</strong><br>
+          • Backbone antar gedung, antar lantai, atau antar rack server</p>
+        </div>
+      </div>
+    </details>
+  </section>
+
+  <!-- 5.6 -->
+  <section id="m5-6">
+    <details>
+          <summary>
+        <span class="num">5.6</span>
+        <span class="summary-text">Single-mode dan Multimode</span>
+        <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </summary>
+      <div class="content">
+        <p>Fiber optik dibedakan menjadi dua jenis utama berdasarkan <strong>diameter core</strong> dan <strong>cara cahaya menjalar</strong> di dalamnya.</p>
+
+        <div class="fiber-visual">
+          <div class="fiber-title">Perbandingan Visual</div>
+          <div class="fiber-comp">
+            <div class="fiber-part sm">
+              <div class="fp-circle">1</div>
+              <div class="fp-name">Single-mode</div>
+              <div class="fp-desc">Core sangat kecil<br>Satu jalur cahaya<br>Jarak puluhan km</div>
+            </div>
+            <div class="fiber-part mm">
+              <div class="fp-circle">≋</div>
+              <div class="fp-name">Multimode</div>
+              <div class="fp-desc">Core lebih besar<br>Banyak jalur cahaya<br>Jarak hingga 550 m</div>
+            </div>
+          </div>
+        </div>
+
+        <h4>Perbandingan Detail</h4>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Aspek</th><th>Single-mode (SM)</th><th>Multimode (MM)</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Diameter core</td><td>8–10 µm</td><td>50 atau 62.5 µm</td></tr>
+              <tr><td>Sumber cahaya</td><td>Laser</td><td>LED / VCSEL</td></tr>
+              <tr><td>Jarak maksimum</td><td>10–100 km+</td><td>550 m (10G), 2 km (1G)</td></tr>
+              <tr><td>Bandwidth</td><td>Sangat tinggi</td><td>Tinggi</td></tr>
+              <tr><td>Warna jaket</td><td>Kuning</td><td>Orange / Aqua</td></tr>
+              <tr><td>Biaya kabel</td><td>Lebih murah</td><td>Lebih mahal</td></tr>
+              <tr><td>Biaya transceiver</td><td>Sangat mahal (laser)</td><td>Lebih murah (LED)</td></tr>
+              <tr><td>Kesulitan instalasi</td><td>Tinggi (presisi)</td><td>Lebih mudah</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h4>Kapan Pilih SM vs MM?</h4>
+        <div class="vs">
+          <div class="vs-col blue">
+            <h5>Single-mode (SM)</h5>
+            <ul>
+              <li>Jarak antar kota (km)</li>
+              <li>Backbone utama ISP</li>
+              <li>Koneksi antar gedung berjauhan</li>
+              <li>Kabel antar wilayah</li>
+              <li>Budget jangka panjang</li>
+            </ul>
+          </div>
+          <div class="vs-col purple">
+            <h5>Multimode (MM)</h5>
+            <ul>
+              <li>Data center internal</li>
+              <li>Backbone antar rack</li>
+              <li>Antar gedung jarak sedang (&lt; 500 m)</li>
+              <li>LAN kampus</li>
+              <li>Budget terbatas</li>
+            </ul>
+          </div>
+        </div>
+
+        <h4>Warna Jaket Fiber</h4>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Warna</th><th>Jenis</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>🟡 Kuning</td><td>Single-mode</td></tr>
+              <tr><td>🟠 Orange</td><td>Multimode OM1 / OM2</td></tr>
+              <tr><td>🩵 Aqua</td><td>Multimode OM3 / OM4</td></tr>
+              <tr><td>🟢 Lime (hijau muda)</td><td>Multimode OM5</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="callout tip">
+          <span class="title">Tips</span>
+          <p style="margin:0">Untuk backbone antar gedung sekolah: <strong>multimode OM3/OM4</strong> sudah sangat cukup. Untuk koneksi antar kota atau antar kampus besar, pilih <strong>single-mode</strong>.</p>
+        </div>
+
+        <div class="callout warn">
+          <span class="title">Kompatibilitas</span>
+          <p style="margin:0">Single-mode & multimode <strong>tidak bisa dicampur</strong>. Transceiver untuk SM tidak akan bekerja di kabel MM, dan sebaliknya. Pastikan konsisten dari ujung ke ujung.</p>
+        </div>
+      </div>
+    </details>
+  </section>
+
+  <!-- 5.7 -->
+  <section id="m5-7">
+    <details>
+      <summary>
+        <span class="num">5.7</span>
+        <span class="summary-text">Wireless</span>
+        <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </summary>
+      <div class="content">
+        <div class="media-hero">
+          <div class="media-icon wireless">📡</div>
+          <div class="media-meta">
+            <div class="media-name">Wireless</div>
+            <div class="media-tagline">Menggunakan gelombang radio — tanpa kabel</div>
+          </div>
+        </div>
+
+        <p><strong>Wireless</strong> mengirim data melalui gelombang elektromagnetik di udara. Tidak ada media fisik — yang penting adalah jarak & kondisi lingkungan.</p>
+
+        <h4>Jenis Wireless</h4>
+        <div class="spec-grid">
+          <div class="spec-card">
+            <h5>Wi-Fi (WLAN)</h5>
+            <ul>
+              <li>Standar: 802.11 a/b/g/n/ac/ax/be</li>
+              <li>Frekuensi: 2.4 / 5 / 6 GHz</li>
+              <li>Jarak: 10–100 m</li>
+              <li>Untuk: laptop, HP, tablet</li>
+            </ul>
+          </div>
+          <div class="spec-card">
+            <h5>Bluetooth</h5>
+            <ul>
+              <li>Jarak pendek: 1–10 m</li>
+              <li>Kecepatan rendah</li>
+              <li>Untuk: headset, mouse, keyboard</li>
+              <li>Bukan untuk jaringan utama</li>
+            </ul>
+          </div>
+          <div class="spec-card">
+            <h5>WiMAX / Fixed Wireless</h5>
+            <ul>
+              <li>Jarak: km</li>
+              <li>Untuk area luas</li>
+              <li>Bisa jadi ISP alternatif</li>
+              <li>Umum di area tanpa fiber</li>
+            </ul>
+          </div>
+          <div class="spec-card">
+            <h5>Seluler (4G/5G)</h5>
+            <ul>
+              <li>Jarak: kilometer</li>
+              <li>Kecepatan tinggi</li>
+              <li>Untuk akses mobile</li>
+              <li>Bisa jadi backup internet</li>
+            </ul>
+          </div>
+        </div>
+
+        <h4>Keunggulan Wireless</h4>
+        <ul>
+          <li><strong>Tanpa kabel</strong> — instalasi cepat & murah.</li>
+          <li><strong>Mobilitas</strong> — perangkat bisa berpindah.</li>
+          <li><strong>Fleksibel</strong> — bisa di tempat yang sulit ditarik kabel.</li>
+          <li><strong>Skalabilitas</strong> — tambah pengguna tanpa tambah kabel.</li>
+        </ul>
+
+        <h4>Kekurangan Wireless</h4>
+        <ul>
+          <li><strong>Interferensi</strong> — dari perangkat lain, microwave, Bluetooth.</li>
+          <li><strong>Keamanan</strong> — sinyal bisa ditangkap dari luar.</li>
+          <li><strong>Kecepatan tidak stabil</strong> — turun saat banyak pengguna.</li>
+          <li><strong>Terpengaruh dinding</strong> — beton & logam meredam sinyal.</li>
+          <li><strong>Half-duplex</strong> — tidak bisa kirim & terima bersamaan.</li>
+        </ul>
+
+        <div class="callout warn">
+          <span class="title">Jangan Semua Wireless</span>
+          <p style="margin:0">Untuk perangkat <strong>tetap</strong> dengan kebutuhan <strong>bandwidth tinggi</strong> (PC, server, CCTV, printer), selalu pakai <strong>kabel</strong>. Wireless untuk perangkat yang memang butuh mobilitas.</p>
+        </div>
+      </div>
+    </details>
+  </section>
+
+  <!-- 5.8 -->
+  <section id="m5-8">
+    <details>
+      <summary>
+        <span class="num">5.8</span>
+        <span class="summary-text">Perbandingan Tembaga, Fiber, Wireless</span>
+        <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </summary>
+      <div class="content">
+        <p>Inilah perbandingan tiga media utama — hafalkan polanya, bukan angkanya.</p>
+
+        <h4>Perbandingan Cepat</h4>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Aspek</th><th>Tembaga</th><th>Fiber</th><th>Wireless</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Kecepatan</td><td>100 Mbps–10 Gbps</td><td>1 Gbps–100 Gbps</td><td>100 Mbps–9.6 Gbps</td></tr>
+              <tr><td>Jarak</td><td>100 m</td><td>10 km+</td><td>10–100 m</td></tr>
+              <tr><td>Interferensi</td><td>Rentan</td><td>Imun</td><td>Rentan</td></tr>
+              <tr><td>Keamanan</td><td>Sedang</td><td>Sangat tinggi</td><td>Rendah–sedang</td></tr>
+              <tr><td>Harga kabel</td><td>Murah</td><td>Mahal</td><td>—</td></tr>
+              <tr><td>Harga instalasi</td><td>Sedang</td><td>Mahal</td><td>Sangat murah</td></tr>
+              <tr><td>Mobilitas</td><td>Tidak</td><td>Tidak</td><td>Ya</td></tr>
+              <tr><td>Kerumitan</td><td>Rendah</td><td>Tinggi</td><td>Sedang</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h4>Visual Kecepatan Maksimum</h4>
+        <div class="bar-chart">
+          <div class="chart-title">Kecepatan Maksimum Teoretis</div>
+
+          <div class="bar-row">
+            <div class="bar-label">
+              <span>Tembaga (Cat 6a)</span>
+              <span class="bar-val">10 Gbps</span>
+            </div>
+            <div class="bar-track">
+              <div class="bar-fill copper" style="width:10%"></div>
+            </div>
+          </div>
+
+          <div class="bar-row">
+            <div class="bar-label">
+              <span>Wireless (Wi-Fi 7)</span>
+              <span class="bar-val">46 Gbps</span>
+            </div>
+            <div class="bar-track">
+              <div class="bar-fill wireless" style="width:46%"></div>
+            </div>
+          </div>
+
+          <div class="bar-row">
+            <div class="bar-label">
+              <span>Fiber Optic (SM)</span>
+              <span class="bar-val">100 Gbps+</span>
+            </div>
+            <div class="bar-track">
+              <div class="bar-fill fiber" style="width:100%"></div>
+            </div>
+          </div>
+        </div>
+
+        <h4>Visual Jarak Maksimum</h4>
+        <div class="bar-chart">
+          <div class="chart-title">Jarak Maksimum (logaritmik)</div>
+
+          <div class="bar-row">
+            <div class="bar-label">
+              <span>Wireless</span>
+              <span class="bar-val">~100 m</span>
+            </div>
+            <div class="bar-track">
+              <div class="bar-fill wireless" style="width:8%"></div>
+            </div>
+          </div>
+
+          <div class="bar-row">
+            <div class="bar-label">
+              <span>Tembaga (UTP)</span>
+              <span class="bar-val">100 m</span>
+            </div>
+            <div class="bar-track">
+              <div class="bar-fill copper" style="width:8%"></div>
+            </div>
+          </div>
+
+          <div class="bar-row">
+            <div class="bar-label">
+              <span>Fiber Optic</span>
+              <span class="bar-val">10–100 km+</span>
+            </div>
+            <div class="bar-track">
+              <div class="bar-fill fiber" style="width:100%"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout info">
+          <span class="title">Ringkasan Cepat</span>
+          <p style="margin:0">
+            • <strong>Kabel tembaga</strong> — untuk jarak pendek, murah, standar LAN.<br>
+            • <strong>Fiber optik</strong> — untuk jarak jauh & bandwidth tinggi.<br>
+            • <strong>Wireless</strong> — untuk mobilitas & area tanpa kabel.
+          </p>
+        </div>
+      </div>
+    </details>
+  </section>
+
+  <!-- 5.9 -->
+  <section id="m5-9">
+    <details>
+      <summary>
+        <span class="num">5.9</span>
+        <span class="summary-text">Jarak & Karakteristik Media Transmisi</span>
+        <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </summary>
+      <div class="content">
+        <p>Jarak adalah <strong>faktor paling menentukan</strong> dalam pemilihan media. Melebihi batas jarak = data rusak atau hilang.</p>
+
+        <h4>Tabel Jarak Maksimum</h4>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Media</th><th>Jarak Maks</th><th>Kecepatan</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>UTP Cat 5e</td><td>100 m</td><td>1 Gbps</td></tr>
+              <tr><td>UTP Cat 6</td><td>100 m</td><td>1 Gbps</td></tr>
+              <tr><td>UTP Cat 6 (10G)</td><td>55 m</td><td>10 Gbps</td></tr>
+              <tr><td>UTP Cat 6a</td><td>100 m</td><td>10 Gbps</td></tr>
+              <tr><td>Fiber MM OM3</td><td>300 m</td><td>10 Gbps</td></tr>
+              <tr><td>Fiber MM OM4</td><td>550 m</td><td>10 Gbps</td></tr>
+              <tr><td>Fiber SM</td><td>10–100 km</td><td>10–100 Gbps</td></tr>
+              <tr><td>Wi-Fi 6 (5 GHz)</td><td>~30 m indoor</td><td>1–2 Gbps</td></tr>
+              <tr><td>Wi-Fi 6 (2.4 GHz)</td><td>~50 m indoor</td><td>~300 Mbps</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h4>Karakteristik per Media</h4>
+        <div class="spec-grid">
+          <div class="spec-card">
+            <h5>Tembaga (UTP)</h5>
+            <ul>
+              <li>Jarak terbatas 100 m</li>
+              <li>Sinyal melemah seiring jarak</li>
+              <li>Rentan interferensi elektromagnetik</li>
+              <li>Kecepatan stabil & murah</li>
+            </ul>
+          </div>
+          <div class="spec-card">
+            <h5>Fiber Optik</h5>
+            <ul>
+              <li>Jarak sangat jauh (km)</li>
+              <li>Kecepatan stabil sepanjang jarak</li>
+              <li>Tidak terpengaruh interferensi</li>
+              <li>Butuh alat khusus untuk splicing</li>
+            </ul>
+          </div>
+          <div class="spec-card">
+            <h5>Wireless</h5>
+            <ul>
+              <li>Jarak sangat terbatas (10–50 m)</li>
+              <li>Diredam oleh dinding & logam</li>
+              <li>Rentan interferensi & cuaca</li>
+              <li>Fleksibel & tanpa kabel</li>
+            </ul>
+          </div>
+        </div>
+
+        <h4>Aturan Praktis Jarak</h4>
+        <div class="formula">
+          <span class="cm">Jarak &lt; 100 m dan butuh 1 Gbps</span> <span class="hl">→ UTP Cat 6</span>
+          <br>
+          <span class="cm">Jarak &lt; 100 m dan butuh 10 Gbps</span> <span class="hl">→ UTP Cat 6a</span>
+          <br>
+          <span class="cm">Jarak 100 m – 500 m</span> <span class="hl">→ Fiber Multimode</span>
+          <br>
+          <span class="cm">Jarak &gt; 500 m</span> <span class="hl">→ Fiber Single-mode</span>
+          <br>
+          <span class="cm">Perangkat berpindah</span> <span class="hl">→ Wireless</span>
+        </div>
+
+        <div class="callout warn">
+          <span class="title">Jangan Melebihi Batas</span>
+          <p style="margin:0">Melebihi batas jarak akan menyebabkan:
+          <br>• Sinyal melemah → data corrupt
+          <br>• Retransmisi → jaringan lambat
+          <br>• Paket loss → komunikasi putus-putus</p>
+        </div>
+      </div>
+    </details>
+  </section>
+
+  <!-- 5.10 -->
+  <section id="m5-10">
+    <details>
+      <summary>
+        <span class="num">5.10</span>
+        <span class="summary-text">Pemilihan Media Berdasarkan Kebutuhan</span>
+        <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </summary>
+      <div class="content">
+        <p>Ini tahap penutup Modul 5 — mengubah semua teori menjadi keputusan nyata.</p>
+
+        <h4>Pohon Keputusan Media Transmisi</h4>
+        <div class="formula">
+          <span class="cm">1. Perangkat berpindah-pindah?</span>
+          <br>
+          <span class="hl">Ya  → Wireless (Wi-Fi)</span>
+          <br>
+          <span class="cm">Tidak ↓</span>
+          <br><br>
+          <span class="cm">2. Jarak &gt; 100 m atau butuh &gt; 1 Gbps?</span>
+          <br>
+          <span class="hl">Ya  → Fiber Optic</span>
+          <br>
+          <span class="cm">Tidak ↓</span>
+          <br><br>
+          <span class="cm">3. Ada interferensi elektromagnetik tinggi?</span>
+          <br>
+          <span class="hl">Ya  → STP / Fiber</span>
+          <br>
+          <span class="cm">Tidak → UTP Cat 6 / Cat 6a</span>
+        </div>
+
+        <h4>Panduan Cepat: Media untuk Setiap Perangkat</h4>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Perangkat</th><th>Media</th><th>Alasan</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>PC desktop</td>
+                <td>UTP Cat 6</td>
+                <td>Tetap, butuh 1 Gbps stabil</td>
+              </tr>
+              <tr>
+                <td>Laptop</td>
+                <td>Wi-Fi (utamanya)</td>
+                <td>Berpindah-pindah</td>
+              </tr>
+              <tr>
+                <td>Smartphone</td>
+                <td>Wi-Fi</td>
+                <td>Mobile</td>
+              </tr>
+              <tr>
+                <td>Printer jaringan</td>
+                <td>UTP Cat 6</td>
+                <td>Lokasi tetap</td>
+              </tr>
+              <tr>
+                <td>Access Point</td>
+                <td>UTP Cat 6 + PoE</td>
+                <td>Tetap, tapi daya via PoE</td>
+              </tr>
+              <tr>
+                <td>CCTV / IP Camera</td>
+                <td>UTP Cat 6 + PoE</td>
+                <td>Tetap, kontinu, butuh daya</td>
+              </tr>
+              <tr>
+                <td>Server</td>
+                <td>UTP Cat 6a atau Fiber</td>
+                <td>Bandwidth sangat tinggi</td>
+              </tr>
+              <tr>
+                <td>Switch uplink</td>
+                <td>Fiber (SFP)</td>
+                <td>Antar lantai/gedung</td>
+              </tr>
+              <tr>
+                <td>Backbone antar gedung</td>
+                <td>Fiber Multimode/SM</td>
+                <td>Jarak jauh &amp; bandwidth tinggi</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h4>Bantu Pilih Media Transmisi</h4>
+        <p>Jawab 3 pertanyaan berikut untuk melihat rekomendasi media yang sesuai dengan kebutuhan Anda.</p>
+
+        <div class="picker">
+          <div class="picker-head">
+            <div class="picker-icon">🧭</div>
+            <div>
+              <div class="picker-title">Media Picker</div>
+              <div class="picker-sub">Tentukan media berdasarkan kondisi</div>
+            </div>
+          </div>
+
+          <div class="picker-step">
+            <div class="picker-q">
+              <span class="qnum">1</span>
+              Perangkat berpindah-pindah (mobile)?
+            </div>
+            <div class="picker-opts" data-group="p1">
+              <button data-val="yes">Ya</button>
+              <button data-val="no">Tidak</button>
+            </div>
+          </div>
+
+          <div class="picker-step">
+            <div class="picker-q">
+              <span class="qnum">2</span>
+              Berapa jarak yang dibutuhkan?
+            </div>
+            <div class="picker-opts" data-group="p2">
+              <button data-val="short">&lt; 100 m</button>
+              <button data-val="medium">100–500 m</button>
+              <button data-val="long">&gt; 500 m</button>
+            </div>
+          </div>
+
+          <div class="picker-step">
+            <div class="picker-q">
+              <span class="qnum">3</span>
+              Berapa bandwidth yang dibutuhkan?
+            </div>
+            <div class="picker-opts" data-group="p3">
+              <button data-val="std">≤ 1 Gbps</button>
+              <button data-val="high">1–10 Gbps</button>
+              <button data-val="vhigh">&gt; 10 Gbps</button>
+            </div>
+          </div>
+
+          <div class="picker-result" id="pickerResult">
+            <div class="pr-label">Rekomendasi Media</div>
+            <div class="pr-name" id="pickerName">— Pilih dulu —</div>
+            <div class="pr-desc" id="pickerDesc">Jawab 3 pertanyaan di atas untuk melihat rekomendasi.</div>
+          </div>
+        </div>
+
+        <h4>Contoh Penerapan</h4>
+        <div class="case-box">
+          <span class="case-label">Skenario</span>
+          <p>Lab komputer 36 PC di lantai 1, server di lantai 2, dan gedung perpustakaan 200 m dari lab.</p>
+        </div>
+
+        <ul>
+          <li><strong>PC ke switch lab:</strong> UTP Cat 6 (jarak &lt; 30 m, 1 Gbps).</li>
+          <li><strong>Switch lab ke switch lantai:</strong> UTP Cat 6a atau Fiber MM (uplink internal).</li>
+          <li><strong>Switch lantai ke server (antar lantai):</strong> Fiber Multimode OM3/OM4.</li>
+          <li><strong>Lab ke perpustakaan (200 m):</strong> Fiber Multimode OM3/OM4.</li>
+          <li><strong>Wi-Fi area:</strong> Access Point Wi-Fi 6 via UTP Cat 6 + PoE.</li>
+        </ul>
+
+        <div class="callout tip">
+          <span class="title">Prinsip Akhir</span>
+          <p style="margin:0">Media transmisi dipilih berdasarkan <strong>3 faktor utama</strong>:
+          <br>1. <strong>Mobilitas</strong> (berpindah atau tetap)
+          <br>2. <strong>Jarak</strong> (dekat atau jauh)
+          <br>3. <strong>Bandwidth</strong> (rendah atau tinggi)
+          <br><br>Ketiganya harus dipenuhi. Kalau salah satu dilanggar, jaringan tidak akan optimal.</p>
+        </div>
+
+        <div class="case-box">
+          <span class="case-label">Latihan</span>
+          <p>Untuk setiap skenario, tentukan media yang paling tepat + alasan:</p>
+          <ul style="margin:6px 0 8px;padding-left:20px;font-size:14px">
+            <li>Kantor 3 lantai, tiap lantai ada 20 PC. Server di lantai 2.</li>
+            <li>Rumah dengan 1 PC gaming dan 5 perangkat mobile.</li>
+            <li>Kampus dengan 2 gedung berjarak 300 m.</li>
+          </ul>
+          <div class="question">
+            <strong>Tugas:</strong> Untuk setiap kasus, tentukan media transmisi untuk: PC, uplink antar lantai, backbone antar gedung, dan perangkat mobile.
+          </div>
+        </div>
+      </div>
+    </details>
+  </section>
+
+  <div class="takeaway">
+    <h3>Poin Kunci Modul 5</h3>
+    <ol>
+      <li><strong>Media transmisi</strong> = jalan data. Dibagi <strong>guided</strong> (kabel/fiber) dan <strong>unguided</strong> (wireless).</li>
+      <li><strong>Twisted pair</strong> = 4 pasang kawat tembaga dipilin. Dua jenis: UTP & STP.</li>
+      <li><strong>UTP</strong> untuk umum (kantor, sekolah). <strong>STP</strong> untuk area interferensi tinggi (industri).</li>
+      <li>Kategori kabel: <strong>Cat 5e</strong> (legacy), <strong>Cat 6</strong> (standar sekarang), <strong>Cat 6a</strong> (recommended baru), <strong>Cat 7/8</strong> (data center).</li>
+      <li>Batas jarak UTP = <strong>100 meter</strong>. Lebih dari itu butuh switch perantara atau fiber.</li>
+      <li><strong>Fiber optik</strong> = cahaya, bukan listrik. Imun interferensi, jarak jauh, bandwidth besar.</li>
+      <li><strong>Single-mode</strong> = laser, jarak km, warna kuning. <strong>Multimode</strong> = LED, jarak ratusan meter, warna orange/aqua.</li>
+      <li><strong>Wireless</strong> = fleksibel tapi rentan interferensi. Untuk perangkat mobile atau area tanpa kabel.</li>
+      <li>Aturan praktis: <strong>perangkat tetap + bandwidth tinggi = kabel</strong>. <strong>Perangkat berpindah = wireless</strong>.</li>
+      <li>Pilih media paling <strong>sederhana</strong> yang memenuhi kebutuhan. Jangan over-engineer.</li>
+    </ol>
+  </div>
+
+</main>
+
+<button class="back-top" id="backTop" aria-label="Kembali ke atas">
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>
+</button>
+
+<footer>
+  <strong>Modul 5 — Media Transmisi Jaringan</strong><br>
+  Kelas XI TKJ · TP: Memahami kebutuhan teknis pengguna dan peralatan jaringan dengan teknologi yang sesuai.
+</footer>
+
+<script>
+  // Smooth scroll
+  document.querySelectorAll('nav.toc a').forEach(a=>{
+    a.addEventListener('click', e=>{
+      const el = document.querySelector(a.getAttribute('href'));
+      if(el){ e.preventDefault(); el.scrollIntoView({behavior:'smooth', block:'start'}); }
+    });
+  });
+
+  // Back to top
+  const btn = document.getElementById('backTop');
+  window.addEventListener('scroll', ()=>{
+    if(window.scrollY > 400) btn.classList.add('show');
+    else btn.classList.remove('show');
+  });
+  btn.addEventListener('click', ()=>window.scrollTo({top:0, behavior:'smooth'}));
+
+  // ===== MEDIA PICKER =====
+  const pickAnswers = { p1: null, p2: null, p3: null };
+
+  document.querySelectorAll('.picker-opts').forEach(group => {
+    group.querySelectorAll('button').forEach(btn => {
+      btn.addEventListener('click', () => {
+        group.querySelectorAll('button').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        pickAnswers[group.dataset.group] = btn.dataset.val;
+        renderPick();
+      });
+    });
+  });
+
+  function renderPick(){
+    const nameEl = document.getElementById('pickerName');
+    const descEl = document.getElementById('pickerDesc');
+
+    const { p1, p2, p3 } = pickAnswers;
+
+    if(!p1 || !p2 || !p3){
+      nameEl.textContent = '— Pilih dulu —';
+      descEl.textContent = 'Jawab 3 pertanyaan di atas untuk melihat rekomendasi.';
+      return;
+    }
+
+    let name = '';
+    let desc = '';
+
+    // Prioritas 1: mobile → wireless
+    if(p1 === 'yes'){
+      if(p3 === 'vhigh'){
+        name = 'Wi-Fi 6/6E (High-Density)';
+        desc = 'Perangkat mobile dengan bandwidth tinggi: gunakan Wi-Fi 6/6E dengan AP enterprise. Untuk > 10 Gbps, tetap butuh kabel untuk uplink ke AP.';
+      } else if(p3 === 'high'){
+        name = 'Wi-Fi 6 Dual-Band';
+        desc = 'Perangkat mobile dengan bandwidth menengah: Wi-Fi 6 dual-band sudah cukup. Uplink AP pakai kabel UTP Cat 6/6a.';
+      } else {
+        name = 'Wi-Fi 5 atau Wi-Fi 6';
+        desc = 'Perangkat mobile dengan bandwidth standar: Wi-Fi 5 atau 6 sudah memadai. Cukup untuk HP, laptop, tablet.';
+      }
+    }
+    // Prioritas 2: non-mobile — berdasarkan jarak & bandwidth
+    else {
+      if(p2 === 'long'){
+        if(p3 === 'vhigh'){
+          name = 'Fiber Single-mode (SM)';
+          desc = 'Jarak > 500 m dengan bandwidth > 10 Gbps: wajib fiber single-mode. Transceiver SFP+ / SFP28, konektor LC/SC.';
+        } else if(p3 === 'high'){
+          name = 'Fiber Single-mode (SM)';
+          desc = 'Jarak > 500 m dengan bandwidth 1–10 Gbps: fiber single-mode atau multimode OM4 tergantung jarak tepatnya.';
+        } else {
+          name = 'Fiber Multimode atau Single-mode';
+          desc = 'Jarak > 500 m dengan bandwidth standar: fiber multimode OM3/OM4 cukup untuk 1 Gbps. Pilih single-mode jika lebih dari 550 m.';
+        }
+      }
+      else if(p2 === 'medium'){
+        if(p3 === 'vhigh'){
+          name = 'Fiber Multimode OM4';
+          desc = 'Jarak 100–500 m dengan bandwidth > 10 Gbps: fiber multimode OM4 mendukung 10–40 Gbps hingga 550 m.';
+        } else if(p3 === 'high'){
+          name = 'Fiber Multimode OM3/OM4';
+          desc = 'Jarak 100–500 m dengan 10 Gbps: fiber multimode OM3 (300 m) atau OM4 (550 m). Transceiver SFP+.';
+        } else {
+          name = 'Fiber Multimode OM3 atau UTP + Switch';
+          desc = 'Jarak 100–500 m, bandwidth standar: fiber multimode untuk kestabilan, atau UTP dengan switch perantara setiap 100 m.';
+        }
+      }
+      else { // short < 100m
+        if(p3 === 'vhigh'){
+          name = 'UTP Cat 6a atau Fiber';
+          desc = 'Jarak pendek tapi butuh > 10 Gbps: fiber multimode atau DAC cable (untuk rack internal). UTP Cat 6a hanya sampai 10 Gbps.';
+        } else if(p3 === 'high'){
+          name = 'UTP Cat 6a';
+          desc = 'Jarak pendek dengan 10 Gbps: UTP Cat 6a mendukung 10 Gbps hingga 100 m. Recommended untuk instalasi baru.';
+        } else {
+          name = 'UTP Cat 6';
+          desc = 'Jarak pendek dengan 1 Gbps: UTP Cat 6 adalah pilihan standar & ekonomis. Mendukung 1 Gbps hingga 100 m.';
+        }
+      }
+    }
+
+    nameEl.textContent = name;
+    descEl.textContent = desc;
+  }
+</script>
+
+</body>
+</html>

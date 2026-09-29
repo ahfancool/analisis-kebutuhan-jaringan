@@ -1,0 +1,2004 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0f766e">
+<title>Modul 8 — Perangkat Jaringan dan Fungsinya</title>
+<style>
+  :root{
+    --primary:#0f766e;
+    --primary-dark:#115e59;
+    --primary-light:#ccfbf1;
+    --accent:#f59e0b;
+    --danger:#dc2626;
+    --success:#16a34a;
+    --bg:#f8fafc;
+    --card:#ffffff;
+    --text:#0f172a;
+    --text-muted:#475569;
+    --border:#e2e8f0;
+    --radius:14px;
+    --shadow:0 1px 3px rgba(15,23,42,.06), 0 1px 2px rgba(15,23,42,.04);
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{margin:0;padding:0}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    line-height:1.6;
+    font-size:16px;
+    -webkit-font-smoothing:antialiased;
+    padding-bottom:env(safe-area-inset-bottom);
+  }
+
+  header.hero{
+    background:linear-gradient(135deg,var(--primary) 0%,var(--primary-dark) 100%);
+    color:#fff;
+    padding:28px 20px 32px;
+    border-radius:0 0 24px 24px;
+    position:relative;
+    overflow:hidden;
+  }
+  header.hero::after{
+    content:"";
+    position:absolute;
+    right:-40px;top:-40px;
+    width:160px;height:160px;
+    background:rgba(255,255,255,.08);
+    border-radius:50%;
+  }
+  .badge{
+    display:inline-block;
+    background:rgba(255,255,255,.18);
+    color:#fff;
+    padding:4px 12px;
+    border-radius:999px;
+    font-size:12px;
+    font-weight:600;
+    letter-spacing:.4px;
+    text-transform:uppercase;
+    margin-bottom:12px;
+    backdrop-filter:blur(4px);
+  }
+  header.hero h1{
+    font-size:22px;
+    margin:0 0 8px;
+    line-height:1.3;
+    font-weight:700;
+  }
+  header.hero p{
+    margin:0;
+    font-size:14px;
+    opacity:.9;
+  }
+
+  .tp-box{
+    background:#fff;
+    margin:-16px 16px 20px;
+    padding:16px 18px;
+    border-radius:var(--radius);
+    box-shadow:var(--shadow);
+    border-left:4px solid var(--accent);
+    position:relative;
+    z-index:1;
+  }
+  .tp-box .label{
+    font-size:11px;
+    font-weight:700;
+    letter-spacing:.6px;
+    text-transform:uppercase;
+    color:var(--accent);
+    margin-bottom:6px;
+    display:block;
+  }
+  .tp-box p{
+    margin:0;
+    font-size:14.5px;
+    color:var(--text);
+    font-weight:500;
+  }
+
+  nav.toc{
+    background:#fff;
+    margin:0 16px 24px;
+    padding:16px 18px;
+    border-radius:var(--radius);
+    box-shadow:var(--shadow);
+  }
+  nav.toc h2{
+    font-size:14px;
+    margin:0 0 12px;
+    color:var(--text-muted);
+    text-transform:uppercase;
+    letter-spacing:.5px;
+    font-weight:700;
+  }
+  nav.toc ol{
+    margin:0;
+    padding-left:20px;
+    font-size:14.5px;
+  }
+  nav.toc li{margin-bottom:6px}
+  nav.toc a{
+    color:var(--primary);
+    text-decoration:none;
+    font-weight:500;
+  }
+  nav.toc a:active{opacity:.6}
+
+  main{
+    padding:0 16px 40px;
+    max-width:720px;
+    margin:0 auto;
+  }
+
+  section{
+    background:#fff;
+    border-radius:var(--radius);
+    box-shadow:var(--shadow);
+    margin-bottom:16px;
+    overflow:hidden;
+    scroll-margin-top:16px;
+  }
+
+  details{
+    border-radius:var(--radius);
+    overflow:hidden;
+  }
+  details summary{
+    list-style:none;
+    cursor:pointer;
+    padding:16px 18px;
+    display:flex;
+    align-items:center;
+    gap:12px;
+    font-weight:600;
+    font-size:15px;
+    user-select:none;
+    transition:background .15s;
+  }
+  details summary::-webkit-details-marker{display:none}
+  details summary:active{background:var(--bg)}
+
+  .num{
+    flex-shrink:0;
+    width:32px;height:32px;
+    background:var(--primary-light);
+    color:var(--primary-dark);
+    border-radius:9px;
+    display:flex;align-items:center;justify-content:center;
+    font-weight:700;
+    font-size:14px;
+  }
+  .summary-text{
+    flex:1;
+    color:var(--text);
+    line-height:1.35;
+  }
+  .chev{
+    flex-shrink:0;
+    width:20px;height:20px;
+    transition:transform .2s;
+    color:var(--text-muted);
+  }
+  details[open] .chev{transform:rotate(180deg)}
+
+  .content{
+    padding:0 18px 20px;
+    font-size:15px;
+    color:var(--text);
+    border-top:1px solid var(--border);
+    padding-top:16px;
+    margin-top:0;
+  }
+
+  .content p{margin:0 0 12px}
+  .content p:last-child{margin-bottom:0}
+  .content h4{
+    font-size:14px;
+    margin:16px 0 8px;
+    color:var(--primary-dark);
+    font-weight:700;
+  }
+  .content ul,.content ol{
+    margin:0 0 12px;
+    padding-left:22px;
+  }
+  .content li{margin-bottom:6px}
+  .content strong{color:var(--text);font-weight:600}
+  .content code{
+    background:#f1f5f9;
+    padding:1px 6px;
+    border-radius:4px;
+    font-size:13px;
+    font-family:"SF Mono",Consolas,Monaco,monospace;
+    color:var(--primary-dark);
+  }
+
+  .callout{
+    border-radius:10px;
+    padding:12px 14px;
+    font-size:14px;
+    margin:12px 0;
+    border-left:3px solid;
+  }
+  .callout.tip{background:#ecfdf5;border-color:var(--success);color:#065f46}
+  .callout.warn{background:#fef2f2;border-color:var(--danger);color:#991b1b}
+  .callout.info{background:#eff6ff;border-color:#2563eb;color:#1e40af}
+  .callout .title{
+    font-weight:700;
+    font-size:12px;
+    text-transform:uppercase;
+    letter-spacing:.4px;
+    display:block;
+    margin-bottom:4px;
+  }
+
+  .table-wrap{
+    overflow-x:auto;
+    margin:12px -4px;
+    border-radius:10px;
+    -webkit-overflow-scrolling:touch;
+  }
+  table{
+    width:100%;
+    border-collapse:collapse;
+    font-size:13.5px;
+    min-width:480px;
+  }
+  th{
+    background:var(--primary-light);
+    color:var(--primary-dark);
+    padding:10px 12px;
+    text-align:left;
+    font-weight:700;
+    font-size:12px;
+    text-transform:uppercase;
+    letter-spacing:.3px;
+    white-space:nowrap;
+  }
+  td{
+    padding:10px 12px;
+    border-top:1px solid var(--border);
+    vertical-align:top;
+  }
+  tr:nth-child(even) td{background:#fafbfc}
+
+  .pill{
+    display:inline-block;
+    padding:2px 8px;
+    border-radius:6px;
+    font-size:11px;
+    font-weight:700;
+    letter-spacing:.3px;
+    text-transform:uppercase;
+  }
+  .pill.high{background:#fee2e2;color:#991b1b}
+  .pill.med{background:#fef3c7;color:#92400e}
+  .pill.low{background:#dcfce7;color:#166534}
+
+  /* ===== DEVICE CARD ===== */
+  .device-hero{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    background:linear-gradient(135deg,#f0fdfa 0%,#ecfeff 100%);
+    border:1px solid #99f6e4;
+    border-radius:14px;
+    padding:14px;
+    margin:4px 0 16px;
+  }
+  .device-icon{
+    flex-shrink:0;
+    width:56px;height:56px;
+    background:var(--primary);
+    color:#fff;
+    border-radius:14px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:26px;
+    box-shadow:0 4px 12px rgba(15,118,110,.25);
+  }
+  .device-hero .device-meta{
+    flex:1;
+    min-width:0;
+  }
+  .device-hero .device-name{
+    font-size:15px;
+    font-weight:800;
+    color:var(--primary-dark);
+    line-height:1.25;
+    margin-bottom:2px;
+  }
+  .device-hero .device-tagline{
+    font-size:12.5px;
+    color:var(--text-muted);
+    line-height:1.35;
+  }
+
+  /* Spec grid (analog) */
+  .spec-grid{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:10px;
+    margin:12px 0;
+  }
+  .spec-card{
+    background:#fff;
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:14px;
+  }
+  .spec-card h5{
+    margin:0 0 8px;
+    font-size:14px;
+    color:var(--primary-dark);
+    font-weight:700;
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  .spec-card h5::before{
+    content:"";
+    width:8px;height:8px;
+    background:var(--accent);
+    border-radius:2px;
+    transform:rotate(45deg);
+  }
+  .spec-card ul{
+    margin:0;
+    padding-left:18px;
+    font-size:13.5px;
+    color:var(--text-muted);
+  }
+  .spec-card ul li{margin-bottom:4px}
+  .spec-card ul li:last-child{margin-bottom:0}
+
+  /* Steps */
+  .steps{
+    counter-reset:step;
+    list-style:none;
+    padding:0;
+    margin:12px 0;
+  }
+  .steps li{
+    counter-increment:step;
+    position:relative;
+    padding:0 0 16px 40px;
+    font-size:14.5px;
+  }
+  .steps li::before{
+    content:counter(step);
+    position:absolute;
+    left:0;top:0;
+    width:28px;height:28px;
+    background:var(--primary);
+    color:#fff;
+    border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    font-size:13px;
+    font-weight:700;
+  }
+  .steps li:last-child{padding-bottom:0}
+
+  /* Formula */
+  .formula{
+    background:#0f172a;
+    color:#e2e8f0;
+    border-radius:12px;
+    padding:14px 16px;
+    margin:12px 0;
+    font-family:"SF Mono",Consolas,Monaco,monospace;
+    font-size:12.5px;
+    line-height:1.7;
+    overflow-x:auto;
+    -webkit-overflow-scrolling:touch;
+  }
+  .formula .hl{color:#5eead4;font-weight:700}
+  .formula .cm{color:#94a3b8}
+
+  /* VS block */
+  .vs{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:10px;
+    margin:12px 0;
+  }
+  .vs-col{
+    background:#f8fafc;
+    border-radius:12px;
+    padding:14px;
+    border-top:4px solid var(--primary);
+  }
+  .vs-col.alt{
+    border-top-color:var(--accent);
+  }
+  .vs-col h5{
+    margin:0 0 8px;
+    font-size:13.5px;
+    font-weight:800;
+    color:var(--primary-dark);
+    text-transform:uppercase;
+    letter-spacing:.3px;
+  }
+  .vs-col.alt h5{color:#b45309}
+  .vs-col ul{
+    margin:0;
+    padding-left:18px;
+    font-size:13.5px;
+    color:var(--text-muted);
+  }
+  .vs-col ul li{margin-bottom:4px}
+  .vs-col ul li:last-child{margin-bottom:0}
+
+  /* Device quick-card (8.14 summary) */
+  .qcard-grid{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:10px;
+    margin:12px 0;
+  }
+  .qcard{
+    background:#fff;
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:12px 14px;
+    display:flex;
+    align-items:flex-start;
+    gap:12px;
+    transition:transform .15s,box-shadow .15s;
+  }
+  .qcard:active{
+    transform:scale(.99);
+    box-shadow:0 2px 8px rgba(15,23,42,.06);
+  }
+  .qcard .qicon{
+    flex-shrink:0;
+    width:40px;height:40px;
+    background:var(--primary-light);
+    color:var(--primary-dark);
+    border-radius:10px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:20px;
+  }
+  .qcard .qmeta{
+    flex:1;
+    min-width:0;
+  }
+  .qcard .qname{
+    font-size:13.5px;
+    font-weight:800;
+    color:var(--text);
+    margin-bottom:2px;
+  }
+  .qcard .qdesc{
+    font-size:12.5px;
+    color:var(--text-muted);
+    line-height:1.4;
+  }
+
+  /* Decision helper (interactive) */
+  .helper{
+    background:linear-gradient(135deg,#f0fdfa 0%,#ecfeff 100%);
+    border:1px solid #99f6e4;
+    border-radius:14px;
+    padding:16px;
+    margin:12px 0;
+  }
+  .helper .helper-head{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom:14px;
+  }
+  .helper .helper-icon{
+    width:36px;height:36px;
+    background:var(--primary);
+    color:#fff;
+    border-radius:10px;
+    display:flex;align-items:center;justify-content:center;
+    flex-shrink:0;
+    font-size:18px;
+  }
+  .helper .helper-title{
+    font-size:14.5px;
+    font-weight:700;
+    color:var(--primary-dark);
+    line-height:1.3;
+  }
+  .helper .helper-sub{
+    font-size:12px;
+    color:var(--text-muted);
+    margin-top:2px;
+  }
+
+  .helper-step{
+    background:#fff;
+    border-radius:10px;
+    padding:12px 14px;
+    margin-bottom:10px;
+  }
+  .helper-step:last-child{margin-bottom:0}
+  .helper-q{
+    font-size:13.5px;
+    font-weight:700;
+    color:var(--text);
+    margin-bottom:10px;
+    display:flex;
+    align-items:flex-start;
+    gap:8px;
+  }
+  .helper-q .qnum{
+    flex-shrink:0;
+    width:22px;height:22px;
+    background:var(--primary-light);
+    color:var(--primary-dark);
+    border-radius:6px;
+    display:flex;align-items:center;justify-content:center;
+    font-size:11.5px;
+    font-weight:800;
+  }
+  .helper-opts{
+    display:flex;
+    flex-wrap:wrap;
+    gap:6px;
+  }
+  .helper-opts button{
+    flex:1;
+    min-width:100px;
+    padding:9px 10px;
+    border-radius:8px;
+    border:1.5px solid var(--border);
+    background:#fff;
+    font-family:inherit;
+    font-size:12.5px;
+    font-weight:600;
+    color:var(--text);
+    cursor:pointer;
+    transition:all .15s;
+    line-height:1.3;
+  }
+  .helper-opts button:hover{
+    border-color:var(--primary);
+    color:var(--primary-dark);
+  }
+  .helper-opts button.active{
+    background:var(--primary);
+    border-color:var(--primary);
+    color:#fff;
+    box-shadow:0 2px 6px rgba(15,118,110,.25);
+  }
+
+  .helper-result{
+    background:#0f172a;
+    color:#fff;
+    border-radius:12px;
+    padding:16px;
+    margin-top:12px;
+    text-align:center;
+  }
+  .helper-result .r-label{
+    font-size:11px;
+    color:#94a3b8;
+    text-transform:uppercase;
+    letter-spacing:.5px;
+    font-weight:700;
+    margin-bottom:6px;
+  }
+  .helper-result .r-name{
+    font-size:20px;
+    font-weight:800;
+    color:#5eead4;
+    margin-bottom:6px;
+    line-height:1.2;
+  }
+  .helper-result .r-desc{
+    font-size:12.5px;
+    color:#cbd5e1;
+    line-height:1.5;
+  }
+
+  /* Case box */
+  .case-box{
+    background:linear-gradient(135deg,#f0fdfa 0%,#e0f2fe 100%);
+    border-radius:12px;
+    padding:14px 16px;
+    margin:12px 0;
+    border:1px solid #99f6e4;
+  }
+  .case-box .case-label{
+    font-size:11px;
+    font-weight:700;
+    letter-spacing:.5px;
+    text-transform:uppercase;
+    color:var(--primary-dark);
+    margin-bottom:6px;
+    display:block;
+  }
+  .case-box p{font-size:14px;margin:0 0 8px}
+  .case-box .question{
+    background:#fff;
+    border-radius:8px;
+    padding:10px 12px;
+    font-size:13.5px;
+    margin-top:8px;
+    border-left:3px solid var(--accent);
+  }
+  .case-box .question strong{color:var(--primary-dark)}
+
+  /* Takeaway */
+  .takeaway{
+    background:#0f172a;
+    color:#fff;
+    border-radius:var(--radius);
+    padding:20px;
+    margin:24px 0 0;
+  }
+  .takeaway h3{
+    margin:0 0 12px;
+    font-size:15px;
+    color:#5eead4;
+    text-transform:uppercase;
+    letter-spacing:.5px;
+  }
+  .takeaway ol{
+    margin:0;
+    padding-left:22px;
+    font-size:14.5px;
+  }
+  .takeaway li{margin-bottom:8px;color:#e2e8f0}
+  .takeaway li:last-child{margin-bottom:0}
+
+  footer{
+    text-align:center;
+    padding:24px 16px 40px;
+    font-size:12.5px;
+    color:var(--text-muted);
+  }
+  footer strong{color:var(--primary-dark)}
+
+  .back-top{
+    position:fixed;
+    right:16px;
+    bottom:calc(16px + env(safe-area-inset-bottom));
+    width:44px;height:44px;
+    border-radius:50%;
+    background:var(--primary);
+    color:#fff;
+    border:none;
+    box-shadow:0 4px 12px rgba(15,118,110,.35);
+    cursor:pointer;
+    display:none;
+    align-items:center;justify-content:center;
+    z-index:50;
+    transition:transform .15s,opacity .2s;
+  }
+  .back-top:active{transform:scale(.92)}
+  .back-top.show{display:flex}
+
+  @media (min-width:600px){
+    header.hero{padding:36px 28px 40px}
+    header.hero h1{font-size:26px}
+    .tp-box{margin:-20px 24px 24px}
+    nav.toc{margin:0 24px 28px}
+    main{padding:0 24px 60px}
+    .spec-grid{grid-template-columns:1fr 1fr}
+    .vs{grid-template-columns:1fr 1fr}
+    .qcard-grid{grid-template-columns:1fr 1fr}
+    .content{font-size:15.5px}
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <span class="badge">Modul 8 · Kelas XI TKJ</span>
+  <h1>Perangkat Jaringan dan Fungsinya</h1>
+  <p>Mengenal perangkat — bukan hanya namanya, tapi perannya.</p>
+</header>
+
+<div class="tp-box">
+  <span class="label">Tujuan Pembelajaran</span>
+  <p>Memahami kebutuhan teknis pengguna dan peralatan jaringan dengan teknologi yang sesuai.</p>
+</div>
+
+<nav class="toc">
+  <h2>Daftar Isi</h2>
+  <ol>
+    <li><a href="#m8-1">NIC (Network Interface Card)</a></li>
+    <li><a href="#m8-2">Hub</a></li>
+    <li><a href="#m8-3">Switch</a></li>
+    <li><a href="#m8-4">Managed & Unmanaged Switch</a></li>
+    <li><a href="#m8-5">Layer 2 & Layer 3 Switch</a></li>
+    <li><a href="#m8-6">Router</a></li>
+    <li><a href="#m8-7">Wireless Access Point</a></li>
+    <li><a href="#m8-8">Modem / ONT</a></li>
+    <li><a href="#m8-9">Firewall</a></li>
+    <li><a href="#m8-10">Server</a></li>
+    <li><a href="#m8-11">PoE Switch & PoE Injector</a></li>
+    <li><a href="#m8-12">SFP dan Transceiver</a></li>
+    <li><a href="#m8-13">Rack & Perangkat Pendukung</a></li>
+    <li><a href="#m8-14">Ringkasan Fungsi & Karakteristik</a></li>
+  </ol>
+</nav>
+
+<main>
+
+  <!-- 8.1 NIC -->
+  <section id="m8-1">
+    <details open>
+      <summary>
+        <span class="num">8.1</span>
+        <span class="summary-text">NIC (Network Interface Card)</span>
+        <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </summary>
+      <div class="content">
+        <div class="device-hero">
+          <div class="device-icon">🔌</div>
+          <div class="device-meta">
+            <div class="device-name">NIC / LAN Card</div>
+            <div class="device-tagline">"Pintu masuk" perangkat ke jaringan</div>
+          </div>
+        </div>
+
+        <p><strong>NIC</strong> adalah perangkat keras yang memungkinkan komputer terhubung ke jaringan. Setiap NIC memiliki alamat fisik unik yang disebut <strong>MAC Address</strong> (48 bit, ditulis dalam 6 pasang heksadesimal).</p>
+
+        <h4>Fungsi Utama</h4>
+        <ul>
+          <li>Menghubungkan komputer ke media transmisi (kabel atau nirkabel).</li>
+          <li>Mengubah data dari komputer menjadi sinyal yang bisa dikirim.</li>
+          <li>Menyediakan MAC Address sebagai identitas unik.</li>
+          <li>Menangani komunikasi data (kirim/terima, error checking).</li>
+        </ul>
+
+        <h4>Jenis NIC</h4>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Jenis</th><th>Media</th><th>Kecepatan Umum</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Ethernet</td><td>Kabel UTP</td><td>100 Mbps – 10 Gbps</td></tr>
+              <tr><td>Wireless</td><td>Wi-Fi</td><td>100 Mbps – 9.6 Gbps</td></tr>
+              <tr><td>Fiber</td><td>Fiber optic</td><td>1 Gbps – 100 Gbps</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h4>Bentuk Fisik</h4>
+        <ul>
+          <li><strong>Onboard</strong> — sudah menempel di motherboard (paling umum).</li>
+          <li><strong>PCIe card</strong> — dipasang di slot PCIe (untuk server / PC high-end).</li>
+          <li><strong>USB adapter</strong> — untuk laptop atau perangkat tanpa slot PCIe.</li>
+          <li><strong>Module</strong> — untuk laptop tertentu (misal laptop bisnis).</li>
+        </ul>
+
+        <div class="callout warn">
+          <span class="title">Bottleneck Tersembunyi</span>
+          <p style="margin:0">NIC 100 Mbps di server akan membatasi semua client meski switch-nya 1 Gbps. <strong>Cek NIC sebelum menyalahkan switch.</strong></p>
+        </div>
+
+        <div class="callout tip">
+          <span class="title">Cara Cek MAC Address</span>
+          <p style="margin:0">
+            <strong>Windows:</strong> <code>ipconfig /all</code><br>
+            <strong>Linux/Mac:</strong> <code>ip link</code> atau <code>ifconfig</code>
+          </p>
+        </div>
+      </div>
+    </details>
+  </section>
+
+  <!-- 8.2 HUB -->
+  <section id="m8-2">
+    <details>
+      <summary>
+        <span class="num">8.2</span>
+        <span class="summary-text">Hub</span>
+        <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </summary>
+      <div class="content">
+        <div class="device-hero">
+          <div class="device-icon">📡</div>
+          <div class="device-meta">
+            <div class="device-name">Hub</div>
+            <div class="device-tagline">Perangkat lama — hampir punah, tapi penting untuk dipahami</div>
+          </div>
+        </div>
+
+        <p><strong>Hub</strong> adalah perangkat jaringan paling sederhana. Fungsinya hanya "mengulang" sinyal yang diterima ke semua port lain. Sudah <strong>jarang dipakai</strong> karena keterbatasannya.</p>
+
+        <h4>Cara Kerja Hub</h4>
+        <ul>
+          <li>Data yang masuk ke satu port akan <strong>dikirim ke semua port lain</strong>.</li>
+          <li>Hanya bekerja di <strong>satu collision domain</strong> — semua port berebut jalur.</li>
+          <li>Tidak bisa membaca MAC Address — tidak tahu tujuan data.</li>
+          <li>Bersifat <strong>half-duplex</strong> — kirim atau terima, tidak bisa bersamaan.</li>
+        </ul>
+
+        <h4>Keterbatasan Hub</h4>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Aspek</th><th>Masalah</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Bandwidth</td><td>Semua port berbagi satu jalur</td></tr>
+              <tr><td>Keamanan</td><td>Semua perangkat bisa "mendengar" data</td></tr>
+              <tr><td>Collision</td><td>Sering terjadi tabrakan data</td></tr>
+              <tr><td>Kecepatan</td><td>Turun drastis saat banyak port aktif</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="callout warn">
+          <span class="title">Sudah Tidak Dipakai</span>
+          <p style="margin:0">Hub sudah digantikan switch. Kalau Anda menemukan hub di jaringan modern, sebaiknya <strong>diganti dengan switch</strong>.</p>
+        </div>
+
+        <div class="callout info">
+          <span class="title">Kenapa Masih Dipelajari?</span>
+          <p style="margin:0">Untuk memahami <em>mengapa</em> switch lebih baik. Tanpa tahu kelemahan hub, sulit memahami nilai switch.</p>
+        </div>
+      </div>
+    </details>
+  </section>
+
+  <!-- 8.3 SWITCH -->
+  <section id="m8-3">
+    <details>
+      <summary>
+        <span class="num">8.3</span>
+        <span class="summary-text">Switch</span>
+        <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </summary>
+      <div class="content">
+        <div class="device-hero">
+          <div class="device-icon">🔀</div>
+          <div class="device-meta">
+            <div class="device-name">Switch</div>
+            <div class="device-tagline">Jantung jaringan lokal — perangkat paling penting di LAN</div>
+          </div>
+        </div>
+
+        <p><strong>Switch</strong> adalah perangkat yang menghubungkan banyak perangkat dalam satu jaringan lokal. Berbeda dengan hub, switch <strong>membaca MAC Address</strong> dan hanya mengirim data ke port tujuan.</p>
+
+        <h4>Cara Kerja Switch</h4>
+        <ol class="steps">
+          <li><strong>Belajar MAC Address</strong> — switch mencatat MAC Address setiap perangkat yang terhubung.</li>
+          <li><strong>Membangun MAC table</strong> — tabel yang memetakan MAC Address ke port.</li>
+          <li><strong>Forward selektif</strong> — data dikirim hanya ke port tujuan.</li>
+          <li><strong>Full-duplex</strong> — semua port bisa kirim & terima bersamaan.</li>
+        </ol>
+
+        <h4>Keunggulan Switch vs Hub</h4>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Aspek</th><th>Hub</th><th>Switch</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Domain collision</td><td>1 untuk semua</td><td>1 per port</td></tr>
+              <tr><td>Keamanan</td><td>Data terkirim ke semua</td><td>Hanya ke tujuan</td></tr>
+              <tr><td>Bandwidth</td><td>Dibagi semua port</td><td>Full per port</td></tr>
+              <tr><td>Duplex</td><td>Half-duplex</td><td>Full-duplex</td></tr>
+              <tr><td>Kinerja</td><td>Turun saat ramai</td><td>Stabil</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h4>Fitur Umum Switch</h4>
+        <div class="spec-grid">
+          <div class="spec-card">
+            <h5>MAC Address Table</h5>
+            <ul>
+              <li>Menyimpan daftar MAC & port</li>
+              <li>4K–16K entries umum</li>
+              <li>Menentukan kemana data dikirim</li>
+            </ul>
+          </div>
+          <div class="spec-card">
+            <h5>Auto-negotiation</h5>
+            <ul>
+              <li>Deteksi kecepatan otomatis</li>
+              <li>10/100/1000 Mbps</li>
+              <li>Tanpa konfigurasi manual</li>
+            </ul>
+          </div>
+          <div class="spec-card">
+            <h5>VLAN (jika managed)</h5>
+            <ul>
+              <li>Segmentasi logis</li>
+              <li>Isolasi traffic antar grup</li>
+              <li>Keamanan & manajemen</li>
+            </ul>
+          </div>
+          <div class="spec-card">
+            <h5>PoE (jika didukung)</h5>
+            <ul>
+              <li>Kirim daya via kabel data</li>
+              <li>Untuk AP, CCTV, VoIP</li>
+              <li>Budget total dibatasi</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </details>
+  </section>
+
+  <!-- 8.4 MANAGED vs UNMANAGED -->
+  <section id="m8-4">
+    <details>
+      <summary>
+        <span class="num">8.4</span>
+        <span class="summary-text">Managed & Unmanaged Switch</span>
+        <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </summary>
+      <div class="content">
+        <p>Switch dibedakan menjadi dua berdasarkan <strong>kemampuan konfigurasi</strong>: managed (bisa diatur) dan unmanaged (plug-and-play).</p>
+
+        <div class="vs">
+          <div class="vs-col">
+            <h5>Unmanaged Switch</h5>
+            <ul>
+              <li>Plug-and-play, tanpa konfigurasi</li>
+              <li>Harga murah</li>
+              <li>Tidak bisa VLAN, QoS, monitoring</li>
+              <li>Cocok: rumah, kantor kecil</li>
+              <li>Contoh: switch 8-port Rp150rb</li>
+            </ul>
+          </div>
+          <div class="vs-col alt">
+            <h5>Managed Switch</h5>
+            <ul>
+              <li>Bisa dikonfigurasi (web/CLI)</li>
+              <li>Support VLAN, QoS, SNMP</li>
+              <li>Bisa monitoring & troubleshooting</li>
+              <li>Cocok: kantor, sekolah, enterprise</li>
+              <li>Contoh: switch 48-port Rp4–8 juta</li>
+            </ul>
+          </div>
+        </div>
+
+        <h4>Perbandingan Detail</h4>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Fitur</th><th>Unmanaged</th><th>Managed</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Konfigurasi</td><td>Tidak ada</td><td>Web / CLI / Cloud</td></tr>
+              <tr><td>VLAN</td><td>✗</td><td>✓</td></tr>
+              <tr><td>QoS</td><td>✗</td><td>✓</td></tr>
+              <tr><td>Monitoring (SNMP)</td><td>✗</td><td>✓</td></tr>
+              <tr><td>Port mirroring</td><td>✗</td><td>✓</td></tr>
+              <tr><td>Link aggregation</td><td>✗</td><td>✓</td></tr>
+              <tr><td>Harga</td><td>Murah</td><td>2–10× lebih mahal</td></tr>
+              <tr><td>Kemudahan</td><td>Sangat mudah</td><td>Butuh keahlian</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="callout info">
+          <span class="title">Smart / Web-Smart Switch</span>
+          <p style="margin:0">Ada kategori di tengah — <strong>smart switch</strong> atau <strong>web-smart switch</strong>. Bisa dikonfigurasi via web, tapi fiturnya lebih terbatas dari managed penuh. Cocok untuk SMB dengan anggaran terbatas.</p>
+        </div>
+
+        <div class="callout tip">
+          <span class="title">Kapan Pilih Managed?</span>
+          <p style="margin:0">
+            Pilih managed jika:<br>
+            • Ada kebutuhan <strong>VLAN</strong> (pisah traffic guru/siswa/tamu)<br>
+            • Ada <strong>QoS</strong> (prioritas VoIP/video conference)<br>
+            • Butuh <strong>monitoring</strong> jaringan<br>
+            • Skala jaringan akan berkembang
+          </p>
+        </div>
+      </div>
+    </details>
+  </section>
+
+  <!-- 8.5 L2 vs L3 -->
+  <section id="m8-5">
+    <details>
+      <summary>
+        <span class="num">8.5</span>
+        <span class="summary-text">Layer 2 & Layer 3 Switch</span>
+        <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </summary>
+      <div class="content">
+        <p>Switch bekerja di <strong>lapisan OSI Layer</strong> tertentu. Layer 2 switch bekerja berdasarkan MAC Address, Layer 3 switch bisa routing berdasarkan IP Address.</p>
+
+        <div class="vs">
+          <div class="vs-col">
+            <h5>Layer 2 Switch</h5>
+            <ul>
+              <li>Bekerja di Data Link Layer (OSI L2)</li>
+              <li>Forward berdasarkan MAC Address</li>
+              <li>Tidak bisa routing antar VLAN</li>
+              <li>Butuh router untuk komunikasi antar jaringan</li>
+              <li>Harga lebih murah</li>
+            </ul>
+          </div>
+          <div class="vs-col alt">
+            <h5>Layer 3 Switch</h5>
+            <ul>
+              <li>Bekerja di Network Layer (OSI L3)</li>
+              <li>Bisa routing berdasarkan IP</li>
+              <li>Bisa routing antar VLAN (inter-VLAN routing)</li>
+              <li>Lebih cepat dari router untuk routing internal</li>
+              <li>Harga lebih mahal</li>
+            </ul>
+          </div>
+        </div>
+
+        <h4>Perbandingan</h4>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Aspek</th><th>L2 Switch</th><th>L3 Switch</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Basis forwarding</td><td>MAC Address</td><td>MAC + IP Address</td></tr>
+              <tr><td>Routing antar VLAN</td><td>Tidak bisa</td><td>Bisa</td></tr>
+              <tr><td>Routing protocol</td><td>Tidak ada</td><td>Static, RIP, OSPF</td></tr>
+              <tr><td>Kecepatan routing</td><td>—</td><td>Lebih cepat dari router</td></tr>
+              <tr><td>Cocok untuk</td><td>Access layer</td><td>Core / distribution</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h4>Kapan Pakai L3 Switch?</h4>
+        <ul>
+          <li>Jaringan dengan <strong>banyak VLAN</strong> (sekolah, kantor besar).</li>
+          <li>Butuh <strong>routing internal cepat</strong> tanpa router terpisah.</li>
+          <li>Backbone / core layer jaringan hierarkis.</li>
+          <li>Mengurangi beban router untuk traffic antar VLAN.</li>
+        </ul>
+
+        <div class="callout info">
+          <span class="title">Istilah "Layer 2+"</span>
+          <p style="margin:0">Beberapa vendor menyebut switch-nya "L2+" atau "L2 with static routing". Ini L2 switch dengan kemampuan routing statis terbatas. Bukan L3 penuh, tapi lebih dari L2 biasa.</p>
+        </div>
+      </div>
+    </details>
+  </section>
+
+  <!-- 8.6 ROUTER -->
+  <section id="m8-6">
+    <details>
+      <summary>
+        <span class="num">8.6</span>
+        <span class="summary-text">Router</span>
+        <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </summary>
+      <div class="content">
+        <div class="device-hero">
+          <div class="device-icon">🌐</div>
+          <div class="device-meta">
+            <div class="device-name">Router</div>
+            <div class="device-tagline">Pintu gerbang antara jaringan lokal dan internet</div>
+          </div>
+        </div>
+
+        <p><strong>Router</strong> menghubungkan dua atau lebih jaringan yang berbeda. Ia membaca <strong>IP Address</strong> dan menentukan rute terbaik untuk paket data.</p>
+
+        <h4>Fungsi Utama Router</h4>
+        <ul>
+          <li><strong>Routing</strong> — menentukan jalur terbaik untuk paket data.</li>
+          <li><strong>NAT</strong> — menerjemahkan IP privat ke IP publik (agar banyak perangkat bisa share 1 IP publik).</li>
+          <li><strong>DHCP Server</strong> — memberi IP otomatis ke perangkat di jaringan.</li>
+          <li><strong>Firewall dasar</strong> — memfilter traffic masuk/keluar.</li>
+          <li><strong>VPN</strong> — koneksi aman antar jaringan.</li>
+          <li><strong>QoS</strong> — memprioritaskan traffic tertentu.</li>
+        </ul>
+
+        <h4>Jenis Router Berdasarkan Konteks</h4>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Jenis</th><th>Cocok untuk</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Router rumahan</td><td>Rumah, kantor kecil — all-in-one (router + Wi-Fi + switch)</td></tr>
+              <tr><td>Router SMB</td><td>Kantor kecil–menengah — multi-WAN, VPN</td></tr>
+              <tr><td>Router enterprise</td><td>Kantor besar, sekolah — modular, routing protocol</td></tr>
+              <tr><td>Router core</td><td>Data center, ISP — throughput sangat tinggi</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="callout warn">
+          <span class="title">Jebakan Umum</span>
+          <p style="margin:0">Router dengan port 1 Gbps <strong>belum tentu</strong> bisa routing 1 Gbps. Lihat <strong>routing throughput</strong> di datasheet — sering hanya 300–500 Mbps di router kelas menengah.</p>
+        </div>
+
+        <div class="callout tip">
+          <span class="title">Router vs Switch</span>
+          <p style="margin:0">Analogi sederhana:<br>
+          • <strong>Switch</strong> = kantor pos <em>dalam</em> satu kota (antar alamat MAC).<br>
+          • <strong>Router</strong> = kantor pos <em>antar</em> kota (antar alamat IP).</p>
+        </div>
+      </div>
+    </details>
+  </section>
+
+  <!-- 8.7 AP -->
+  <section id="m8-7">
+    <details>
+      <summary>
+        <span class="num">8.7</span>
+        <span class="summary-text">Wireless Access Point</span>
+        <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </summary>
+      <div class="content">
+        <div class="device-hero">
+          <div class="device-icon">📶</div>
+          <div class="device-meta">
+            <div class="device-name">Access Point</div>
+            <div class="device-tagline">Jembatan antara jaringan kabel dan perangkat nirkabel</div>
+          </div>
+        </div>
+
+        <p><strong>Access Point (AP)</strong> memungkinkan perangkat nirkabel (laptop, HP, tablet) terhubung ke jaringan kabel. AP "mengubah" sinyal kabel menjadi sinyal Wi-Fi.</p>
+
+        <h4>Fungsi AP</h4>
+        <ul>
+          <li><strong>Menyediakan Wi-Fi</strong> — memancarkan sinyal untuk client.</li>
+          <li><strong>Bridge kabel ↔ wireless</strong> — menghubungkan dua media berbeda.</li>
+          <li><strong>Autentikasi</strong> — mengelola siapa yang boleh terhubung (WPA2/WPA3).</li>
+          <li><strong>Manajemen client</strong> — membagi bandwidth, roaming.</li>
+        </ul>
+
+        <h4>Bentuk AP</h4>
+        <div class="spec-grid">
+          <div class="spec-card">
+            <h5>Ceiling-mount</h5>
+            <ul>
+              <li>Dipasang di plafon</li>
+              <li>Coverage merata ke bawah</li>
+              <li>Umum di kantor & sekolah</li>
+            </ul>
+          </div>
+          <div class="spec-card">
+            <h5>Wall-mount</h5>
+            <ul>
+              <li>Dipasang di dinding</li>
+              <li>Untuk ruangan tertentu</li>
+              <li>Kadang tampil seperti outlet</li>
+            </ul>
+          </div>
+          <div class="spec-card">
+            <h5>Outdoor AP</h5>
+            <ul>
+              <li>Tahan cuaca (IP65+)</li>
+              <li>Untuk area luar</li>
+              <li>Jangkauan luas</li>
+            </ul>
+          </div>
+          <div class="spec-card">
+            <h5>Router Wi-Fi</h5>
+            <ul>
+              <li>Gabungan router + AP</li>
+              <li>Untuk rumah / kantor kecil</li>
+              <li>All-in-one</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="callout info">
+          <span class="title">AP vs Router Wi-Fi</span>
+          <p style="margin:0">AP <strong>hanya</strong> menyediakan Wi-Fi. Router Wi-Fi = <strong>router + AP + switch</strong> dalam satu perangkat. Di kantor, biasanya dipisah: router khusus + AP terpisah.</p>
+        </div>
+
+        <div class="callout tip">
+          <span class="title">Controller vs Standalone</span>
+          <p style="margin:0">
+            • <strong>Standalone</strong> — tiap AP dikonfigurasi terpisah. Cocok untuk 1–3 AP.<br>
+            • <strong>Controller-based</strong> — banyak AP dikelola dari satu titik. Cocok untuk 5+ AP.<br>
+            • <strong>Cloud-managed</strong> — dikelola dari cloud. Cocok untuk multi-lokasi.
+          </p>
+        </div>
+      </div>
+    </details>
+  </section>
+
+  <!-- 8.8 MODEM / ONT -->
+  <section id="m8-8">
+    <details>
+      <summary>
+        <span class="num">8.8</span>
+        <span class="summary-text">Modem / ONT</span>
+        <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </summary>
+      <div class="content">
+        <div class="device-hero">
+          <div class="device-icon">📞</div>
+          <div class="device-meta">
+            <div class="device-name">Modem / ONT</div>
+            <div class="device-tagline">Penerjemah sinyal dari ISP ke jaringan lokal</div>
+          </div>
+        </div>
+
+        <p><strong>Modem</strong> (Modulator-Demodulator) mengubah sinyal dari ISP menjadi sinyal digital yang bisa dipakai jaringan lokal. <strong>ONT</strong> (Optical Network Terminal) adalah modem khusus untuk fiber optic.</p>
+
+        <h4>Jenis Modem Berdasarkan Media ISP</h4>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Jenis</th><th>Media ISP</th><th>Umum di</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>ADSL Modem</td><td>Kabel telepon</td><td>Langganan lama (Speedy)</td></tr>
+              <tr><td>Cable Modem</td><td>Kabel TV</td><td>TV kabel + internet</td></tr>
+              <tr><td>ONT (Fiber)</td><td>Fiber optic</td><td>IndiHome, Biznet, MyRepublic</td></tr>
+              <tr><td>4G/5G Modem</td><td>Seluler</td><td>Backup / area tanpa kabel</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h4>Fungsi Modem / ONT</h4>
+        <ul>
+          <li>Mengubah sinyal ISP (analog/optik) menjadi sinyal digital (Ethernet).</li>
+          <li>Sering sudah termasuk <strong>router + Wi-Fi</strong> (all-in-one).</li>
+          <li>Bisa <strong>bridge mode</strong> — modem hanya meneruskan, router terpisah menangani routing.</li>
+          <li>Menyediakan port untuk TV kabel / telepon (jika satu paket).</li>
+        </ul>
+
+        <div class="callout info">
+          <span class="title">Bridge Mode</span>
+          <p style="margin:0">Kalau Anda pakai router sendiri yang lebih bagus, aktifkan <strong>bridge mode</strong> di modem/ONT. Modem hanya jadi "pipa", semua routing dilakukan router Anda. Menghindari <em>double NAT</em>.</p>
+        </div>
+
+        <div class="callout warn">
+          <span class="title">Milik Siapa?</span>
+          <p style="margin:0">Modem/ONT biasanya <strong>milik ISP</strong> dan dipinjamkan selama berlangganan. Jangan asal ganti tanpa izin ISP — bisa putus koneksi.</p>
+        </div>
+      </div>
+    </details>
+  </section>
+
+  <!-- 8.9 FIREWALL -->
+  <section id="m8-9">
+    <details>
+      <summary>
+        <span class="num">8.9</span>
+        <span class="summary-text">Firewall</span>
+        <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </summary>
+      <div class="content">
+        <div class="device-hero">
+          <div class="device-icon">🛡️</div>
+          <div class="device-meta">
+            <div class="device-name">Firewall</div>
+            <div class="device-tagline">Satpam jaringan — menyaring traffic yang boleh masuk</div>
+          </div>
+        </div>
+
+        <p><strong>Firewall</strong> memeriksa setiap paket data yang masuk atau keluar dari jaringan dan memutuskan: <em>izinkan</em> atau <em>blokir</em>, berdasarkan aturan yang ditentukan.</p>
+
+        <h4>Jenis Firewall</h4>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Jenis</th><th>Cara Kerja</th><th>Level</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Packet Filtering</td><td>Filter berdasarkan IP & port</td><td><span class="pill low">Dasar</span></td></tr>
+              <tr><td>Stateful Inspection</td><td>Melacak status koneksi</td><td><span class="pill med">Menengah</span></td></tr>
+              <tr><td>UTM / NGFW</td><td>Antivirus, IPS, content filter</td><td><span class="pill high">Lanjut</span></td></tr>
+              <tr><td>WAF</td><td>Khusus aplikasi web</td><td><span class="pill high">Khusus</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h4>Bentuk Firewall</h4>
+        <ul>
+          <li><strong>Software firewall</strong> — terinstall di PC/server (Windows Firewall, iptables).</li>
+          <li><strong>Router firewall</strong> — fitur di router (sudah cukup untuk kecil).</li>
+          <li><strong>Appliance firewall</strong> — perangkat khusus antara router & LAN.</li>
+          <li><strong>Cloud firewall</strong> — disediakan oleh layanan cloud.</li>
+        </ul>
+
+        <h4>Fungsi Umum Firewall</h4>
+        <ul>
+          <li>Blokir akses tidak sah dari luar.</li>
+          <li>Filter konten (parental control, block situs).</li>
+          <li>Deteksi & blokir serangan (IPS/IDS).</li>
+          <li>Log aktivitas jaringan untuk audit.</li>
+          <li>Membuat VPN antar lokasi.</li>
+        </ul>
+
+        <div class="callout tip">
+          <span class="title">Untuk Skala Kecil</span>
+          <p style="margin:0">Untuk rumah & kantor kecil, <strong>firewall bawaan router sudah cukup</strong>. Beli appliance firewall terpisah hanya jika ada kebutuhan spesifik (audit, IPS, content filtering serius).</p>
+        </div>
+
+        <div class="callout warn">
+          <span class="title">Lisensi</span>
+          <p style="margin:0">Firewall UTM/NGFW biasanya butuh <strong>lisensi tahunan</strong> untuk update signature. Jangan hanya lihat harga beli — hitung juga biaya lisensinya.</p>
+        </div>
+      </div>
+    </details>
+  </section>
+
+  <!-- 8.10 SERVER -->
+  <section id="m8-10">
+    <details>
+      <summary>
+        <span class="num">8.10</span>
+        <span class="summary-text">Server</span>
+        <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </summary>
+      <div class="content">
+        <div class="device-hero">
+          <div class="device-icon">🖥️</div>
+          <div class="device-meta">
+            <div class="device-name">Server</div>
+            <div class="device-tagline">Komputer yang melayani — bukan dilayani</div>
+          </div>
+        </div>
+
+        <p><strong>Server</strong> adalah komputer (atau perangkat) yang menyediakan layanan bagi komputer lain (client). Di jaringan, server biasanya diakses oleh banyak client bersamaan.</p>
+
+        <h4>Jenis Server Berdasarkan Fungsi</h4>
+        <div class="spec-grid">
+          <div class="spec-card">
+            <h5>File Server</h5>
+            <ul>
+              <li>Menyimpan & berbagi file</li>
+              <li>Bisa diakses banyak client</li>
+              <li>Butuh storage besar</li>
+            </ul>
+          </div>
+          <div class="spec-card">
+            <h5>Web Server</h5>
+            <ul>
+              <li>Menyajikan aplikasi web</li>
+              <li>Akses via browser</li>
+              <li>Contoh: LMS sekolah</li>
+            </ul>
+          </div>
+          <div class="spec-card">
+            <h5>Database Server</h5>
+            <ul>
+              <li>Menyimpan & mengelola data</li>
+              <li>Query dari aplikasi lain</li>
+              <li>Butuh RAM & disk cepat</li>
+            </ul>
+          </div>
+          <div class="spec-card">
+            <h5>Print Server</h5>
+            <ul>
+              <li>Mengelola printer jaringan</li>
+              <li>Bisa dari router/NAS</li>
+              <li>Antrian & driver management</li>
+            </ul>
+          </div>
+        </div>
+
+        <h4>Bentuk Server</h4>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Bentuk</th><th>Ciri</th><th>Cocok untuk</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Tower</td><td>Berdiri, seperti PC besar</td><td>Kantor kecil, sekolah</td></tr>
+              <tr><td>Rack-mount (1U/2U/4U)</td><td>Datar, dipasang di rack</td><td>Data center, kantor menengah</td></tr>
+              <tr><td>Blade</td><td>Modular dalam chassis</td><td>Enterprise, efisiensi ruang</td></tr>
+              <tr><td>NAS</td><td>Kotak penyimpanan jaringan</td><td>Rumah, kantor kecil</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h4>Server vs PC Biasa</h4>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Aspek</th><th>PC Biasa</th><th>Server</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Uptime</td><td>8 jam/hari</td><td>24/7</td></tr>
+              <tr><td>Prosesor</td><td>1 CPU umum</td><td>Multi-CPU / Xeon</td></tr>
+              <tr><td>RAM</td><td>8–32 GB</td><td>64 GB – 1 TB+</td></tr>
+              <tr><td>Storage</td><td>1 disk</td><td>RAID (disk berlapis)</td></tr>
+              <tr><td>Redundansi</td><td>Tidak ada</td><td>PSU ganda, cooling</td></tr>
+              <tr><td>Harga</td><td>Rp5–15 juta</td><td>Rp30 juta – ratusan juta</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="callout warn">
+          <span class="title">Bottleneck NIC</span>
+          <p style="margin:0">Server dengan NIC 1 Gbps hanya bisa melayani ~125 MB/detik. Kalau 36 client transfer file bersamaan, akan terasa lambat. <strong>NIC 2.5G atau 10G</strong> sering diperlukan untuk server file.</p>
+        </div>
+      </div>
+    </details>
+  </section>
+
+  <!-- 8.11 PoE -->
+  <section id="m8-11">
+    <details>
+      <summary>
+        <span class="num">8.11</span>
+        <span class="summary-text">PoE Switch & PoE Injector</span>
+        <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </summary>
+      <div class="content">
+        <p><strong>PoE (Power over Ethernet)</strong> mengirim daya listrik <em>bersamaan</em> dengan data melalui satu kabel UTP. Berguna untuk perangkat yang sulit dijangkau colokan listrik.</p>
+
+        <h4>Perangkat yang Cocok Pakai PoE</h4>
+        <ul>
+          <li><strong>Access Point</strong> — dipasang di plafon, tanpa colokan dekat.</li>
+          <li><strong>CCTV / IP Camera</strong> — dipasang di lokasi yang tidak ada listrik.</li>
+          <li><strong>Telepon VoIP</strong> — meja kerja, satu kabel untuk data & daya.</li>
+          <li><strong>Perangkat IoT</strong> — sensor, akses kontrol.</li>
+        </ul>
+
+        <h4>Standar PoE</h4>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Standar</th><th>Nama</th><th>Daya per Port</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>802.3af</td><td>PoE</td><td>15.4 W</td></tr>
+              <tr><td>802.3at</td><td>PoE+</td><td>30 W</td></tr>
+              <tr><td>802.3bt Type 3</td><td>PoE++</td><td>60 W</td></tr>
+              <tr><td>802.3bt Type 4</td><td>PoE++</td><td>90 W</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h4>Dua Cara Memberi PoE</h4>
+        <div class="vs">
+          <div class="vs-col">
+            <h5>PoE Switch</h5>
+            <ul>
+              <li>Switch sudah punya PoE built-in</li>
+              <li>Semua port PoE (atau sebagian)</li>
+              <li>Budget total (misal 190W)</li>
+              <li>Cocok: banyak perangkat PoE</li>
+            </ul>
+          </div>
+          <div class="vs-col alt">
+            <h5>PoE Injector</h5>
+            <ul>
+              <li>Alat kecil di antara switch & perangkat</li>
+              <li>Satu injector untuk satu perangkat</li>
+              <li>Butuh colokan listrik per injector</li>
+              <li>Cocok: perangkat PoE sedikit (1–3)</li>
+            </ul>
+          </div>
+        </div>
+
+        <h4>Hitung Budget PoE</h4>
+        <div class="formula">
+          <span class="hl">Total PoE</span> = Σ (jumlah perangkat × daya perangkat)
+          <br><br>
+          <span class="cm">Contoh: 8 AP × 15W = 120W</span>
+          <br>
+          <span class="cm">Budget switch harus ≥ 120W</span>
+        </div>
+
+        <div class="callout warn">
+          <span class="title">PoE Budget ≠ Per Port</span>
+          <p style="margin:0">Switch 24-port PoE+ dengan budget <strong>190W</strong> tidak bisa memberi 30W ke semua port (24 × 30 = 720W). Yang dibatasi adalah <strong>total</strong>, bukan per port.</p>
+        </div>
+
+        <div class="callout tip">
+          <span class="title">Tips</span>
+          <p style="margin:0">Sisakan minimal <strong>20% cadangan</strong> PoE budget untuk perangkat tambahan di masa depan.</p>
+        </div>
+      </div>
+    </details>
+  </section>
+
+  <!-- 8.12 SFP -->
+  <section id="m8-12">
+    <details>
+      <summary>
+        <span class="num">8.12</span>
+        <span class="summary-text">SFP dan Transceiver</span>
+        <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </summary>
+      <div class="content">
+        <p><strong>SFP (Small Form-factor Pluggable)</strong> adalah modul transceiver yang bisa dilepas-pasang di slot switch/router. Fungsinya mengubah sinyal listrik menjadi sinyal optik (fiber) — atau sebaliknya.</p>
+
+        <h4>Jenis SFP</h4>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Jenis</th><th>Kecepatan</th><th>Umum untuk</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>SFP</td><td>1 Gbps</td><td>Uplink jarak menengah</td></tr>
+              <tr><td>SFP+</td><td>10 Gbps</td><td>Backbone, server</td></tr>
+              <tr><td>SFP28</td><td>25 Gbps</td><td>Data center</td></tr>
+              <tr><td>QSFP+</td><td>40 Gbps</td><td>Backbone besar</td></tr>
+              <tr><td>QSFP28</td><td>100 Gbps</td><td>Data center core</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h4>Jenis Kabel di SFP</h4>
+        <div class="spec-grid">
+          <div class="spec-card">
+            <h5>Fiber Optic</h5>
+            <ul>
+              <li>Jarak jauh (100 m – puluhan km)</li>
+              <li>Butuh SFP khusus (SM/MM)</li>
+              <li>Kecepatan tinggi</li>
+            </ul>
+          </div>
+          <div class="spec-card">
+            <h5>DAC Cable</h5>
+            <ul>
+              <li>Direct Attach Copper</li>
+              <li>Jarak pendek (1–7 m)</li>
+              <li>Lebih murah dari fiber</li>
+              <li>Untuk koneksi rack internal</li>
+            </ul>
+          </div>
+          <div class="spec-card">
+            <h5>AOC Cable</h5>
+            <ul>
+              <li>Active Optical Cable</li>
+              <li>Jarak menengah (10–100 m)</li>
+              <li>Sudah termasuk transceiver</li>
+            </ul>
+          </div>
+          <div class="spec-card">
+            <h5>Copper RJ45 SFP</h5>
+            <ul>
+              <li>SFP dengan port RJ45</li>
+              <li>Untuk kabel UTP</li>
+              <li>Jarak 100 m</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="callout info">
+          <span class="title">Kenapa SFP Penting?</span>
+          <p style="margin:0">SFP memungkinkan switch/router <strong>dipasang koneksi fiber</strong> tanpa harus beli perangkat baru. Fleksibel untuk upgrade.</p>
+        </div>
+
+        <div class="callout warn">
+          <span class="title">Kompatibilitas</span>
+          <p style="margin:0">Tidak semua SFP kompatibel dengan semua switch. Beberapa vendor <strong>mengunci</strong> SFP hanya untuk merek mereka. Cek datasheet sebelum beli.</p>
+        </div>
+      </div>
+    </details>
+  </section>
+
+  <!-- 8.13 RACK -->
+  <section id="m8-13">
+    <details>
+      <summary>
+        <span class="num">8.13</span>
+        <span class="summary-text">Rack & Perangkat Pendukung</span>
+        <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </summary>
+      <div class="content">
+        <p>Perangkat jaringan profesional dipasang di <strong>rack</strong> — lemari khusus dengan ukuran standar. Rack bukan sekadar tempat, tapi bagian dari manajemen infrastruktur.</p>
+
+        <h4>Ukuran Rack</h4>
+        <div class="formula">
+          <span class="hl">1U</span> = 1.75 inci = 44.45 mm (tinggi)
+          <br><br>
+          <span class="cm">Lebar standar: 19 inci (482 mm)<br>
+          Ukuran umum tinggi: 6U, 9U, 12U, 22U, 42U</span>
+        </div>
+
+        <h4>Komponen Rack</h4>
+        <div class="spec-grid">
+          <div class="spec-card">
+            <h5>Rack Frame</h5>
+            <ul>
+              <li>Struktur utama (logam)</li>
+              <li>Terbuka atau tertutup</li>
+              <li>Ada pintu & kunci</li>
+            </ul>
+          </div>
+          <div class="spec-card">
+            <h5>PDU</h5>
+            <ul>
+              <li>Power Distribution Unit</li>
+              <li>Stop kontak rack-mounted</li>
+              <li>Bisa monitored / switched</li>
+            </ul>
+          </div>
+          <div class="spec-card">
+            <h5>Patch Panel</h5>
+            <ul>
+              <li>Terminasi kabel UTP</li>
+              <li>24 / 48 port</li>
+              <li>Rapi & mudah di-manage</li>
+            </ul>
+          </div>
+          <div class="spec-card">
+            <h5>Cable Manager</h5>
+            <ul>
+              <li>Mengatur jalur kabel</li>
+              <li>Horizontal & vertikal</li>
+              <li>Mencegah kabel kusut</li>
+            </ul>
+          </div>
+          <div class="spec-card">
+            <h5>Fan / Cooling</h5>
+            <ul>
+              <li>Sirkulasi udara dalam rack</li>
+              <li>Penting untuk server</li>
+              <li>Termostat otomatis</li>
+            </ul>
+          </div>
+          <div class="spec-card">
+            <h5>Shelves & Bracket</h5>
+            <ul>
+              <li>Rak untuk perangkat non-rack</li>
+              <li>Bracket untuk mounting</li>
+              <li>Baut & mur standar M6</li>
+            </ul>
+          </div>
+        </div>
+
+        <h4>Perhitungan Ukuran Rack</h4>
+        <div class="formula">
+          <span class="hl">Total U</span> = Σ tinggi perangkat + 2U (organizer) + cadangan 30%
+          <br><br>
+          <span class="cm">Contoh:<br>
+          Switch 1U + Patch Panel 2U + Router 1U + Server 1U<br>
+          + NVR 2U + UPS 2U + Cable mgr 2U = 11U<br>
+          + 30% cadangan = 15U → <span class="hl">pilih rack 22U</span></span>
+        </div>
+
+        <div class="callout tip">
+          <span class="title">Tips</span>
+          <p style="margin:0">Jangan beli rack "pas-pasan". Selalu pilih satu ukuran di atas kebutuhan, agar ada ruang untuk upgrade & sirkulasi udara.</p>
+        </div>
+      </div>
+    </details>
+  </section>
+
+  <!-- 8.14 RINGKASAN -->
+  <section id="m8-14">
+    <details>
+      <summary>
+        <span class="num">8.14</span>
+        <span class="summary-text">Ringkasan Fungsi & Karakteristik</span>
+        <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </summary>
+      <div class="content">
+        <p>Ringkasan cepat semua perangkat yang sudah dipelajari di Modul 8.</p>
+
+        <div class="qcard-grid">
+          <div class="qcard">
+            <div class="qicon">🔌</div>
+            <div class="qmeta">
+              <div class="qname">NIC</div>
+              <div class="qdesc">Interface fisik ke jaringan. Punya MAC Address unik.</div>
+            </div>
+          </div>
+          <div class="qcard">
+            <div class="qicon">📡</div>
+            <div class="qmeta">
+              <div class="qname">Hub</div>
+              <div class="qdesc">Perangkat lama, broadcast ke semua port. Sudah jarang dipakai.</div>
+            </div>
+          </div>
+          <div class="qcard">
+            <div class="qicon">🔀</div>
+            <div class="qmeta">
+              <div class="qname">Switch</div>
+              <div class="qdesc">Forward selektif berdasarkan MAC. Jantung LAN.</div>
+            </div>
+          </div>
+          <div class="qcard">
+            <div class="qicon">⚙️</div>
+            <div class="qmeta">
+              <div class="qname">Managed Switch</div>
+              <div class="qdesc">Switch yang bisa dikonfigurasi (VLAN, QoS, SNMP).</div>
+            </div>
+          </div>
+          <div class="qcard">
+            <div class="qicon">🧭</div>
+            <div class="qmeta">
+              <div class="qname">L3 Switch</div>
+              <div class="qdesc">Switch dengan kemampuan routing antar VLAN.</div>
+            </div>
+          </div>
+          <div class="qcard">
+            <div class="qicon">🌐</div>
+            <div class="qmeta">
+              <div class="qname">Router</div>
+              <div class="qdesc">Hubungkan jaringan berbeda. NAT, DHCP, firewall.</div>
+            </div>
+          </div>
+          <div class="qcard">
+            <div class="qicon">📶</div>
+            <div class="qmeta">
+              <div class="qname">Access Point</div>
+              <div class="qdesc">Sediakan Wi-Fi dari jaringan kabel.</div>
+            </div>
+          </div>
+          <div class="qcard">
+            <div class="qicon">📞</div>
+            <div class="qmeta">
+              <div class="qname">Modem / ONT</div>
+              <div class="qdesc">Terjemahkan sinyal ISP ke jaringan lokal.</div>
+            </div>
+          </div>
+          <div class="qcard">
+            <div class="qicon">🛡️</div>
+            <div class="qmeta">
+              <div class="qname">Firewall</div>
+              <div class="qdesc">Saring traffic masuk/keluar berdasarkan aturan.</div>
+            </div>
+          </div>
+          <div class="qcard">
+            <div class="qicon">🖥️</div>
+            <div class="qmeta">
+              <div class="qname">Server</div>
+              <div class="qdesc">Menyediakan layanan (file, web, database) untuk client.</div>
+            </div>
+          </div>
+          <div class="qcard">
+            <div class="qicon">⚡</div>
+            <div class="qmeta">
+              <div class="qname">PoE Switch/Injector</div>
+              <div class="qdesc">Kirim daya + data via satu kabel untuk AP/CCTV/VoIP.</div>
+            </div>
+          </div>
+          <div class="qcard">
+            <div class="qicon">🔗</div>
+            <div class="qmeta">
+              <div class="qname">SFP / Transceiver</div>
+              <div class="qdesc">Modul fiber yang bisa dilepas-pasang. Untuk uplink cepat.</div>
+            </div>
+          </div>
+          <div class="qcard">
+            <div class="qicon">🗄️</div>
+            <div class="qmeta">
+              <div class="qname">Rack</div>
+              <div class="qdesc">Tempat pemasangan standar 19". Ukuran dalam U.</div>
+            </div>
+          </div>
+          <div class="qcard">
+            <div class="qicon">🔋</div>
+            <div class="qmeta">
+              <div class="qname">UPS</div>
+              <div class="qdesc">Catu daya cadangan untuk perangkat kritis.</div>
+            </div>
+          </div>
+        </div>
+
+        <h4>Alur Data dari Internet ke PC</h4>
+        <div class="formula">
+          <span class="cm">Internet</span>
+          <br><span class="hl">↓</span><br>
+          <span class="cm">Modem / ONT (ubah sinyal ISP)</span>
+          <br><span class="hl">↓</span><br>
+          <span class="cm">Router (NAT, firewall, DHCP)</span>
+          <br><span class="hl">↓</span><br>
+          <span class="cm">Switch (distribusi ke LAN)</span>
+          <br><span class="hl">↓</span><br>
+          <span class="cm">NIC (interface di PC)</span>
+        </div>
+
+        <h4>Bantu Pilih Perangkat</h4>
+        <p>Jawab beberapa pertanyaan berikut untuk melihat perangkat mana yang paling relevan dengan kebutuhan Anda.</p>
+
+        <div class="helper">
+          <div class="helper-head">
+            <div class="helper-icon">🧠</div>
+            <div>
+              <div class="helper-title">Panduan Cepat</div>
+              <div class="helper-sub">Pilih kondisi yang paling sesuai</div>
+            </div>
+          </div>
+
+          <div class="helper-step">
+            <div class="helper-q">
+              <span class="qnum">1</span>
+              Berapa jumlah perangkat yang akan terhubung?
+            </div>
+            <div class="helper-opts" data-group="q1">
+              <button data-val="small">1–5</button>
+              <button data-val="medium">6–24</button>
+              <button data-val="large">25+</button>
+            </div>
+          </div>
+
+          <div class="helper-step">
+            <div class="helper-q">
+              <span class="qnum">2</span>
+              Ada perangkat PoE (AP / CCTV / VoIP)?
+            </div>
+            <div class="helper-opts" data-group="q2">
+              <button data-val="yes">Ya</button>
+              <button data-val="no">Tidak</button>
+            </div>
+          </div>
+
+          <div class="helper-step">
+            <div class="helper-q">
+              <span class="qnum">3</span>
+              Butuh Wi-Fi untuk perangkat mobile?
+            </div>
+            <div class="helper-opts" data-group="q3">
+              <button data-val="yes">Ya</button>
+              <button data-val="no">Tidak</button>
+            </div>
+          </div>
+
+          <div class="helper-result" id="helperResult">
+            <div class="r-label">Rekomendasi Perangkat</div>
+            <div class="r-name" id="helperName">— Pilih dulu —</div>
+            <div class="r-desc" id="helperDesc">Jawab 3 pertanyaan di atas untuk melihat rekomendasi.</div>
+          </div>
+        </div>
+
+        <div class="case-box">
+          <span class="case-label">Latihan</span>
+          <p>Untuk setiap skenario berikut, tentukan perangkat yang dibutuhkan:</p>
+          <ul style="margin:6px 0 8px;padding-left:20px;font-size:14px">
+            <li>Rumah dengan 4 penghuni, semua pakai Wi-Fi.</li>
+            <li>Lab komputer dengan 36 PC + 1 server lokal.</li>
+            <li>Kantor kecil dengan 15 karyawan, 8 di antaranya pakai VoIP.</li>
+          </ul>
+          <div class="question">
+            <strong>Tugas:</strong> Untuk setiap kasus, daftar perangkat minimum yang diperlukan + alasan singkat untuk masing-masing.
+          </div>
+        </div>
+      </div>
+    </details>
+  </section>
+
+  <div class="takeaway">
+    <h3>Poin Kunci Modul 8</h3>
+    <ol>
+      <li><strong>NIC</strong> = interface fisik ke jaringan, punya MAC Address.</li>
+      <li><strong>Hub</strong> = broadcast ke semua port (lama, tidak dipakai lagi).</li>
+      <li><strong>Switch</strong> = forward selektif berdasarkan MAC. Jantung LAN.</li>
+      <li><strong>Managed switch</strong> = bisa VLAN, QoS, monitoring. <strong>Unmanaged</strong> = plug-and-play.</li>
+      <li><strong>L3 switch</strong> = bisa routing antar VLAN, lebih cepat dari router.</li>
+      <li><strong>Router</strong> = hubungkan jaringan berbeda, NAT, DHCP, firewall.</li>
+      <li><strong>Access Point</strong> = Wi-Fi dari jaringan kabel.</li>
+      <li><strong>Modem/ONT</strong> = penerjemah sinyal ISP ke jaringan lokal.</li>
+      <li><strong>Firewall</strong> = saring traffic berdasarkan aturan keamanan.</li>
+      <li><strong>Server</strong> = melayani; PC = dilayani.</li>
+      <li><strong>PoE</strong> = daya + data via satu kabel. Budget total, bukan per port.</li>
+      <li><strong>SFP</strong> = modul fiber fleksibel untuk uplink cepat.</li>
+      <li><strong>Rack</strong> = pemasangan standar 19". Ukuran dalam U.</li>
+      <li>Setiap perangkat punya <strong>peran</strong>, bukan hanya nama.</li>
+    </ol>
+  </div>
+
+</main>
+
+<button class="back-top" id="backTop" aria-label="Kembali ke atas">
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>
+</button>
+
+<footer>
+  <strong>Modul 8 — Perangkat Jaringan dan Fungsinya</strong><br>
+  Kelas XI TKJ · TP: Memahami kebutuhan teknis pengguna dan peralatan jaringan dengan teknologi yang sesuai.
+</footer>
+
+<script>
+  // Smooth scroll
+  document.querySelectorAll('nav.toc a').forEach(a=>{
+    a.addEventListener('click', e=>{
+      const el = document.querySelector(a.getAttribute('href'));
+      if(el){ e.preventDefault(); el.scrollIntoView({behavior:'smooth', block:'start'}); }
+    });
+  });
+
+  // Back to top
+  const btn = document.getElementById('backTop');
+  window.addEventListener('scroll', ()=>{
+    if(window.scrollY > 400) btn.classList.add('show');
+    else btn.classList.remove('show');
+  });
+  btn.addEventListener('click', ()=>window.scrollTo({top:0, behavior:'smooth'}));
+
+  // ===== DEVICE HELPER =====
+  const answers = { q1:null, q2:null, q3:null };
+
+  document.querySelectorAll('.helper-opts').forEach(group=>{
+    group.querySelectorAll('button').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        // Reset siblings dalam group ini
+        group.querySelectorAll('button').forEach(b=>b.classList.remove('active'));
+        btn.classList.add('active');
+
+        // Simpan jawaban
+        const key = group.dataset.group;
+        answers[key] = btn.dataset.val;
+
+        // Update hasil
+        renderHelper();
+      });
+    });
+  });
+
+  function renderHelper(){
+    const nameEl = document.getElementById('helperName');
+    const descEl = document.getElementById('helperDesc');
+
+    const { q1, q2, q3 } = answers;
+
+    // Belum lengkap
+    if(!q1 || !q2 || !q3){
+      nameEl.textContent = '— Pilih dulu —';
+      descEl.textContent = 'Jawab 3 pertanyaan di atas untuk melihat rekomendasi.';
+      return;
+    }
+
+    // Logika rekomendasi
+    let name = '';
+    let desc = '';
+
+    // Kombinasi 1: Kecil (1-5) + tidak PoE + tidak Wi-Fi
+    if(q1 === 'small' && q2 === 'no' && q3 === 'no'){
+      name = 'Router Rumahan Sederhana';
+      desc = 'Untuk 1–5 perangkat berkabel, cukup router basic atau switch unmanaged kecil. Tidak perlu AP.';
+    }
+    // Kecil + Wi-Fi + tidak PoE
+    else if(q1 === 'small' && q2 === 'no' && q3 === 'yes'){
+      name = 'Router Wi-Fi (All-in-one)';
+      desc = 'Router rumahan dengan Wi-Fi bawaan sudah cukup. Ada 4 port LAN untuk perangkat berkabel.';
+    }
+    // Kecil + PoE (dengan/tanpa Wi-Fi)
+    else if(q1 === 'small' && q2 === 'yes'){
+      name = 'Router Wi-Fi + PoE Injector';
+      desc = 'Untuk 1–2 perangkat PoE (misal 1 AP tambahan), gunakan PoE injector. Belum perlu PoE switch.';
+    }
+    // Medium 6-24 + tidak PoE + tidak Wi-Fi
+    else if(q1 === 'medium' && q2 === 'no' && q3 === 'no'){
+      name = 'Switch Unmanaged 16/24-port + Router';
+      desc = 'Switch unmanaged sudah cukup untuk PC/printer berkabel. Router untuk akses internet.';
+    }
+    // Medium + tidak PoE + Wi-Fi
+    else if(q1 === 'medium' && q2 === 'no' && q3 === 'yes'){
+      name = 'Router Wi-Fi + Switch Unmanaged';
+      desc = 'Router dengan Wi-Fi + switch 16/24-port untuk perangkat berkabel. Cocok kantor kecil tanpa perangkat PoE.';
+    }
+    // Medium + PoE (dengan/tanpa Wi-Fi)
+    else if(q1 === 'medium' && q2 === 'yes'){
+      name = 'PoE Switch 8/16-port + Router';
+      desc = 'PoE switch untuk AP/CCTV/VoIP. Router terpisah untuk internet. Pertimbangkan managed jika butuh VLAN.';
+    }
+    // Large 25+ + tidak PoE + tidak Wi-Fi
+    else if(q1 === 'large' && q2 === 'no' && q3 === 'no'){
+      name = 'Managed Switch 48-port + Router SMB';
+      desc = 'Skala besar butuh switch managed untuk VLAN & monitoring. Router SMB untuk firewall & QoS.';
+    }
+    // Large + tidak PoE + Wi-Fi
+    else if(q1 === 'large' && q2 === 'no' && q3 === 'yes'){
+      name = 'Managed Switch + Router + AP Terpisah';
+      desc = 'Pisahkan router dan AP untuk fleksibilitas. Switch managed untuk VLAN. AP dipasang di titik-titik strategis.';
+    }
+    // Large + PoE
+    else if(q1 === 'large' && q2 === 'yes'){
+      name = 'Managed PoE+ Switch + Router + AP + Firewall';
+      desc = 'Solusi enterprise: PoE managed switch, router multi-WAN, beberapa AP controller-based, firewall untuk keamanan.';
+    }
+    else {
+      name = 'Belum bisa ditentukan';
+      desc = 'Coba ulangi pemilihan.';
+    }
+
+    nameEl.textContent = name;
+    descEl.textContent = desc;
+  }
+</script>
+
+</body>
+</html>

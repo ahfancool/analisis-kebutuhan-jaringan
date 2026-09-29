@@ -1,0 +1,2169 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0f766e">
+<title>Modul 12 — Studi Kasus Analisis Kebutuhan Jaringan</title>
+<style>
+  :root{
+    --primary:#0f766e;
+    --primary-dark:#115e59;
+    --primary-light:#ccfbf1;
+    --accent:#f59e0b;
+    --danger:#dc2626;
+    --success:#16a34a;
+    --bg:#f8fafc;
+    --card:#ffffff;
+    --text:#0f172a;
+    --text-muted:#475569;
+    --border:#e2e8f0;
+    --radius:14px;
+    --shadow:0 1px 3px rgba(15,23,42,.06), 0 1px 2px rgba(15,23,42,.04);
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{margin:0;padding:0}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    line-height:1.6;
+    font-size:16px;
+    -webkit-font-smoothing:antialiased;
+    padding-bottom:env(safe-area-inset-bottom);
+  }
+
+  header.hero{
+    background:linear-gradient(135deg,var(--primary) 0%,var(--primary-dark) 100%);
+    color:#fff;
+    padding:28px 20px 32px;
+    border-radius:0 0 24px 24px;
+    position:relative;
+    overflow:hidden;
+  }
+  header.hero::after{
+    content:"";
+    position:absolute;
+    right:-40px;top:-40px;
+    width:160px;height:160px;
+    background:rgba(255,255,255,.08);
+    border-radius:50%;
+  }
+  .badge{
+    display:inline-block;
+    background:rgba(255,255,255,.18);
+    color:#fff;
+    padding:4px 12px;
+    border-radius:999px;
+    font-size:12px;
+    font-weight:600;
+    letter-spacing:.4px;
+    text-transform:uppercase;
+    margin-bottom:12px;
+    backdrop-filter:blur(4px);
+  }
+  header.hero h1{
+    font-size:22px;
+    margin:0 0 8px;
+    line-height:1.3;
+    font-weight:700;
+  }
+  header.hero p{
+    margin:0;
+    font-size:14px;
+    opacity:.9;
+  }
+
+  .tp-box{
+    background:#fff;
+    margin:-16px 16px 20px;
+    padding:16px 18px;
+    border-radius:var(--radius);
+    box-shadow:var(--shadow);
+    border-left:4px solid var(--accent);
+    position:relative;
+    z-index:1;
+  }
+  .tp-box .label{
+    font-size:11px;
+    font-weight:700;
+    letter-spacing:.6px;
+    text-transform:uppercase;
+    color:var(--accent);
+    margin-bottom:6px;
+    display:block;
+  }
+  .tp-box p{
+    margin:0;
+    font-size:14.5px;
+    color:var(--text);
+    font-weight:500;
+  }
+
+  nav.toc{
+    background:#fff;
+    margin:0 16px 24px;
+    padding:16px 18px;
+    border-radius:var(--radius);
+    box-shadow:var(--shadow);
+  }
+  nav.toc h2{
+    font-size:14px;
+    margin:0 0 12px;
+    color:var(--text-muted);
+    text-transform:uppercase;
+    letter-spacing:.5px;
+    font-weight:700;
+  }
+  nav.toc ol{
+    margin:0;
+    padding-left:20px;
+    font-size:14.5px;
+  }
+  nav.toc li{margin-bottom:6px}
+  nav.toc a{
+    color:var(--primary);
+    text-decoration:none;
+    font-weight:500;
+  }
+  nav.toc a:active{opacity:.6}
+
+  main{
+    padding:0 16px 40px;
+    max-width:720px;
+    margin:0 auto;
+  }
+
+  section{
+    background:#fff;
+    border-radius:var(--radius);
+    box-shadow:var(--shadow);
+    margin-bottom:16px;
+    overflow:hidden;
+    scroll-margin-top:16px;
+  }
+
+  details{
+    border-radius:var(--radius);
+    overflow:hidden;
+  }
+  details summary{
+    list-style:none;
+    cursor:pointer;
+    padding:16px 18px;
+    display:flex;
+    align-items:center;
+    gap:12px;
+    font-weight:600;
+    font-size:15px;
+    user-select:none;
+    transition:background .15s;
+  }
+  details summary::-webkit-details-marker{display:none}
+  details summary:active{background:var(--bg)}
+
+  .num{
+    flex-shrink:0;
+    width:32px;height:32px;
+    background:var(--primary-light);
+    color:var(--primary-dark);
+    border-radius:9px;
+    display:flex;align-items:center;justify-content:center;
+    font-weight:700;
+    font-size:13px;
+  }
+  .summary-text{
+    flex:1;
+    color:var(--text);
+    line-height:1.35;
+  }
+  .chev{
+    flex-shrink:0;
+    width:20px;height:20px;
+    transition:transform .2s;
+    color:var(--text-muted);
+  }
+  details[open] > summary .chev{transform:rotate(180deg)}
+
+  .content{
+    padding:0 18px 20px;
+    font-size:15px;
+    color:var(--text);
+    border-top:1px solid var(--border);
+    padding-top:16px;
+    margin-top:0;
+  }
+
+  .content p{margin:0 0 12px}
+  .content p:last-child{margin-bottom:0}
+  .content h4{
+    font-size:14px;
+    margin:16px 0 8px;
+    color:var(--primary-dark);
+    font-weight:700;
+  }
+  .content ul,.content ol{
+    margin:0 0 12px;
+    padding-left:22px;
+  }
+  .content li{margin-bottom:6px}
+  .content strong{color:var(--text);font-weight:600}
+
+  /* ===== CALLOUTS ===== */
+  .callout{
+    border-radius:10px;
+    padding:12px 14px;
+    font-size:14px;
+    margin:12px 0;
+    border-left:3px solid;
+  }
+  .callout.tip{background:#ecfdf5;border-color:var(--success);color:#065f46}
+  .callout.warn{background:#fef2f2;border-color:var(--danger);color:#991b1b}
+  .callout.info{background:#eff6ff;border-color:#2563eb;color:#1e40af}
+  .callout .title{
+    font-weight:700;
+    font-size:12px;
+    text-transform:uppercase;
+    letter-spacing:.4px;
+    display:block;
+    margin-bottom:4px;
+  }
+
+  /* ===== TABLE ===== */
+  .table-wrap{
+    overflow-x:auto;
+    margin:12px -4px;
+    border-radius:10px;
+    -webkit-overflow-scrolling:touch;
+  }
+  table{
+    width:100%;
+    border-collapse:collapse;
+    font-size:13.5px;
+    min-width:420px;
+  }
+  th{
+    background:var(--primary-light);
+    color:var(--primary-dark);
+    padding:10px 12px;
+    text-align:left;
+    font-weight:700;
+    font-size:12px;
+    text-transform:uppercase;
+    letter-spacing:.3px;
+    white-space:nowrap;
+  }
+  td{
+    padding:10px 12px;
+    border-top:1px solid var(--border);
+    vertical-align:top;
+  }
+  tr:nth-child(even) td{background:#fafbfc}
+
+  /* ===== CASE META ===== */
+  .case-meta{
+    display:flex;
+    flex-wrap:wrap;
+    gap:6px;
+    margin-bottom:14px;
+  }
+  .case-tag{
+    display:inline-flex;
+    align-items:center;
+    gap:4px;
+    padding:4px 10px;
+    border-radius:999px;
+    font-size:11.5px;
+    font-weight:700;
+    letter-spacing:.3px;
+    text-transform:uppercase;
+  }
+  .case-tag.type{background:var(--primary-light);color:var(--primary-dark)}
+  .case-tag.easy{background:#dcfce7;color:#166534}
+  .case-tag.medium{background:#fef3c7;color:#92400e}
+  .case-tag.hard{background:#fee2e2;color:#991b1b}
+  .case-tag.time{background:#e0e7ff;color:#3730a3}
+
+  /* ===== CONTEXT / TASK / SOLUTION CARDS ===== */
+  .context-card{
+    background:linear-gradient(135deg,#fffbeb 0%,#fef3c7 100%);
+    border-radius:12px;
+    padding:14px 16px;
+    margin:12px 0;
+    border-left:4px solid var(--accent);
+    font-size:14px;
+    color:#78350f;
+    line-height:1.55;
+  }
+  .context-card .label{
+    display:block;
+    font-size:11px;
+    font-weight:700;
+    letter-spacing:.5px;
+    text-transform:uppercase;
+    color:#b45309;
+    margin-bottom:6px;
+  }
+  .context-card em{
+    font-style:normal;
+    background:rgba(180,83,9,.12);
+    padding:1px 5px;
+    border-radius:4px;
+    font-weight:600;
+  }
+
+  .task-card{
+    background:linear-gradient(135deg,#eff6ff 0%,#dbeafe 100%);
+    border-radius:12px;
+    padding:14px 16px;
+    margin:14px 0;
+    border-left:4px solid #2563eb;
+    font-size:14px;
+    color:#1e3a8a;
+  }
+  .task-card .label{
+    display:block;
+    font-size:11px;
+    font-weight:700;
+    letter-spacing:.5px;
+    text-transform:uppercase;
+    color:#1d4ed8;
+    margin-bottom:8px;
+  }
+  .task-card ol{
+    margin:0;
+    padding-left:22px;
+    color:#1e3a8a;
+  }
+  .task-card ol li{margin-bottom:4px}
+  .task-card ol li:last-child{margin-bottom:0}
+
+  /* ===== REVEAL BUTTON (Pembahasan) ===== */
+  .reveal{
+    background:transparent;
+    border:2px dashed var(--primary);
+    border-radius:12px;
+    margin:16px 0 0;
+    overflow:hidden;
+    transition:border-color .2s;
+  }
+  .reveal[open]{
+    border-style:solid;
+    border-color:var(--primary);
+    background:#fff;
+  }
+  .reveal > summary{
+    padding:14px 16px;
+    font-size:14px;
+    font-weight:700;
+    color:var(--primary-dark);
+    background:linear-gradient(135deg,#f0fdfa 0%,#ecfeff 100%);
+    display:flex;
+    align-items:center;
+    gap:10px;
+    transition:background .15s;
+  }
+  .reveal[open] > summary{
+    background:#f8fafc;
+    border-bottom:1px solid var(--border);
+  }
+  .reveal > summary .reveal-icon{
+    flex-shrink:0;
+    width:32px;height:32px;
+    background:var(--primary);
+    color:#fff;
+    border-radius:9px;
+    display:flex;align-items:center;justify-content:center;
+    font-size:16px;
+  }
+  .reveal[open] > summary .reveal-icon{
+    background:var(--primary-dark);
+  }
+  .reveal > summary .reveal-text{
+    flex:1;
+    line-height:1.3;
+  }
+  .reveal > summary .reveal-text small{
+    display:block;
+    font-size:11.5px;
+    font-weight:500;
+    color:var(--text-muted);
+    margin-top:2px;
+  }
+  .reveal[open] > summary .reveal-text small{
+    color:var(--text-muted);
+  }
+  .reveal > summary .chev{
+    color:var(--primary-dark);
+  }
+  .reveal-body{
+    padding:16px 18px;
+    font-size:14px;
+    color:var(--text);
+  }
+  .reveal-body p{margin:0 0 10px}
+  .reveal-body p:last-child{margin-bottom:0}
+  .reveal-body h5{
+    font-size:13px;
+    margin:14px 0 8px;
+    color:var(--primary-dark);
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:.3px;
+    display:flex;
+    align-items:center;
+    gap:6px;
+  }
+  .reveal-body h5::before{
+    content:"";
+    width:4px;height:14px;
+    background:var(--accent);
+    border-radius:2px;
+  }
+  .reveal-body ul,.reveal-body ol{
+    margin:0 0 10px;
+    padding-left:20px;
+    font-size:13.5px;
+  }
+  .reveal-body ul li,.reveal-body ol li{margin-bottom:4px}
+  .reveal-body ul li:last-child,.reveal-body ol li:last-child{margin-bottom:0}
+
+  /* Solution grid */
+  .sol-grid{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:8px;
+    margin:10px 0;
+  }
+  .sol-item{
+    background:#f8fafc;
+    border-radius:8px;
+    padding:10px 12px;
+    font-size:13px;
+    border-left:3px solid var(--primary);
+  }
+  .sol-item .k{
+    font-size:11px;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:.3px;
+    color:var(--primary-dark);
+    display:block;
+    margin-bottom:4px;
+  }
+  .sol-item .v{
+    color:var(--text);
+    font-weight:600;
+    font-size:13.5px;
+  }
+  .sol-item .v small{
+    display:block;
+    font-weight:400;
+    color:var(--text-muted);
+    font-size:12px;
+    margin-top:2px;
+    line-height:1.4;
+  }
+
+  /* Insight list */
+  .insights{
+    background:#0f172a;
+    color:#e2e8f0;
+    border-radius:10px;
+    padding:14px 16px;
+    margin-top:14px;
+  }
+  .insights .ins-title{
+    font-size:11px;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:.4px;
+    color:#5eead4;
+    margin-bottom:10px;
+    display:block;
+  }
+  .insights ul{
+    margin:0;
+    padding-left:20px;
+    font-size:13px;
+  }
+  .insights ul li{
+    color:#cbd5e1;
+    margin-bottom:5px;
+  }
+  .insights ul li:last-child{margin-bottom:0}
+  .insights strong{color:#fff;font-weight:600}
+
+  /* Intro box */
+  .intro-box{
+    background:linear-gradient(135deg,#f0fdfa 0%,#ecfeff 100%);
+    border-radius:12px;
+    padding:14px 16px;
+    margin:12px 0;
+    border:1px solid #99f6e4;
+    font-size:14px;
+  }
+  .intro-box .label{
+    display:block;
+    font-size:11px;
+    font-weight:700;
+    letter-spacing:.5px;
+    text-transform:uppercase;
+    color:var(--primary-dark);
+    margin-bottom:6px;
+  }
+  .intro-box ol{
+    margin:8px 0 0;
+    padding-left:22px;
+    font-size:13.5px;
+  }
+  .intro-box ol li{margin-bottom:5px}
+  .intro-box ol li:last-child{margin-bottom:0}
+
+  /* ===== TAKEAWAY ===== */
+  .takeaway{
+    background:#0f172a;
+    color:#fff;
+    border-radius:var(--radius);
+    padding:20px;
+    margin:24px 0 0;
+  }
+  .takeaway h3{
+    margin:0 0 12px;
+    font-size:15px;
+    color:#5eead4;
+    text-transform:uppercase;
+    letter-spacing:.5px;
+  }
+  .takeaway ol{
+    margin:0;
+    padding-left:22px;
+    font-size:14.5px;
+  }
+  .takeaway li{margin-bottom:8px;color:#e2e8f0}
+  .takeaway li:last-child{margin-bottom:0}
+
+  footer{
+    text-align:center;
+    padding:24px 16px 40px;
+    font-size:12.5px;
+    color:var(--text-muted);
+  }
+  footer strong{color:var(--primary-dark)}
+
+  .back-top{
+    position:fixed;
+    right:16px;
+    bottom:calc(16px + env(safe-area-inset-bottom));
+    width:44px;height:44px;
+    border-radius:50%;
+    background:var(--primary);
+    color:#fff;
+    border:none;
+    box-shadow:0 4px 12px rgba(15,118,110,.35);
+    cursor:pointer;
+    display:none;
+    align-items:center;justify-content:center;
+    z-index:50;
+    transition:transform .15s,opacity .2s;
+  }
+  .back-top:active{transform:scale(.92)}
+  .back-top.show{display:flex}
+
+  @media (min-width:600px){
+    header.hero{padding:36px 28px 40px}
+    header.hero h1{font-size:26px}
+    .tp-box{margin:-20px 24px 24px}
+    nav.toc{margin:0 24px 28px}
+    main{padding:0 24px 60px}
+    .content{font-size:15.5px}
+    .sol-grid{grid-template-columns:1fr 1fr}
+    .reveal-body{font-size:14.5px}
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <span class="badge">Modul 12 · Kelas XI TKJ</span>
+  <h1>Studi Kasus Analisis Kebutuhan Jaringan</h1>
+  <p>Sepuluh skenario nyata — dari rumah sampai sekolah besar.</p>
+</header>
+
+<div class="tp-box">
+  <span class="label">Tujuan Pembelajaran</span>
+  <p>Memahami kebutuhan teknis pengguna dan peralatan jaringan dengan teknologi yang sesuai.</p>
+</div>
+
+<nav class="toc">
+  <h2>Daftar Isi</h2>
+  <ol>
+    <li><a href="#m12-1">Jaringan Rumah</a></li>
+    <li><a href="#m12-2">Laboratorium Komputer 36 PC</a></li>
+    <li><a href="#m12-3">Jaringan Ruang Guru</a></li>
+    <li><a href="#m12-4">Jaringan Sekolah</a></li>
+    <li><a href="#m12-5">Jaringan Kantor Kecil</a></li>
+    <li><a href="#m12-6">Jaringan Hotspot</a></li>
+    <li><a href="#m12-7">Jaringan CCTV</a></li>
+    <li><a href="#m12-8">Jaringan dengan Server Lokal</a></li>
+    <li><a href="#m12-9">Jaringan dengan Layanan Cloud</a></li>
+    <li><a href="#m12-10">Jaringan Sekolah Banyak Pengguna</a></li>
+  </ol>
+</nav>
+
+<main>
+
+  <!-- INTRO -->
+  <section>
+    <details open>
+      <summary>
+        <span class="num">📖</span>
+        <span class="summary-text">Cara Memakai Modul Ini</span>
+        <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </summary>
+      <div class="content">
+        <p>Modul ini berisi <strong>10 studi kasus</strong> yang mensimulasikan proyek jaringan nyata. Setiap kasus disusun mengikuti alur berpikir dari Modul 1 sampai 11.</p>
+
+        <div class="intro-box">
+          <span class="label">Cara Menggunakan</span>
+          <ol>
+            <li><strong>Baca konteks</strong> — pahami skenario dan batasannya.</li>
+            <li><strong>Analisis sendiri</strong> — jawab tugas yang diberikan sebelum membuka pembahasan.</li>
+            <li><strong>Baru buka pembahasan</strong> — bandingkan hasil Anda dengan solusi yang disarankan.</li>
+            <li><strong>Diskusikan</strong> — tidak ada satu jawaban benar. Banyak solusi bisa valid jika alasannya kuat.</li>
+          </ol>
+        </div>
+
+        <h4>Struktur Setiap Kasus</h4>
+        <ul>
+          <li><strong>Konteks</strong> — situasi & batasan proyek.</li>
+          <li><strong>Data</strong> — fakta yang tersedia (jumlah pengguna, luas, aplikasi).</li>
+          <li><strong>Tugas</strong> — pertanyaan analisis yang harus dijawab.</li>
+          <li><strong>Pembahasan</strong> — contoh analisis lengkap (bisa dibuka/tutup).</li>
+        </ul>
+
+        <div class="callout tip">
+          <span class="title">Tips</span>
+          <p style="margin:0">Jangan langsung buka pembahasan. Coba analisis sendiri dulu — proses berpikirlah yang menjadi tujuan modul ini, bukan jawabannya.</p>
+        </div>
+      </div>
+    </details>
+  </section>
+
+  <!-- 12.1 JARINGAN RUMAH -->
+  <section id="m12-1">
+    <details>
+      <summary>
+        <span class="num">12.1</span>
+        <span class="summary-text">Jaringan Rumah</span>
+        <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </summary>
+      <div class="content">
+        <div class="case-meta">
+          <span class="case-tag type">🏠 Rumah</span>
+          <span class="case-tag easy">Mudah</span>
+          <span class="case-tag time">⏱ 15 menit</span>
+        </div>
+
+        <div class="context-card">
+          <span class="label">Konteks</span>
+          Keluarga Bapak Andi tinggal di rumah dua lantai seluas <em>120 m²</em>. Ia ingin Wi-Fi stabil di seluruh rumah karena anaknya sering ikut <em>kelas online</em>, istrinya <em>WFH</em> dengan video meeting, dan Bapak Andi sendiri kadang <em>gaming</em> di malam hari.
+        </div>
+
+        <h4>Data yang Tersedia</h4>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Aspek</th><th>Detail</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Luas rumah</td><td>120 m², 2 lantai (60 m² per lantai)</td></tr>
+              <tr><td>Material dinding</td><td>Bata ringan + 1 dinding beton antar lantai</td></tr>
+              <tr><td>Anggota keluarga</td><td>4 orang</td></tr>
+              <tr><td>Perangkat</td><td>3 HP, 2 laptop, 1 PC gaming, 1 Smart TV, 2 CCTV</td></tr>
+              <tr><td>Aplikasi utama</td><td>Video call HD, streaming 1080p, gaming online, browsing</td></tr>
+              <tr><td>Langganan internet</td><td>Belum ada — akan dipasang</td></tr>
+              <tr><td>Anggaran</td><td>Rp3–5 juta untuk perangkat, langganan bulanan terpisah</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="task-card">
+          <span class="label">Tugas</span>
+          <ol>
+            <li>Tentukan kebutuhan bandwidth minimum.</li>
+            <li>Rekomendasikan jumlah dan tipe Access Point.</li>
+            <li>Pilih media transmisi untuk PC gaming dan CCTV.</li>
+            <li>Estimasi total perangkat yang dibutuhkan.</li>
+          </ol>
+        </div>
+
+        <details class="reveal">
+          <summary>
+            <span class="reveal-icon">🔓</span>
+            <span class="reveal-text">
+              Lihat Pembahasan
+              <small>Klik untuk membuka analisis lengkap</small>
+            </span>
+            <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </summary>
+          <div class="reveal-body">
+            <h5>Analisis Bandwidth</h5>
+            <ul>
+              <li>Video call HD (2 orang bersamaan): 2 × 3 Mbps = 6 Mbps</li>
+              <li>Streaming 1080p: 5 Mbps</li>
+              <li>Gaming online: 5 Mbps</li>
+              <li>Browsing & sosial media: 3 × 2 Mbps = 6 Mbps</li>
+              <li>CCTV remote access: 2 × 2 Mbps = 4 Mbps</li>
+              <li><strong>Total mentah: 26 Mbps → dengan overhead 1.3 ≈ 34 Mbps</strong></li>
+              <li><strong>Rekomendasi langganan: 50 Mbps</strong> (ada cadangan untuk jam sibuk)</li>
+            </ul>
+
+            <h5>Jumlah Access Point</h5>
+            <ul>
+              <li>Coverage: 120 m² ÷ 55 m² (dinding bata) ≈ 2.2 → <strong>3 AP</strong> (2 lantai × 1 AP + 1 cadangan di titik lemah)</li>
+              <li>Kapasitas: 8 client ÷ 30 = 1 AP cukup</li>
+              <li><strong>Ditentukan oleh coverage: 2 AP minimum</strong> (1 per lantai)</li>
+            </ul>
+
+            <h5>Media Transmisi</h5>
+            <ul>
+              <li><strong>PC gaming</strong>: kabel (butuh latency rendah, stabil)</li>
+              <li><strong>CCTV</strong>: kabel (kontinu, tidak boleh putus)</li>
+              <li><strong>Smart TV</strong>: kabel (streaming stabil)</li>
+              <li><strong>HP & laptop</strong>: Wi-Fi</li>
+            </ul>
+
+            <h5>Rekomendasi Perangkat</h5>
+            <div class="sol-grid">
+              <div class="sol-item">
+                <span class="k">Router Wi-Fi</span>
+                <span class="v">Wi-Fi 6 dual-band (AX3000)
+                  <small>Sudah termasuk AP + router + firewall dasar</small>
+                </span>
+              </div>
+              <div class="sol-item">
+                <span class="k">Access Point Tambahan</span>
+                <span class="v">1× AP Wi-Fi 5/6
+                  <small>Untuk lantai 2 jika router utama di lantai 1</small>
+                </span>
+              </div>
+              <div class="sol-item">
+                <span class="k">Switch</span>
+                <span class="v">Switch 8-port Gigabit unmanaged
+                  <small>Untuk PC, CCTV, Smart TV</small>
+                </span>
+              </div>
+              <div class="sol-item">
+                <span class="k">Kabel</span>
+                <span class="v">UTP Cat6 + konektor
+                  <small>~50 m untuk titik-titik tetap</small>
+                </span>
+              </div>
+            </div>
+
+            <div class="insights">
+              <span class="ins-title">Poin Pembelajaran</span>
+              <ul>
+                <li>Di rumah, <strong>coverage sering lebih menentukan</strong> daripada kapasitas.</li>
+                <li>Perangkat yang <strong>tidak berpindah</strong> (TV, PC, CCTV) lebih baik pakai kabel.</li>
+                <li>Router Wi-Fi rumah modern <strong>sudah</strong> punya firewall + DHCP + AP sekaligus.</li>
+                <li>Langganan 50 Mbps cukup untuk 4 orang dengan aktivitas campuran.</li>
+              </ul>
+            </div>
+          </div>
+        </details>
+      </div>
+    </details>
+  </section>
+
+  <!-- 12.2 LAB 36 PC -->
+  <section id="m12-2">
+    <details>
+      <summary>
+        <span class="num">12.2</span>
+        <span class="summary-text">Laboratorium Komputer 36 PC</span>
+        <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </summary>
+      <div class="content">
+        <div class="case-meta">
+          <span class="case-tag type">💻 Laboratorium</span>
+          <span class="case-tag medium">Sedang</span>
+          <span class="case-tag time">⏱ 25 menit</span>
+        </div>
+
+        <div class="context-card">
+          <span class="label">Konteks</span>
+          SMK Negeri 3 Jember akan membangun <em>laboratorium TKJ</em> dengan 36 PC untuk praktikum siswa. Lab ini juga akan jadi ruang ujian online dan pelatihan guru. Setiap PC butuh akses ke <em>server lokal</em> untuk file materi, dan ke <em>internet</em> untuk praktikum jaringan.
+        </div>
+
+        <h4>Data yang Tersedia</h4>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Aspek</th><th>Detail</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Jumlah PC siswa</td><td>36 unit</td></tr>
+              <tr><td>PC guru / instruktur</td><td>2 unit</td></tr>
+              <tr><td>Server lokal</td><td>1 unit (file server, web lokal, DHCP)</td></tr>
+              <tr><td>Printer jaringan</td><td>2 unit</td></tr>
+              <tr><td>Proyektor</td><td>1 unit (tidak butuh jaringan)</td></tr>
+              <tr><td>Luas lab</td><td>12 × 8 m = 96 m²</td></tr>
+              <tr><td>Pengguna concurrent</td><td>36 siswa + 1 guru = 37 aktif bersamaan</td></tr>
+              <tr><td>Aplikasi</td><td>Praktikum jaringan, akses materi LMS, ujian online, browsing</td></tr>
+              <tr><td>Anggaran</td><td>Rp25 juta (untuk perangkat jaringan saja)</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="task-card">
+          <span class="label">Tugas</span>
+          <ol>
+            <li>Hitung kebutuhan port switch (dengan cadangan).</li>
+            <li>Tentukan jumlah switch dan tipenya.</li>
+            <li>Hitung bandwidth internet yang dibutuhkan.</li>
+            <li>Rancang media transmisi & topologi.</li>
+            <li>Estimasi biaya perangkat jaringan.</li>
+          </ol>
+        </div>
+
+        <details class="reveal">
+          <summary>
+            <span class="reveal-icon">🔓</span>
+            <span class="reveal-text">
+              Lihat Pembahasan
+              <small>Klik untuk membuka analisis lengkap</small>
+            </span>
+            <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </summary>
+          <div class="reveal-body">
+            <h5>Kebutuhan Port Switch</h5>
+            <ul>
+              <li>36 PC siswa + 2 PC guru + 1 server + 2 printer = 41 port</li>
+              <li>Cadangan 20%: +8 port</li>
+              <li><strong>Total: 49 port</strong></li>
+              <li>Rekomendasi: <strong>1× switch 48-port + 1× switch 24-port</strong> (atau 2× 48-port untuk kelonggaran)</li>
+            </ul>
+
+            <h5>Bandwidth Internet</h5>
+            <ul>
+              <li>37 concurrent × 2 Mbps (akses campuran) × 1.3 overhead ≈ 96 Mbps</li>
+              <li><strong>Rekomendasi langganan: 100 Mbps</strong></li>
+              <li>Catatan: saat praktikum tertentu (download image, virtual machine), bisa spike tinggi</li>
+            </ul>
+
+            <h5>Media Transmisi</h5>
+            <ul>
+              <li><strong>Semua PC</strong>: UTP Cat6 (1 Gbps) — wajib untuk stabilitas praktikum</li>
+              <li><strong>Server</strong>: UTP Cat6 (bisa teaming 2× 1 Gbps jika perlu)</li>
+              <li><strong>Uplink</strong>: kabel ke switch inti sekolah, idealnya fiber/SFP</li>
+            </ul>
+
+            <h5>Topologi</h5>
+            <ul>
+              <li><strong>Star</strong> — semua PC ke switch lab, switch lab ke switch inti sekolah</li>
+              <li>Server diletakkan dekat switch lab untuk latency minimal</li>
+            </ul>
+
+            <h5>Rekomendasi Perangkat</h5>
+            <div class="sol-grid">
+              <div class="sol-item">
+                <span class="k">Switch Utama</span>
+                <span class="v">Managed 48-port 1G + 4× SFP
+                  <small>VLAN untuk pisah praktikum & ujian</small>
+                </span>
+              </div>
+              <div class="sol-item">
+                <span class="k">Switch Tambahan</span>
+                <span class="v">24-port 1G unmanaged
+                  <small>Untuk ekspansi / port cadangan</small>
+                </span>
+              </div>
+              <div class="sol-item">
+                <span class="k">Kabel</span>
+                <span class="v">UTP Cat6, ~50 titik
+                  <small>Estimasi 1.500 m + konektor + faceplate</small>
+                </span>
+              </div>
+              <div class="sol-item">
+                <span class="k">Rack</span>
+                <span class="v">Rack 22U + PDU
+                  <small>Untuk switch, patch panel, server</small>
+                </span>
+              </div>
+            </div>
+
+            <h5>Estimasi Biaya Ringkas</h5>
+            <ul>
+              <li>Switch managed 48-port + SFP: ~Rp4.500.000</li>
+              <li>Switch 24-port unmanaged: ~Rp900.000</li>
+              <li>Kabel Cat6 (5 box): ~Rp7.500.000</li>
+              <li>Konektor, faceplate, keystone: ~Rp1.800.000</li>
+              <li>Patch panel + patch cord: ~Rp1.500.000</li>
+              <li>Rack 22U + PDU: ~Rp2.800.000</li>
+              <li>Instalasi & terminasi: ~Rp3.000.000</li>
+              <li><strong>Subtotal: ~Rp22.000.000 + cadangan 10%</strong></li>
+              <li><strong>Total: ~Rp24.200.000</strong> — masuk anggaran Rp25 juta</li>
+            </ul>
+
+            <div class="insights">
+              <span class="ins-title">Poin Pembelajaran</span>
+              <ul>
+                <li>Lab komputer <strong>wajib pakai switch managed</strong> jika ada ujian online & praktikum (butuh VLAN).</li>
+                <li>Server lokal <strong>tidak makan bandwidth internet</strong> — akses antar PC tetap di LAN.</li>
+                <li>Uplink ke switch inti harus cukup — jangan sampai jadi bottleneck.</li>
+                <li>BoM lengkap penting — biaya pendukung (kabel, rack) sering lebih besar dari perangkat inti.</li>
+              </ul>
+            </div>
+          </div>
+        </details>
+      </div>
+    </details>
+  </section>
+
+  <!-- 12.3 RUANG GURU -->
+  <section id="m12-3">
+    <details>
+      <summary>
+        <span class="num">12.3</span>
+        <span class="summary-text">Jaringan Ruang Guru</span>
+        <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </summary>
+      <div class="content">
+        <div class="case-meta">
+          <span class="case-tag type">👨‍🏫 Ruang Guru</span>
+          <span class="case-tag easy">Mudah</span>
+          <span class="case-tag time">⏱ 15 menit</span>
+        </div>
+
+        <div class="context-card">
+          <span class="label">Konteks</span>
+          Ruang guru dengan <em>12 guru</em> sering terganggu koneksi Wi-Fi yang lambat saat <em>jam istirahat</em>. Guru membutuhkan akses lancar ke <em>sistem informasi sekolah</em>, <em>video conference</em> dengan dinas, dan sesekali <em>streaming</em> materi pembelajaran.
+        </div>
+
+        <h4>Data yang Tersedia</h4>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Aspek</th><th>Detail</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Jumlah guru</td><td>12 orang</td></tr>
+              <tr><td>Concurrent aktif</td><td>~8 orang (tidak semua pakai bersamaan)</td></tr>
+              <tr><td>Perangkat</td><td>12 laptop + 12 HP</td></tr>
+              <tr><td>Printer jaringan</td><td>1 unit</td></tr>
+              <tr><td>Luas ruang</td><td>10 × 8 m = 80 m²</td></tr>
+              <tr><td>Aplikasi</td><td>Web sistem informasi, video conference, streaming materi, browsing</td></tr>
+              <tr><td>Masalah</td><td>Wi-Fi lambat di jam istirahat, ada blank spot di sudut ruangan</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="task-card">
+          <span class="label">Tugas</span>
+          <ol>
+            <li>Hitung bandwidth minimum untuk 12 guru.</li>
+            <li>Tentukan jumlah AP yang dibutuhkan.</li>
+            <li>Rekomendasikan strategi QoS untuk prioritas video conference.</li>
+            <li>Usulkan solusi untuk masalah blank spot.</li>
+          </ol>
+        </div>
+
+        <details class="reveal">
+          <summary>
+            <span class="reveal-icon">🔓</span>
+            <span class="reveal-text">
+              Lihat Pembahasan
+              <small>Klik untuk membuka analisis lengkap</small>
+            </span>
+            <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </summary>
+          <div class="reveal-body">
+            <h5>Analisis Bandwidth</h5>
+            <ul>
+              <li>Browsing & email (8 user × 1 Mbps): 8 Mbps</li>
+              <li>Akses sistem informasi (6 user × 1.5 Mbps): 9 Mbps</li>
+              <li>Video conference (2 user × 3 Mbps): 6 Mbps</li>
+              <li>Streaming (2 user × 5 Mbps): 10 Mbps</li>
+              <li><strong>Total: 33 Mbps × 1.3 overhead ≈ 43 Mbps</strong></li>
+              <li><strong>Rekomendasi: 50 Mbps khusus untuk ruang guru</strong> (dipisah dari jaringan siswa)</li>
+            </ul>
+
+            <h5>Jumlah Access Point</h5>
+            <ul>
+              <li>Coverage: 80 m² ÷ 55 m² ≈ 1.5 → <strong>2 AP</strong></li>
+              <li>Kapasitas: 8 client aktif ÷ 30 = 1 AP cukup</li>
+              <li>Rekomendasi: <strong>2 AP Wi-Fi 6 dual-band</strong>, dipasang di dua titik berlawanan untuk coverage merata</li>
+            </ul>
+
+            <h5>Strategi QoS</h5>
+            <ul>
+              <li><strong>Prioritas 1</strong>: Video conference (guaranteed 6 Mbps)</li>
+              <li><strong>Prioritas 2</strong>: Sistem informasi sekolah (guaranteed 9 Mbps)</li>
+              <li><strong>Prioritas 3</strong>: Browsing & email</li>
+              <li><strong>Prioritas 4</strong>: Streaming (best effort, bisa diturunkan kualitasnya jika kongesti)</li>
+            </ul>
+
+            <h5>Solusi Blank Spot</h5>
+            <ul>
+              <li>Jangan pakai 1 AP kuat — pakai <strong>2 AP daya sedang</strong> untuk coverage merata</li>
+              <li>Posisikan AP di langit-langit, jangan di dalam lemari atau di belakang dinding</li>
+              <li>Aktifkan <strong>band steering</strong> agar client otomatis pilih 5 GHz saat dekat</li>
+              <li>Pertimbangkan <strong>roaming 802.11k/v/r</strong> jika guru berpindah-pindah</li>
+            </ul>
+
+            <div class="sol-grid">
+              <div class="sol-item">
+                <span class="k">Access Point</span>
+                <span class="v">2× Wi-Fi 6 dual-band
+                  <small>PoE-powered, dipasang di plafon</small>
+                </span>
+              </div>
+              <div class="sol-item">
+                <span class="k">Switch PoE</span>
+                <span class="v">8-port 1G dengan PoE+
+                  <small>Untuk 2 AP + printer + uplink</small>
+                </span>
+              </div>
+              <div class="sol-item">
+                <span class="k">SSID</span>
+                <span class="v">2 SSID terpisah
+                  <small>Guru (private) + Tamu (guest, terisolasi)</small>
+                </span>
+              </div>
+              <div class="sol-item">
+                <span class="k">Uplink</span>
+                <span class="v">1 Gbps ke switch inti
+                  <small>Kabel Cat6 ke rack sekolah</small>
+                </span>
+              </div>
+            </div>
+
+            <div class="insights">
+              <span class="ins-title">Poin Pembelajaran</span>
+              <ul>
+                <li><strong>Dua AP sedang &gt; satu AP kuat</strong> — coverage lebih merata, kapasitas lebih baik.</li>
+                <li>QoS <strong>wajib</strong> jika ada video conference bercampur streaming.</li>
+                <li>Pisahkan SSID guru & tamu untuk keamanan dan manajemen bandwidth.</li>
+                <li>Masalah "Wi-Fi lambat" sering bukan karena bandwidth, tapi karena coverage atau jumlah AP kurang.</li>
+              </ul>
+            </div>
+          </div>
+        </details>
+      </div>
+    </details>
+  </section>
+
+  <!-- 12.4 SEKOLAH -->
+  <section id="m12-4">
+    <details>
+      <summary>
+        <span class="num">12.4</span>
+        <span class="summary-text">Jaringan Sekolah</span>
+        <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </summary>
+      <div class="content">
+        <div class="case-meta">
+          <span class="case-tag type">🏫 Sekolah</span>
+          <span class="case-tag hard">Tantangan</span>
+          <span class="case-tag time">⏱ 35 menit</span>
+        </div>
+
+        <div class="context-card">
+          <span class="label">Konteks</span>
+          Sebuah <em>SMK swasta</em> akan membangun jaringan baru untuk gedung 2 lantai. Ada beberapa zona berbeda: <em>lab komputer</em>, <em>ruang guru</em>, <em>tata usaha</em>, <em>perpustakaan</em>, dan <em>aula</em>. Masing-masing zona punya karakteristik pengguna yang berbeda.
+        </div>
+
+        <h4>Data yang Tersedia</h4>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Zona</th><th>Pengguna</th><th>Karakteristik</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Lab Komputer</strong></td>
+                <td>36 PC + 1 guru</td>
+                <td>Bandwidth tinggi, ujian online, praktikum</td>
+              </tr>
+              <tr>
+                <td><strong>Ruang Guru</strong></td>
+                <td>20 guru</td>
+                <td>Video conference, sistem informasi, browsing</td>
+              </tr>
+              <tr>
+                <td><strong>Tata Usaha</strong></td>
+                <td>6 staf</td>
+                <td>Aplikasi keuangan, print, database</td>
+              </tr>
+              <tr>
+                <td><strong>Perpustakaan</strong></td>
+                <td>4 staf + pengunjung</td>
+                <td>Katalog digital, Wi-Fi untuk siswa</td>
+              </tr>
+              <tr>
+                <td><strong>Aula</strong></td>
+                <td>~200 orang (event)</td>
+                <td>Wi-Fi sementara, high-density</td>
+              </tr>
+              <tr>
+                <td colspan="3"><strong>Luas total:</strong> ~1.200 m² · <strong>Anggaran:</strong> Rp80 juta · <strong>Langganan internet:</strong> 300 Mbps</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="task-card">
+          <span class="label">Tugas</span>
+          <ol>
+            <li>Identifikasi kebutuhan tiap zona (URL ringkas).</li>
+            <li>Tentukan segmentasi VLAN.</li>
+            <li>Rancang topologi jaringan.</li>
+            <li>Tentukan jumlah switch & AP per zona.</li>
+            <li>Rancang skema QoS lintas zona.</li>
+          </ol>
+        </div>
+
+        <details class="reveal">
+          <summary>
+            <span class="reveal-icon">🔓</span>
+            <span class="reveal-text">
+              Lihat Pembahasan
+              <small>Klik untuk membuka analisis lengkap</small>
+            </span>
+            <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </summary>
+          <div class="reveal-body">
+            <h5>Segmentasi VLAN</h5>
+            <ul>
+              <li><strong>VLAN 10</strong> — Lab Komputer (bandwidth tinggi, terisolasi)</li>
+              <li><strong>VLAN 20</strong> — Ruang Guru (prioritas video conference)</li>
+              <li><strong>VLAN 30</strong> — Tata Usaha (data sensitif, firewall ketat)</li>
+              <li><strong>VLAN 40</strong> — Perpustakaan (akses katalog + internet terbatas)</li>
+              <li><strong>VLAN 50</strong> — Aula / Guest (terisolasi, bandwidth terbatas)</li>
+              <li><strong>VLAN 99</strong> — Manajemen perangkat (hanya admin)</li>
+            </ul>
+
+            <h5>Topologi</h5>
+            <ul>
+              <li><strong>Tree (hierarkis):</strong> switch inti → switch distribusi per lantai → switch access per zona</li>
+              <li>Switch inti terhubung ke router → internet</li>
+              <li>Server lokal terhubung langsung ke switch inti (bukan lewat distribusi)</li>
+            </ul>
+
+            <h5>Jumlah Switch per Zona</h5>
+            <div class="sol-grid">
+              <div class="sol-item">
+                <span class="k">Switch Inti</span>
+                <span class="v">1× L3 Managed 48-port + 4× SFP+
+                  <small>Routing antar VLAN, uplink fiber antar lantai</small>
+                </span>
+              </div>
+              <div class="sol-item">
+                <span class="k">Lab Komputer</span>
+                <span class="v">1× Managed 48-port
+                  <small>Uplink 10G ke switch inti</small>
+                </span>
+              </div>
+              <div class="sol-item">
+                <span class="k">Lantai 1 & 2</span>
+                <span class="v">2× Managed 24-port PoE+
+                  <small>Untuk AP, CCTV, printer</small>
+                </span>
+              </div>
+              <div class="sol-item">
+                <span class="k">Aula</span>
+                <span class="v">1× Managed 24-port + 2× AP high-density
+                  <small>Untuk event besar</small>
+                </span>
+              </div>
+            </div>
+
+            <h5>Jumlah Access Point</h5>
+            <ul>
+              <li><strong>Ruang Guru:</strong> 2 AP Wi-Fi 6</li>
+              <li><strong>Perpustakaan:</strong> 2 AP Wi-Fi 6</li>
+              <li><strong>Aula:</strong> 2 AP high-density (Wi-Fi 6 dengan MU-MIMO)</li>
+              <li><strong>Tata Usaha:</strong> 1 AP Wi-Fi 6</li>
+              <li><strong>Koridor & area umum:</strong> 2 AP Wi-Fi 5</li>
+              <li><strong>Total: 9 AP</strong></li>
+            </ul>
+
+            <h5>QoS Lintas Zona</h5>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr><th>Zona</th><th>Prioritas</th><th>Bandwidth Guarantee</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>Ruang Guru</td><td>Prioritas 1 (Voice/Video)</td><td>60 Mbps</td></tr>
+                  <tr><td>Tata Usaha</td><td>Prioritas 2 (Critical Data)</td><td>30 Mbps</td></tr>
+                  <tr><td>Lab Komputer</td><td>Prioritas 3 (Bulk)</td><td>100 Mbps</td></tr>
+                  <tr><td>Perpustakaan</td><td>Prioritas 4</td><td>40 Mbps</td></tr>
+                  <tr><td>Aula / Guest</td><td>Prioritas 5 (Best Effort)</td><td>70 Mbps (shared)</td></tr>
+                </tbody>
+              </table>
+            </div>
+
+            <h5>Rekomendasi Perangkat Inti</h5>
+            <ul>
+              <li>Router dengan firewall + VPN + QoS (kelas SMB)</li>
+              <li>Switch inti L3 managed dengan 10G uplink</li>
+              <li>Managed switch access dengan PoE+ (untuk AP, CCTV)</li>
+              <li>AP Wi-Fi 6 dual-band dengan controller / cloud management</li>
+              <li>UPS untuk switch inti + server</li>
+            </ul>
+
+            <div class="insights">
+              <span class="ins-title">Poin Pembelajaran</span>
+              <ul>
+                <li><strong>VLAN adalah kunci</strong> di jaringan sekolah — tiap zona punya karakter berbeda.</li>
+                <li>Topologi <strong>tree</strong> dengan switch inti memudahkan manajemen & troubleshooting.</li>
+                <li>Aula butuh <strong>AP high-density</strong> — bukan AP biasa jumlah banyak.</li>
+                <li>Switch inti sebaiknya <strong>L3 managed</strong> agar routing antar VLAN tidak bergantung router.</li>
+                <li>QoS lintas zona mencegah satu zona (misal lab) menghabiskan bandwidth zona lain.</li>
+              </ul>
+            </div>
+          </div>
+        </details>
+      </div>
+    </details>
+  </section>
+
+  <!-- 12.5 KANTOR KECIL -->
+  <section id="m12-5">
+    <details>
+      <summary>
+        <span class="num">12.5</span>
+        <span class="summary-text">Jaringan Kantor Kecil</span>
+        <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </summary>
+      <div class="content">
+        <div class="case-meta">
+          <span class="case-tag type">🏢 Kantor</span>
+          <span class="case-tag medium">Sedang</span>
+          <span class="case-tag time">⏱ 25 menit</span>
+        </div>
+
+        <div class="context-card">
+          <span class="label">Konteks</span>
+          Sebuah <em>startup teknologi</em> dengan 15 karyawan pindah ke kantor baru seluas 150 m². Mereka butuh jaringan yang mendukung <em>VoIP</em> untuk panggilan klien, <em>video conference</em> harian, akses ke <em>CRM cloud</em>, dan <em>file server lokal</em>.
+        </div>
+
+        <h4>Data yang Tersedia</h4>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Aspek</th><th>Detail</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Karyawan</td><td>15 orang</td></tr>
+              <tr><td>Divisi</td><td>Engineering (6), Sales (5), Marketing (2), Finance (2)</td></tr>
+              <tr><td>Perangkat</td><td>15 laptop, 15 HP, 2 printer, 1 NAS, 1 VoIP gateway</td></tr>
+              <tr><td>Ruang meeting</td><td>2 ruang (kapasitas 6 & 10 orang)</td></tr>
+              <tr><td>Aplikasi utama</td><td>CRM (cloud), video conference, VoIP, file server lokal, Git</td></tr>
+              <tr><td>Langganan internet</td><td>Belum ada, akan pasang 2 ISP (backup)</td></tr>
+              <tr><td>Anggaran perangkat</td><td>Rp20 juta</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="task-card">
+          <span class="label">Tugas</span>
+          <ol>
+            <li>Rancang VLAN untuk segmentasi (Engineering, Sales, Meeting, Guest).</li>
+            <li>Tentukan strategi QoS untuk VoIP dan video conference.</li>
+            <li>Rekomendasikan router multi-WAN.</li>
+            <li>Hitung bandwidth minimum & cadangan.</li>
+          </ol>
+        </div>
+
+        <details class="reveal">
+          <summary>
+            <span class="reveal-icon">🔓</span>
+            <span class="reveal-text">
+              Lihat Pembahasan
+              <small>Klik untuk membuka analisis lengkap</small>
+            </span>
+            <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </summary>
+          <div class="reveal-body">
+            <h5>Segmentasi VLAN</h5>
+            <ul>
+              <li><strong>VLAN 10</strong> — Engineering (akses Git, NAS, koneksi internet)</li>
+              <li><strong>VLAN 20</strong> — Sales (akses CRM cloud, VoIP)</li>
+              <li><strong>VLAN 30</strong> — Marketing (akses internet luas, media)</li>
+              <li><strong>VLAN 40</strong> — Finance (data sensitif, akses terbatas)</li>
+              <li><strong>VLAN 50</strong> — Meeting Rooms (prioritas video conference)</li>
+              <li><strong>VLAN 60</strong> — Guest (internet saja, terisolasi)</li>
+              <li><strong>VLAN 99</strong> — Manajemen</li>
+            </ul>
+
+            <h5>Bandwidth Analysis</h5>
+            <ul>
+              <li>VoIP: 5 panggilan × 0.1 Mbps = 0.5 Mbps</li>
+              <li>Video conference: 3 orang × 3 Mbps = 9 Mbps</li>
+              <li>CRM cloud: 5 sales × 1.5 Mbps = 7.5 Mbps</li>
+              <li>File server lokal: tidak keluar ke internet</li>
+              <li>Browsing & email: 15 × 1 Mbps = 15 Mbps</li>
+              <li><strong>Total ~32 Mbps × 1.3 = 42 Mbps</strong></li>
+              <li><strong>Rekomendasi:</strong> 2 ISP masing-masing 100 Mbps (load balance + failover)</li>
+            </ul>
+
+            <h5>QoS Prioritas</h5>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr><th>Kelas</th><th>Aplikasi</th><th>Bandwidth Guarantee</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>Prioritas 1</td><td>VoIP</td><td>5 Mbps</td></tr>
+                  <tr><td>Prioritas 2</td><td>Video conference</td><td>20 Mbps</td></tr>
+                  <tr><td>Prioritas 3</td><td>CRM, aplikasi bisnis</td><td>30 Mbps</td></tr>
+                  <tr><td>Prioritas 4</td><td>Browsing, email</td><td>30 Mbps</td></tr>
+                  <tr><td>Prioritas 5</td><td>Streaming, download</td><td>Best effort</td></tr>
+                </tbody>
+              </table>
+            </div>
+
+            <h5>Router Multi-WAN</h5>
+            <ul>
+              <li><strong>Wajib:</strong> dual WAN untuk failover & load balancing</li>
+              <li>Fitur VPN untuk akses WFH</li>
+              <li>Firewall stateful + content filtering</li>
+              <li>Bandwidth management per user & per aplikasi</li>
+              <li>Integrasi dengan VoIP gateway (SIP ALG)</li>
+            </ul>
+
+            <div class="sol-grid">
+              <div class="sol-item">
+                <span class="k">Router</span>
+                <span class="v">SMB multi-WAN dengan QoS
+                  <small>+ failover otomatis jika ISP utama down</small>
+                </span>
+              </div>
+              <div class="sol-item">
+                <span class="k">Switch</span>
+                <span class="v">Managed 24-port + PoE+
+                  <small>Untuk AP, VoIP phone (jika ada)</small>
+                </span>
+              </div>
+              <div class="sol-item">
+                <span class="k">Access Point</span>
+                <span class="v">3× Wi-Fi 6
+                  <small>Open office + 2 meeting room</small>
+                </span>
+              </div>
+              <div class="sol-item">
+                <span class="k">UPS</span>
+                <span class="v">2200VA line interactive
+                  <small>Untuk router, switch, NAS</small>
+                </span>
+              </div>
+            </div>
+
+            <div class="insights">
+              <span class="ins-title">Poin Pembelajaran</span>
+              <ul>
+                <li>Kantor dengan VoIP & video conference <strong>wajib</strong> punya QoS.</li>
+                <li><strong>Multi-WAN</strong> penting untuk bisnis — internet down = operasional berhenti.</li>
+                <li>File server lokal <strong>tidak butuh bandwidth internet</strong>, tapi butuh switch cepat (1 Gbps).</li>
+                <li>VLAN untuk <strong>guest</strong> penting untuk keamanan data perusahaan.</li>
+              </ul>
+            </div>
+          </div>
+        </details>
+      </div>
+    </details>
+  </section>
+
+  <!-- 12.6 HOTSPOT -->
+  <section id="m12-6">
+    <details>
+      <summary>
+        <span class="num">12.6</span>
+        <span class="summary-text">Jaringan Hotspot</span>
+        <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </summary>
+      <div class="content">
+        <div class="case-meta">
+          <span class="case-tag type">☕ Publik</span>
+          <span class="case-tag medium">Sedang</span>
+          <span class="case-tag time">⏱ 20 menit</span>
+        </div>
+
+        <div class="context-card">
+          <span class="label">Konteks</span>
+          Sebuah <em>kafe di pusat kota</em> ingin menyediakan Wi-Fi gratis untuk pelanggan. Pengunjung mencapai 40–60 orang pada jam sibuk. Pemilik kafe juga ingin bisa <em>membatasi waktu akses</em> dan <em>mengelola bandwidth per pelanggan</em>.
+        </div>
+
+        <h4>Data yang Tersedia</h4>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Aspek</th><th>Detail</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Luas kafe</td><td>150 m², indoor + 1 area outdoor</td></tr>
+              <tr><td>Pengunjung puncak</td><td>60 orang, ~40 aktif pakai Wi-Fi</td></tr>
+              <tr><td>Perangkat pengunjung</td><td>~50 smartphone, 10 laptop</td></tr>
+              <tr><td>Aplikasi</td><td>Media sosial, browsing, streaming, video call</td></tr>
+              <tr><td>Langganan internet</td><td>100 Mbps</td></tr>
+              <tr><td>Kebutuhan pemilik</td><td>Voucher Wi-Fi, limit waktu per user, monitoring</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="task-card">
+          <span class="label">Tugas</span>
+          <ol>
+            <li>Tentukan jumlah AP untuk area indoor + outdoor.</li>
+            <li>Rancang sistem autentikasi (voucher / captive portal).</li>
+            <li>Tentukan strategi bandwidth per user.</li>
+            <li>Rancang isolasi antar client.</li>
+          </ol>
+        </div>
+
+        <details class="reveal">
+          <summary>
+            <span class="reveal-icon">🔓</span>
+            <span class="reveal-text">
+              Lihat Pembahasan
+              <small>Klik untuk membuka analisis lengkap</small>
+            </span>
+            <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </summary>
+          <div class="reveal-body">
+            <h5>Jumlah Access Point</h5>
+            <ul>
+              <li>Coverage indoor: 120 m² ÷ 55 m² ≈ 2.2 → <strong>3 AP</strong></li>
+              <li>Coverage outdoor: 30 m² ÷ 80 m² → <strong>1 AP outdoor</strong> (weatherproof)</li>
+              <li>Kapasitas: 40 client aktif ÷ 30 = 1.3 AP</li>
+              <li><strong>Total: 4 AP</strong> (3 indoor + 1 outdoor)</li>
+            </ul>
+
+            <h5>Sistem Autentikasi</h5>
+            <ul>
+              <li><strong>Captive portal</strong> — halaman login sebelum bisa internet</li>
+              <li><strong>Voucher</strong> — kode unik per pelanggan (bisa dijual atau gratis)</li>
+              <li><strong>Time limit</strong> — akses otomatis berhenti setelah X menit</li>
+              <li><strong>Bandwidth limit per user</strong> — mencegah satu orang menghabiskan bandwidth</li>
+            </ul>
+
+            <h5>Strategi Bandwidth</h5>
+            <ul>
+              <li>Total langganan: 100 Mbps</li>
+              <li>Limit per user: 5 Mbps down / 2 Mbps up</li>
+              <li>Simulasi: 40 user × 5 Mbps = 200 Mbps (over) — jadi limit aktual 2.5 Mbps/user</li>
+              <li>Lebih realistis: <strong>limit 3 Mbps per user, sisakan untuk overhead</strong></li>
+              <li>Prioritaskan browsing & chat; batasi streaming 4K</li>
+            </ul>
+
+            <h5>Isolasi Client</h5>
+            <ul>
+              <li><strong>Client isolation</strong> aktif — antar pengunjung tidak bisa saling akses</li>
+              <li>Mencegah pencurian data antar pengunjung</li>
+              <li>Mencegah penyebaran malware di jaringan Wi-Fi publik</li>
+              <li>Guest network terpisah total dari jaringan manajemen kafe</li>
+            </ul>
+
+            <div class="sol-grid">
+              <div class="sol-item">
+                <span class="k">Router</span>
+                <span class="v">Router dengan captive portal
+                  <small>+ voucher manager + bandwidth management</small>
+                </span>
+              </div>
+              <div class="sol-item">
+                <span class="k">Switch PoE</span>
+                <span class="v">8-port PoE+
+                  <small>Untuk 4 AP + uplink</small>
+                </span>
+              </div>
+              <div class="sol-item">
+                <span class="k">AP Indoor</span>
+                <span class="v">3× Wi-Fi 6
+                  <small>Coverage merata di area kafe</small>
+                </span>
+              </div>
+              <div class="sol-item">
+                <span class="k">AP Outdoor</span>
+                <span class="v">1× Wi-Fi 6 outdoor
+                  <small>IP65 rated, tahan hujan</small>
+                </span>
+              </div>
+            </div>
+
+            <div class="insights">
+              <span class="ins-title">Poin Pembelajaran</span>
+              <ul>
+                <li>Hotspot publik <strong>wajib client isolation</strong> untuk keamanan.</li>
+                <li><strong>Captive portal + voucher</strong> memberi kontrol ke pemilik.</li>
+                <li>Bandwidth limit per user <strong>lebih adil</strong> daripada free-for-all.</li>
+                <li>AP outdoor butuh rating IP65+ untuk tahan cuaca.</li>
+                <li>Jangan lupa <strong>time limit</strong> agar slot tidak dimonopoli satu orang.</li>
+              </ul>
+            </div>
+          </div>
+        </details>
+      </div>
+    </details>
+  </section>
+
+  <!-- 12.7 CCTV -->
+  <section id="m12-7">
+    <details>
+      <summary>
+        <span class="num">12.7</span>
+        <span class="summary-text">Jaringan CCTV</span>
+        <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </summary>
+      <div class="content">
+        <div class="case-meta">
+          <span class="case-tag type">📹 CCTV</span>
+          <span class="case-tag medium">Sedang</span>
+          <span class="case-tag time">⏱ 20 menit</span>
+        </div>
+
+        <div class="context-card">
+          <span class="label">Konteks</span>
+          Sebuah sekolah ingin memasang <em>16 kamera CCTV</em> di area koridor, gerbang, dan halaman. Rekaman harus tersimpan minimal 14 hari, dan kepala sekolah ingin bisa <em>memantau dari rumah</em> melalui HP.
+        </div>
+
+        <h4>Data yang Tersedia</h4>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Aspek</th><th>Detail</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Jumlah kamera</td><td>16 unit</td></tr>
+              <tr><td>Resolusi</td><td>1080p (Full HD), 25 fps</td></tr>
+              <tr><td>Lokasi</td><td>4 gerbang, 6 koridor, 4 halaman, 2 ruang khusus</td></tr>
+              <tr><td>Penyimpanan</td><td>Minimal 14 hari rekaman</td></tr>
+              <tr><td>Akses remote</td><td>Kepala sekolah & petugas keamanan</td></tr>
+              <tr><td>Jam operasi</td><td>24/7</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="task-card">
+          <span class="label">Tugas</span>
+          <ol>
+            <li>Hitung bandwidth CCTV (internal & remote).</li>
+            <li>Tentukan kapasitas storage untuk 14 hari.</li>
+            <li>Pilih media transmisi & PoE.</li>
+            <li>Rancang skema akses remote yang aman.</li>
+          </ol>
+        </div>
+
+        <details class="reveal">
+          <summary>
+            <span class="reveal-icon">🔓</span>
+            <span class="reveal-text">
+              Lihat Pembahasan
+              <small>Klik untuk membuka analisis lengkap</small>
+            </span>
+            <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </summary>
+          <div class="reveal-body">
+            <h5>Bandwidth CCTV</h5>
+            <ul>
+              <li>16 kamera × 3 Mbps (1080p H.265) = <strong>48 Mbps</strong> internal</li>
+              <li>Catatan: bandwidth ini <strong>tidak keluar ke internet</strong> — hanya di LAN</li>
+              <li>Untuk remote view (kepala sekolah): ~2 Mbps per stream</li>
+              <li>Jika 2 orang akses bersamaan: 4 Mbps uplink</li>
+              <li><strong>Uplink internet minimal: 10 Mbps</strong> (untuk remote + backup)</li>
+            </ul>
+
+            <h5>Kapasitas Storage (14 hari)</h5>
+            <ul>
+              <li>Bitrate per kamera: 3 Mbps = 0.375 MB/s</li>
+              <li>Per kamera per hari: 0.375 × 86400 = ~32 GB</li>
+              <li>16 kamera × 32 GB = 512 GB/hari</li>
+              <li><strong>14 hari: 7.2 TB</strong></li>
+              <li>Rekomendasi: <strong>NVR dengan 2× 8 TB HDD (RAID 1 atau JBOD)</strong></li>
+              <li>Dengan H.265 bisa menghemat ~40% → 4.3 TB</li>
+            </ul>
+
+            <h5>Media Transmisi</h5>
+            <ul>
+              <li><strong>Kabel UTP Cat6</strong> dengan PoE — untuk semua kamera</li>
+              <li>Maksimum 100 m per kamera; jika lebih, pakai fiber + converter</li>
+              <li>PoE standard: <strong>802.3af (15.4W)</strong> per kamera</li>
+              <li>Total PoE: 16 × 15W = <strong>240W</strong> → butuh switch PoE dengan budget ≥ 300W</li>
+            </ul>
+
+            <h5>Akses Remote yang Aman</h5>
+            <ul>
+              <li><strong>Jangan</strong> langsung buka port NVR ke internet (rawan di-hack)</li>
+              <li>Gunakan <strong>VPN</strong> untuk akses remote</li>
+              <li>Atau gunakan <strong>cloud P2P</strong> dari vendor terpercaya</li>
+              <li>Aktifkan autentikasi 2 faktor jika tersedia</li>
+              <li>Buat user terpisah untuk kepala sekolah & petugas keamanan</li>
+            </ul>
+
+            <div class="sol-grid">
+              <div class="sol-item">
+                <span class="k">Switch PoE</span>
+                <span class="v">Managed 24-port PoE+
+                  <small>Budget ≥ 300W untuk 16 kamera</small>
+                </span>
+              </div>
+              <div class="sol-item">
+                <span class="k">NVR</span>
+                <span class="v">NVR 32-channel + 2× 8TB HDD
+                  <small>Support H.265, RAID 1</small>
+                </span>
+              </div>
+              <div class="sol-item">
+                <span class="k">Kabel</span>
+                <span class="v">UTP Cat6 outdoor-rated
+                  <small>~1.600 m untuk 16 kamera</small>
+                </span>
+              </div>
+              <div class="sol-item">
+                <span class="k">UPS</span>
+                <span class="v">2200VA untuk switch + NVR
+                  <small>CCTV harus tetap jalan saat listrik mati</small>
+                </span>
+              </div>
+            </div>
+
+            <div class="insights">
+              <span class="ins-title">Poin Pembelajaran</span>
+              <ul>
+                <li>CCTV <strong>makan bandwidth terus-menerus</strong> — bukan bursty seperti browsing.</li>
+                <li>Bandwidth internal (LAN) <strong>tidak keluar ke internet</strong>, jadi berbeda dengan bandwidth langganan.</li>
+                <li><strong>PoE budget</strong> adalah total, bukan per port. Hitung dengan teliti!</li>
+                <li><strong>Jangan buka NVR ke internet</strong> langsung — gunakan VPN.</li>
+                <li>Storage CCTV besar — 16 kamera bisa butuh &gt; 5 TB untuk 14 hari.</li>
+              </ul>
+            </div>
+          </div>
+        </details>
+      </div>
+    </details>
+  </section>
+
+  <!-- 12.8 SERVER LOKAL -->
+  <section id="m12-8">
+    <details>
+      <summary>
+        <span class="num">12.8</span>
+        <span class="summary-text">Jaringan dengan Server Lokal</span>
+        <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </summary>
+      <div class="content">
+        <div class="case-meta">
+          <span class="case-tag type">🖥 Server</span>
+          <span class="case-tag hard">Tantangan</span>
+          <span class="case-tag time">⏱ 30 menit</span>
+        </div>
+
+        <div class="context-card">
+          <span class="label">Konteks</span>
+          Sebuah <em>kantor menengah</em> dengan 40 karyawan ingin memasang <em>server lokal</em> untuk file sharing, print server, aplikasi internal, dan database. Sebagian karyawan juga butuh akses <em>dari luar kantor</em>.
+        </div>
+
+        <h4>Data yang Tersedia</h4>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Aspek</th><th>Detail</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Karyawan</td><td>40 orang (30 di kantor, 10 remote)</td></tr>
+              <tr><td>Server yang direncanakan</td><td>File server, print server, web app, database</td></tr>
+              <tr><td>Kapasitas server</td><td>2 TB storage, 32 GB RAM</td></tr>
+              <tr><td>Jumlah akses file/hari</td><td>~500 kali transfer</td></tr>
+              <tr><td>Ukuran file rata-rata</td><td>5–50 MB</td></tr>
+              <tr><td>Akses remote</td><td>10 karyawan WFH, butuh akses file & aplikasi</td></tr>
+              <tr><td>Jam operasional</td><td>08.00–17.00 untuk mayoritas</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="task-card">
+          <span class="label">Tugas</span>
+          <ol>
+            <li>Hitung beban bandwidth server (peak & average).</li>
+            <li>Tentukan NIC server yang memadai.</li>
+            <li>Rancang skema akses remote yang aman.</li>
+            <li>Rencanakan backup strategy.</li>
+          </ol>
+        </div>
+
+        <details class="reveal">
+          <summary>
+            <span class="reveal-icon">🔓</span>
+            <span class="reveal-text">
+              Lihat Pembahasan
+              <small>Klik untuk membuka analisis lengkap</small>
+            </span>
+            <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </summary>
+          <div class="reveal-body">
+            <h5>Analisis Bandwidth Server</h5>
+            <ul>
+              <li><strong>Peak:</strong> jam 09.00–11.00, ~15 user transfer bersamaan</li>
+              <li>Rata-rata transfer: 20 MB per file, durasi 5 detik → 32 Mbps per transfer</li>
+              <li>15 user × 32 Mbps = 480 Mbps</li>
+              <li><strong>NIC 1 Gbps sudah cukup</strong> untuk beban ini, tapi sudah diambang batas</li>
+              <li>Jika beban naik 2×, perlu <strong>NIC 2.5G atau teaming 2× 1G</strong></li>
+            </ul>
+
+            <h5>NIC Server</h5>
+            <ul>
+              <li>Minimal: <strong>1 Gbps onboard</strong></li>
+              <li>Rekomendasi: <strong>2× 1 Gbps teaming</strong> atau <strong>1× 2.5 Gbps</strong></li>
+              <li>Untuk server dengan traffic tinggi: <strong>10 Gbps SFP+</strong></li>
+              <li>Pastikan kabel & switch mendukung kecepatan yang sama</li>
+            </ul>
+
+            <h5>Akses Remote yang Aman</h5>
+            <ul>
+              <li><strong>VPN IPSec / WireGuard</strong> — akses ke jaringan kantor seolah di kantor</li>
+              <li><strong>Jangan buka port RDP/SMB</strong> langsung ke internet</li>
+              <li>Gunakan <strong>VPN client</strong> di perangkat remote</li>
+              <li>Autentikasi 2 faktor untuk user remote</li>
+              <li>Log semua akses untuk audit</li>
+              <li>Pertimbangkan <strong>Cloudflare Tunnel / Tailscale</strong> untuk akses yang lebih mudah</li>
+            </ul>
+
+            <h5>Backup Strategy</h5>
+            <ul>
+              <li><strong>3-2-1 Rule</strong> — 3 kopi, 2 media, 1 off-site</li>
+              <li>Server lokal → backup harian ke NAS lokal (dalam kantor)</li>
+              <li>Server lokal → backup mingguan ke cloud (off-site)</li>
+              <li>Buat snapshot sebelum update/upgrade</li>
+              <li>Test restore setiap bulan (backup tidak berguna jika tidak bisa direstore)</li>
+            </ul>
+
+            <div class="sol-grid">
+              <div class="sol-item">
+                <span class="k">Server</span>
+                <span class="v">Server rack 1U
+                  <small>NIC 2× 1G, 32 GB RAM, 2 TB storage</small>
+                </span>
+              </div>
+              <div class="sol-item">
+                <span class="k">Switch</span>
+                <span class="v">Managed L3 48-port
+                  <small>Uplink 10G untuk server & backbone</small>
+                </span>
+              </div>
+              <div class="sol-item">
+                <span class="k">NAS Backup</span>
+                <span class="v">NAS 4-bay + 2× 4TB HDD
+                  <small>RAID 1 untuk backup lokal</small>
+                </span>
+              </div>
+              <div class="sol-item">
+                <span class="k">VPN</span>
+                <span class="v">WireGuard / IPSec
+                  <small>Di router atau server terpisah</small>
+                </span>
+              </div>
+            </div>
+
+            <div class="insights">
+              <span class="ins-title">Poin Pembelajaran</span>
+              <ul>
+                <li>Server lokal <strong>tidak membebani bandwidth internet</strong> — hanya LAN yang sibuk.</li>
+                <li>NIC server adalah <strong>bottleneck tersembunyi</strong> — hitung dengan teliti.</li>
+                <li><strong>Jangan pernah</strong> buka RDP/SMB ke internet langsung. VPN wajib.</li>
+                <li>Backup <strong>3-2-1</strong> adalah standar — bukan kemewahan.</li>
+                <li>Server butuh <strong>UPS khusus</strong> — shutdown mendadak bisa merusak data.</li>
+              </ul>
+            </div>
+          </div>
+        </details>
+      </div>
+    </details>
+  </section>
+
+  <!-- 12.9 CLOUD -->
+  <section id="m12-9">
+    <details>
+      <summary>
+        <span class="num">12.9</span>
+        <span class="summary-text">Jaringan dengan Layanan Cloud</span>
+        <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </summary>
+      <div class="content">
+        <div class="case-meta">
+          <span class="case-tag type">☁ Cloud</span>
+          <span class="case-tag medium">Sedang</span>
+          <span class="case-tag time">⏱ 20 menit</span>
+        </div>
+
+        <div class="context-card">
+          <span class="label">Konteks</span>
+          Sebuah <em>kantor konsultan kecil</em> memutuskan untuk <em>sepenuhnya cloud</em>. Tidak ada server lokal. Semua aplikasi (email, dokumen, CRM, komunikasi) berbasis cloud. Sebagian karyawan bekerja <em>remote full-time</em>.
+        </div>
+
+        <h4>Data yang Tersedia</h4>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Aspek</th><th>Detail</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Karyawan</td><td>20 orang (10 kantor, 10 remote)</td></tr>
+              <tr><td>Perangkat</td><td>20 laptop, 20 HP</td></tr>
+              <tr><td>Aplikasi</td><td>Google Workspace, Zoom, CRM cloud, Slack, Figma</td></tr>
+              <tr><td>Server lokal</td><td>Tidak ada</td></tr>
+              <tr><td>Cetak</td><td>1 printer jaringan (via cloud print)</td></tr>
+              <tr><td>Anggaran bulanan</td><td>Cloud subscription ~Rp8 juta/bulan</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="task-card">
+          <span class="label">Tugas</span>
+          <ol>
+            <li>Hitung bandwidth minimum kantor.</li>
+            <li>Tentukan jenis langganan internet (simetris / asimetris).</li>
+            <li>Rancang Wi-Fi untuk kantor cloud-only.</li>
+            <li>Antisipasi risiko jika internet down.</li>
+          </ol>
+        </div>
+
+        <details class="reveal">
+          <summary>
+            <span class="reveal-icon">🔓</span>
+            <span class="reveal-text">
+              Lihat Pembahasan
+              <small>Klik untuk membuka analisis lengkap</small>
+            </span>
+            <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </summary>
+          <div class="reveal-body">
+            <h5>Bandwidth Kantor</h5>
+            <ul>
+              <li>Zoom HD: 3 user × 3 Mbps = 9 Mbps</li>
+              <li>Google Workspace: 10 user × 1.5 Mbps = 15 Mbps</li>
+              <li>CRM cloud: 5 user × 1 Mbps = 5 Mbps</li>
+              <li>Slack + notifikasi: 10 × 0.5 Mbps = 5 Mbps</li>
+              <li>Figma (design): 2 user × 5 Mbps = 10 Mbps</li>
+              <li><strong>Total ~44 Mbps × 1.3 = 57 Mbps</strong></li>
+              <li><strong>Rekomendasi: 100 Mbps</strong> dengan fokus pada uplink</li>
+            </ul>
+
+            <h5>Simetris vs Asimetris</h5>
+            <ul>
+              <li>Kantor cloud-only butuh <strong>uplink yang cukup</strong></li>
+              <li>Video call butuh uplink 1:1 dengan downlink</li>
+              <li>Upload ke cloud juga butuh uplink</li>
+              <li><strong>Rekomendasi: langganan SIMETRIS</strong> 100 Mbps up/down</li>
+              <li>Jangan pakai asimetris (100/20) — uplink akan jadi bottleneck</li>
+            </ul>
+
+            <h5>Wi-Fi Kantor Cloud</h5>
+            <ul>
+              <li>Coverage 150 m² ÷ 55 m² ≈ 3 AP</li>
+              <li>Kapasitas: 10 client aktif ÷ 30 = 1 AP cukup</li>
+              <li><strong>2 AP Wi-Fi 6</strong> cukup untuk kantor kecil</li>
+              <li>Aktifkan <strong>band steering</strong> (client pindah otomatis ke 5 GHz)</li>
+              <li>Guest network terpisah untuk tamu</li>
+            </ul>
+
+            <h5>Risiko Internet Down</h5>
+            <ul>
+              <li><strong>Simulasi:</strong> internet down = kantor hampir lumpuh total</li>
+              <li><strong>Solusi 1:</strong> Langganan 2 ISP dari provider berbeda (failover)</li>
+              <li><strong>Solusi 2:</strong> 4G/5G backup via modem USB atau MiFi</li>
+              <li><strong>Solusi 3:</strong> Kebijakan "offline-first" untuk aplikasi kritikal (jarang di cloud)</li>
+              <li>Estimasi tambahan biaya: Rp500rb–1.5jt/bulan untuk backup</li>
+            </ul>
+
+            <div class="sol-grid">
+              <div class="sol-item">
+                <span class="k">Internet</span>
+                <span class="v">2 ISP (simetris 100 Mbps)
+                  <small>+ failover otomatis</small>
+                </span>
+              </div>
+              <div class="sol-item">
+                <span class="k">Router</span>
+                <span class="v">Multi-WAN dengan QoS
+                  <small>Prioritas Zoom & VoIP</small>
+                </span>
+              </div>
+              <div class="sol-item">
+                <span class="k">Switch</span>
+                <span class="v">16-port 1G unmanaged
+                  <small>Untuk printer & uplink AP</small>
+                </span>
+              </div>
+              <div class="sol-item">
+                <span class="k">AP</span>
+                <span class="v">2× Wi-Fi 6 dual-band
+                  <small>Coverage merata, PoE</small>
+                </span>
+              </div>
+            </div>
+
+            <div class="insights">
+              <span class="ins-title">Poin Pembelajaran</span>
+              <ul>
+                <li>Kantor cloud-only butuh <strong>uplink besar</strong> — langganan simetris wajib.</li>
+                <li>Tanpa server lokal, <strong>bandwidth internet = bandwidth kantor</strong>. Tidak ada buffer.</li>
+                <li><strong>Internet down = kantor stop.</strong> Backup ISP bukan kemewahan.</li>
+                <li>Wi-Fi cepat + uplink lambat = pengalaman buruk. Fokus ke <strong>uplink</strong>.</li>
+                <li>Cloud lebih murah untuk skala kecil, tapi butuh internet yang lebih baik.</li>
+              </ul>
+            </div>
+          </div>
+        </details>
+      </div>
+    </details>
+  </section>
+
+  <!-- 12.10 SEKOLAH BANYAK PENGGUNA -->
+  <section id="m12-10">
+    <details>
+      <summary>
+        <span class="num">12.10</span>
+        <span class="summary-text">Jaringan Sekolah Banyak Pengguna</span>
+        <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </summary>
+      <div class="content">
+        <div class="case-meta">
+          <span class="case-tag type">🏫 Skala Besar</span>
+          <span class="case-tag hard">Tantangan</span>
+          <span class="case-tag time">⏱ 45 menit</span>
+        </div>
+
+        <div class="context-card">
+          <span class="label">Konteks</span>
+          Sebuah <em>SMK besar</em> dengan <em>1.000 siswa</em> dan <em>80 guru/staf</em> akan membangun jaringan baru untuk <em>3 gedung</em>. Siswa membawa perangkat sendiri (BYOD). Ujian online berbasis komputer menjadi rutin. Ada juga <em>server lokal</em> untuk LMS, dan integrasi dengan <em>sistem informasi cloud</em>.
+        </div>
+
+        <h4>Data yang Tersedia</h4>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Aspek</th><th>Detail</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Jumlah siswa</td><td>1.000 (concurrent ~300–400)</td></tr>
+              <tr><td>Guru & staf</td><td>80 (concurrent ~40)</td></tr>
+              <tr><td>Gedung</td><td>3 gedung, masing-masing 3–4 lantai</td></tr>
+              <tr><td>Lab komputer</td><td>4 lab × 36 PC</td></tr>
+              <tr><td>Server lokal</td><td>LMS, file server, print server</td></tr>
+              <tr><td>Cloud</td><td>Sistem informasi, Google Workspace, absensi</td></tr>
+              <tr><td>BYOD</td><td>Siswa bawa HP/laptop ke sekolah</td></tr>
+              <tr><td>Ujian online</td><td>1–2 kali/bulan, 300 siswa serentak</td></tr>
+              <tr><td>Anggaran</td><td>Rp1,5 miliar untuk jaringan</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="task-card">
+          <span class="label">Tugas</span>
+          <ol>
+            <li>Rancang arsitektur jaringan (backbone, distribusi, access).</li>
+            <li>Tentukan strategi VLAN untuk semua zona.</li>
+            <li>Rancang skenario ujian online 300 siswa.</li>
+            <li>Rancang BYOD policy (bandwidth, keamanan).</li>
+            <li>Estimasi kebutuhan bandwidth & langganan.</li>
+            <li>Susun BoM ringkas per kategori.</li>
+          </ol>
+        </div>
+
+        <details class="reveal">
+          <summary>
+            <span class="reveal-icon">🔓</span>
+            <span class="reveal-text">
+              Lihat Pembahasan
+              <small>Klik untuk membuka analisis lengkap</small>
+            </span>
+            <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </summary>
+          <div class="reveal-body">
+            <h5>Arsitektur Jaringan</h5>
+            <ul>
+              <li><strong>Core Layer:</strong> 1× switch L3 managed (10G) di gedung pusat</li>
+              <li><strong>Distribution Layer:</strong> 3× switch L3 managed per gedung (uplink 10G fiber ke core)</li>
+              <li><strong>Access Layer:</strong> switch managed 48-port PoE+ per zona (uplink 1G ke distribusi)</li>
+              <li><strong>Wireless:</strong> AP Wi-Fi 6 controller-based, coverage seluruh area</li>
+            </ul>
+
+            <h5>VLAN Strategi</h5>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr><th>VLAN</th><th>Fungsi</th><th>Subnet</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>10</td><td>Lab Komputer</td><td>/23 (510 host)</td></tr>
+                  <tr><td>20</td><td>Ruang Guru</td><td>/25 (126 host)</td></tr>
+                  <tr><td>30</td><td>Tata Usaha</td><td>/26 (62 host)</td></tr>
+                  <tr><td>40</td><td>Kelas / Siswa</td><td>/22 (1022 host)</td></tr>
+                  <tr><td>50</td><td>Perpustakaan</td><td>/26</td></tr>
+                  <tr><td>60</td><td>BYOD Siswa</td><td>/22</td></tr>
+                  <tr><td>70</td><td>Guest</td><td>/24</td></tr>
+                  <tr><td>80</td><td>Server Lokal</td><td>/27</td></tr>
+                  <tr><td>90</td><td>CCTV</td><td>/24</td></tr>
+                  <tr><td>99</td><td>Manajemen</td><td>/28</td></tr>
+                </tbody>
+              </table>
+            </div>
+
+            <h5>Skenario Ujian Online 300 Siswa</h5>
+            <ul>
+              <li>Setiap siswa butuh ~1 Mbps untuk akses aplikasi ujian (tidak streaming)</li>
+              <li>300 siswa × 1 Mbps × 1.3 = <strong>390 Mbps</strong></li>
+              <li>Server ujian (LMS) diakses <strong>via LAN</strong> — tidak keluar internet</li>
+              <li>Yang butuh internet hanya sinkronisasi & validasi (kecil)</li>
+              <li><strong>Kunci sukses:</strong> server ujian harus di LAN, bukan di cloud</li>
+              <li>Uplink server ujian minimal <strong>10 Gbps</strong> ke switch inti</li>
+            </ul>
+
+            <h5>BYOD Policy</h5>
+            <ul>
+              <li><strong>SSID terpisah</strong> untuk siswa (BYOD) dan guru (private)</li>
+              <li><strong>Bandwidth limit</strong> 5 Mbps per siswa</li>
+              <li><strong>Jam aktif</strong>: BYOD hanya aktif saat jam istirahat/pulang</li>
+              <li><strong>Content filtering</strong>: block situs berbahaya & tidak pantas</li>
+              <li><strong>Isolasi client</strong>: siswa tidak bisa akses perangkat siswa lain</li>
+              <li>Akses siswa ke LAN internal dibatasi (hanya LMS & perpustakaan digital)</li>
+            </ul>
+
+            <h5>Bandwidth Internet Total</h5>
+            <ul>
+              <li><strong>Guru & staf:</strong> 40 × 2 Mbps × 1.3 = 104 Mbps</li>
+              <li><strong>Siswa BYOD:</strong> 200 concurrent × 2 Mbps × 1.3 = 520 Mbps</li>
+              <li><strong>Sistem cloud:</strong> 50 Mbps</li>
+              <li><strong>Cadangan & overhead:</strong> 100 Mbps</li>
+              <li><strong>Total: ~775 Mbps</strong></li>
+              <li><strong>Rekomendasi: 2 ISP masing-masing 500 Mbps</strong> (total 1 Gbps, load balance)</li>
+            </ul>
+
+            <h5>Jumlah Perangkat Estimasi</h5>
+            <div class="sol-grid">
+              <div class="sol-item">
+                <span class="k">Switch Core</span>
+                <span class="v">1× L3 48-port + 8× SFP+
+                  <small>Backbone utama sekolah</small>
+                </span>
+              </div>
+              <div class="sol-item">
+                <span class="k">Switch Distribusi</span>
+                <span class="v">3× L3 48-port + 4× SFP+
+                  <small>1 per gedung, uplink 10G ke core</small>
+                </span>
+              </div>
+              <div class="sol-item">
+                <span class="k">Switch Access</span>
+                <span class="v">~20× Managed 48-port PoE+
+                  <small>Per lantai/zona, uplink 1G ke distribusi</small>
+                </span>
+              </div>
+              <div class="sol-item">
+                <span class="k">Access Point</span>
+                <span class="v">~60× Wi-Fi 6 dual-band
+                  <small>Coverage semua area + high-density di aula</small>
+                </span>
+              </div>
+            </div>
+
+            <h5>BoM Ringkas per Kategori</h5>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr><th>Kategori</th><th>Estimasi Biaya</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>Switch core & distribusi</td><td>Rp200.000.000</td></tr>
+                  <tr><td>Switch access (20 unit)</td><td>Rp300.000.000</td></tr>
+                  <tr><td>Access Point (60 unit)</td><td>Rp250.000.000</td></tr>
+                  <tr><td>Router & firewall</td><td>Rp80.000.000</td></tr>
+                  <tr><td>Kabel & konektor (fiber + UTP)</td><td>Rp250.000.000</td></tr>
+                  <tr><td>Rack & pendukung</td><td>Rp100.000.000</td></tr>
+                  <tr><td>UPS & daya</td><td>Rp80.000.000</td></tr>
+                  <tr><td>Server lokal (upgrade)</td><td>Rp100.000.000</td></tr>
+                  <tr><td>Instalasi & terminasi</td><td>Rp100.000.000</td></tr>
+                  <tr style="background:#f0fdfa"><td><strong>Subtotal</strong></td><td><strong>Rp1.460.000.000</strong></td></tr>
+                  <tr style="background:#0f172a;color:#5eead4"><td><strong>Total + Cadangan 10%</strong></td><td><strong>~Rp1.606.000.000</strong></td></tr>
+                </tbody>
+              </table>
+            </div>
+
+            <h5>Poin Manajemen Proyek</h5>
+            <ul>
+              <li><strong>Fase 1:</strong> Backbone (core + distribusi + fiber antar gedung)</li>
+              <li><strong>Fase 2:</strong> Access layer lantai 1 semua gedung</li>
+              <li><strong>Fase 3:</strong> Wireless coverage menyeluruh</li>
+              <li><strong>Fase 4:</strong> Migrasi & pelatihan admin</li>
+              <li>Total waktu: 3–6 bulan tergantung kondisi</li>
+              <li>Siapkan <strong>dokumentasi as-built</strong> untuk maintenance</li>
+            </ul>
+
+            <div class="insights">
+              <span class="ins-title">Poin Pembelajaran</span>
+              <ul>
+                <li>Jaringan besar butuh <strong>arsitektur hierarkis</strong> (core-distribution-access) — bukan switch bertumpuk.</li>
+                <li><strong>Ujian online</strong> sebaiknya pakai server lokal, bukan cloud — lebih cepat & tidak bergantung internet.</li>
+                <li><strong>BYOD policy</strong> wajib di sekolah besar — keamanan & bandwidth.</li>
+                <li>VLAN adalah <strong>tulang punggung</strong> desain jaringan besar.</li>
+                <li>Anggaran proyek besar perlu <strong>fase bertahap</strong> — tidak bisa selesai sekaligus.</li>
+                <li>Dokumentasi as-built adalah <strong>aset jangka panjang</strong> — jangan diabaikan.</li>
+              </ul>
+            </div>
+          </div>
+        </details>
+      </div>
+    </details>
+  </section>
+
+  <div class="takeaway">
+    <h3>Poin Kunci Modul 12</h3>
+    <ol>
+      <li>Setiap kasus punya <strong>konteks unik</strong> — jangan generalisasi solusi.</li>
+      <li>Rumah: fokus <strong>coverage</strong>. Lab: fokus <strong>kapasitas & stabilitas</strong>.</li>
+      <li>Kantor: butuh <strong>QoS</strong> untuk VoIP & video conference.</li>
+      <li>Hotspot publik: wajib <strong>client isolation</strong> + bandwidth limit.</li>
+      <li>CCTV: bandwidth <strong>kontinu</strong>, storage besar, PoE budget besar.</li>
+      <li>Server lokal: NIC server <strong>bisa jadi bottleneck</strong>. Backup 3-2-1.</li>
+      <li>Cloud-only: <strong>uplink = kunci</strong>. Backup ISP wajib.</li>
+      <li>Jaringan besar: <strong>arsitektur hierarkis</strong> + VLAN + QoS lintas zona.</li>
+      <li>Ujian online: gunakan <strong>server lokal</strong>, bukan cloud.</li>
+      <li>Semua solusi harus bisa <strong>dipertanggungjawabkan</strong> secara teknis dan biaya.</li>
+    </ol>
+  </div>
+
+</main>
+
+<button class="back-top" id="backTop" aria-label="Kembali ke atas">
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>
+</button>
+
+<footer>
+  <strong>Modul 12 — Studi Kasus Analisis Kebutuhan Jaringan</strong><br>
+  Kelas XI TKJ · TP: Memahami kebutuhan teknis pengguna dan peralatan jaringan dengan teknologi yang sesuai.
+</footer>
+
+<script>
+  // Smooth scroll
+  document.querySelectorAll('nav.toc a').forEach(a=>{
+    a.addEventListener('click', e=>{
+      const el = document.querySelector(a.getAttribute('href'));
+      if(el){ e.preventDefault(); el.scrollIntoView({behavior:'smooth', block:'start'}); }
+    });
+  });
+
+  // Back to top
+  const btn = document.getElementById('backTop');
+  window.addEventListener('scroll', ()=>{
+    if(window.scrollY > 400) btn.classList.add('show');
+    else btn.classList.remove('show');
+  });
+  btn.addEventListener('click', ()=>window.scrollTo({top:0, behavior:'smooth'}));
+</script>
+
+</body>
+</html>

@@ -1,0 +1,844 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0f766e">
+<title>Modul 1 — Konsep Dasar Analisis Kebutuhan Jaringan</title>
+<style>
+  :root{
+    --primary:#0f766e;
+    --primary-dark:#115e59;
+    --primary-light:#ccfbf1;
+    --accent:#f59e0b;
+    --danger:#dc2626;
+    --success:#16a34a;
+    --bg:#f8fafc;
+    --card:#ffffff;
+    --text:#0f172a;
+    --text-muted:#475569;
+    --border:#e2e8f0;
+    --radius:14px;
+    --shadow:0 1px 3px rgba(15,23,42,.06), 0 1px 2px rgba(15,23,42,.04);
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{margin:0;padding:0}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    line-height:1.6;
+    font-size:16px;
+    -webkit-font-smoothing:antialiased;
+    padding-bottom:env(safe-area-inset-bottom);
+  }
+
+  /* ===== HEADER ===== */
+  header.hero{
+    background:linear-gradient(135deg,var(--primary) 0%,var(--primary-dark) 100%);
+    color:#fff;
+    padding:28px 20px 32px;
+    border-radius:0 0 24px 24px;
+    position:relative;
+    overflow:hidden;
+  }
+  header.hero::after{
+    content:"";
+    position:absolute;
+    right:-40px;top:-40px;
+    width:160px;height:160px;
+    background:rgba(255,255,255,.08);
+    border-radius:50%;
+  }
+  .badge{
+    display:inline-block;
+    background:rgba(255,255,255,.18);
+    color:#fff;
+    padding:4px 12px;
+    border-radius:999px;
+    font-size:12px;
+    font-weight:600;
+    letter-spacing:.4px;
+    text-transform:uppercase;
+    margin-bottom:12px;
+    backdrop-filter:blur(4px);
+  }
+  header.hero h1{
+    font-size:22px;
+    margin:0 0 8px;
+    line-height:1.3;
+    font-weight:700;
+  }
+  header.hero p{
+    margin:0;
+    font-size:14px;
+    opacity:.9;
+  }
+
+  /* ===== TP BOX ===== */
+  .tp-box{
+    background:#fff;
+    margin:-16px 16px 20px;
+    padding:16px 18px;
+    border-radius:var(--radius);
+    box-shadow:var(--shadow);
+    border-left:4px solid var(--accent);
+    position:relative;
+    z-index:1;
+  }
+  .tp-box .label{
+    font-size:11px;
+    font-weight:700;
+    letter-spacing:.6px;
+    text-transform:uppercase;
+    color:var(--accent);
+    margin-bottom:6px;
+    display:block;
+  }
+  .tp-box p{
+    margin:0;
+    font-size:14.5px;
+    color:var(--text);
+    font-weight:500;
+  }
+
+  /* ===== NAV / TOC ===== */
+  nav.toc{
+    background:#fff;
+    margin:0 16px 24px;
+    padding:16px 18px;
+    border-radius:var(--radius);
+    box-shadow:var(--shadow);
+  }
+  nav.toc h2{
+    font-size:14px;
+    margin:0 0 12px;
+    color:var(--text-muted);
+    text-transform:uppercase;
+    letter-spacing:.5px;
+    font-weight:700;
+  }
+  nav.toc ol{
+    margin:0;
+    padding-left:20px;
+    font-size:14.5px;
+  }
+  nav.toc li{margin-bottom:6px}
+  nav.toc a{
+    color:var(--primary);
+    text-decoration:none;
+    font-weight:500;
+  }
+  nav.toc a:active{opacity:.6}
+
+  /* ===== MAIN ===== */
+  main{
+    padding:0 16px 40px;
+    max-width:720px;
+    margin:0 auto;
+  }
+
+  section{
+    background:#fff;
+    border-radius:var(--radius);
+    box-shadow:var(--shadow);
+    margin-bottom:16px;
+    overflow:hidden;
+    scroll-margin-top:16px;
+  }
+
+  details{
+    border-radius:var(--radius);
+    overflow:hidden;
+  }
+  details summary{
+    list-style:none;
+    cursor:pointer;
+    padding:16px 18px;
+    display:flex;
+    align-items:center;
+    gap:12px;
+    font-weight:600;
+    font-size:15px;
+    user-select:none;
+    transition:background .15s;
+  }
+  details summary::-webkit-details-marker{display:none}
+  details summary:active{background:var(--bg)}
+
+  .num{
+    flex-shrink:0;
+    width:32px;height:32px;
+    background:var(--primary-light);
+    color:var(--primary-dark);
+    border-radius:9px;
+    display:flex;align-items:center;justify-content:center;
+    font-weight:700;
+    font-size:14px;
+  }
+  .summary-text{
+    flex:1;
+    color:var(--text);
+    line-height:1.35;
+  }
+  .chev{
+    flex-shrink:0;
+    width:20px;height:20px;
+    transition:transform .2s;
+    color:var(--text-muted);
+  }
+  details[open] .chev{transform:rotate(180deg)}
+
+  .content{
+    padding:0 18px 20px;
+    font-size:15px;
+    color:var(--text);
+    border-top:1px solid var(--border);
+    padding-top:16px;
+    margin-top:0;
+  }
+
+  .content p{margin:0 0 12px}
+  .content p:last-child{margin-bottom:0}
+  .content h4{
+    font-size:14px;
+    margin:16px 0 8px;
+    color:var(--primary-dark);
+    font-weight:700;
+  }
+  .content ul,.content ol{
+    margin:0 0 12px;
+    padding-left:22px;
+  }
+  .content li{margin-bottom:6px}
+  .content strong{color:var(--text);font-weight:600}
+
+  /* ===== CALLOUTS ===== */
+  .callout{
+    border-radius:10px;
+    padding:12px 14px;
+    font-size:14px;
+    margin:12px 0;
+    border-left:3px solid;
+  }
+  .callout.tip{
+    background:#ecfdf5;
+    border-color:var(--success);
+    color:#065f46;
+  }
+  .callout.warn{
+    background:#fef2f2;
+    border-color:var(--danger);
+    color:#991b1b;
+  }
+  .callout.info{
+    background:#eff6ff;
+    border-color:#2563eb;
+    color:#1e40af;
+  }
+  .callout .title{
+    font-weight:700;
+    font-size:12px;
+    text-transform:uppercase;
+    letter-spacing:.4px;
+    display:block;
+    margin-bottom:4px;
+  }
+
+  /* ===== TABLE ===== */
+  .table-wrap{
+    overflow-x:auto;
+    margin:12px -4px;
+    border-radius:10px;
+    -webkit-overflow-scrolling:touch;
+  }
+  table{
+    width:100%;
+    border-collapse:collapse;
+    font-size:13.5px;
+    min-width:480px;
+  }
+  th{
+    background:var(--primary-light);
+    color:var(--primary-dark);
+    padding:10px 12px;
+    text-align:left;
+    font-weight:700;
+    font-size:12.5px;
+    text-transform:uppercase;
+    letter-spacing:.3px;
+    white-space:nowrap;
+  }
+  td{
+    padding:10px 12px;
+    border-top:1px solid var(--border);
+    vertical-align:top;
+  }
+  tr:nth-child(even) td{background:#fafbfc}
+
+  /* ===== VS CARD ===== */
+  .vs-grid{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:10px;
+    margin:12px 0;
+  }
+  .vs-card{
+    background:var(--bg);
+    border-radius:10px;
+    padding:12px 14px;
+    border-left:3px solid var(--primary);
+  }
+  .vs-card.alt{
+    border-left-color:var(--accent);
+  }
+  .vs-card .head{
+    font-size:12px;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:.4px;
+    color:var(--primary-dark);
+    margin-bottom:6px;
+  }
+  .vs-card.alt .head{color:#b45309}
+  .vs-card p{font-size:13.5px;margin:0 0 6px}
+  .vs-card p:last-child{margin-bottom:0}
+
+  /* ===== STEPS ===== */
+  .steps{
+    counter-reset:step;
+    list-style:none;
+    padding:0;
+    margin:12px 0;
+  }
+  .steps li{
+    counter-increment:step;
+    position:relative;
+    padding:0 0 16px 40px;
+    font-size:14.5px;
+  }
+  .steps li::before{
+    content:counter(step);
+    position:absolute;
+    left:0;top:0;
+    width:28px;height:28px;
+    background:var(--primary);
+    color:#fff;
+    border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    font-size:13px;
+    font-weight:700;
+  }
+  .steps li:last-child{padding-bottom:0}
+
+  /* ===== CASE BOX ===== */
+  .case-box{
+    background:linear-gradient(135deg,#f0fdfa 0%,#e0f2fe 100%);
+    border-radius:12px;
+    padding:14px 16px;
+    margin:12px 0;
+    border:1px solid #99f6e4;
+  }
+  .case-box .case-label{
+    font-size:11px;
+    font-weight:700;
+    letter-spacing:.5px;
+    text-transform:uppercase;
+    color:var(--primary-dark);
+    margin-bottom:6px;
+    display:block;
+  }
+  .case-box p{font-size:14px;margin:0 0 8px}
+  .case-box .question{
+    background:#fff;
+    border-radius:8px;
+    padding:10px 12px;
+    font-size:13.5px;
+    margin-top:8px;
+    border-left:3px solid var(--accent);
+  }
+  .case-box .question strong{color:var(--primary-dark)}
+
+  /* ===== KEY TAKEAWAY ===== */
+  .takeaway{
+    background:#0f172a;
+    color:#fff;
+    border-radius:var(--radius);
+    padding:20px 20px;
+    margin:24px 0 0;
+  }
+  .takeaway h3{
+    margin:0 0 12px;
+    font-size:15px;
+    color:#5eead4;
+    text-transform:uppercase;
+    letter-spacing:.5px;
+  }
+  .takeaway ol{
+    margin:0;
+    padding-left:22px;
+    font-size:14.5px;
+  }
+  .takeaway li{margin-bottom:8px;color:#e2e8f0}
+  .takeaway li:last-child{margin-bottom:0}
+
+  footer{
+    text-align:center;
+    padding:24px 16px 40px;
+    font-size:12.5px;
+    color:var(--text-muted);
+  }
+  footer strong{color:var(--primary-dark)}
+
+  /* ===== BACK TO TOP ===== */
+  .back-top{
+    position:fixed;
+    right:16px;
+    bottom:calc(16px + env(safe-area-inset-bottom));
+    width:44px;height:44px;
+    border-radius:50%;
+    background:var(--primary);
+    color:#fff;
+    border:none;
+    box-shadow:0 4px 12px rgba(15,118,110,.35);
+    cursor:pointer;
+    display:none;
+    align-items:center;justify-content:center;
+    z-index:50;
+    transition:transform .15s,opacity .2s;
+  }
+  .back-top:active{transform:scale(.92)}
+  .back-top.show{display:flex}
+
+  @media (min-width:600px){
+    header.hero{padding:36px 28px 40px}
+    header.hero h1{font-size:26px}
+    .tp-box{margin:-20px 24px 24px}
+    nav.toc{margin:0 24px 28px}
+    main{padding:0 24px 60px}
+    .vs-grid{grid-template-columns:1fr 1fr}
+    .content{font-size:15.5px}
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <span class="badge">Modul 1 · Kelas XI TKJ</span>
+  <h1>Konsep Dasar Analisis Kebutuhan Jaringan</h1>
+  <p>Fondasi berpikir teknisi jaringan: dari kebutuhan pengguna menuju justifikasi teknis.</p>
+</header>
+
+<div class="tp-box">
+  <span class="label">Tujuan Pembelajaran</span>
+  <p>Memahami kebutuhan teknis pengguna dan peralatan jaringan dengan teknologi yang sesuai.</p>
+</div>
+
+<nav class="toc">
+  <h2>Daftar Isi</h2>
+  <ol>
+    <li><a href="#m1-1">Pengertian Kebutuhan Teknis Pengguna</a></li>
+    <li><a href="#m1-2">Kebutuhan Pengguna vs Kebutuhan Teknis</a></li>
+    <li><a href="#m1-3">Peran Teknisi dalam Menggali Kebutuhan</a></li>
+    <li><a href="#m1-4">Identifikasi Masalah Jaringan</a></li>
+    <li><a href="#m1-5">Identifikasi Tujuan Pembangunan Jaringan</a></li>
+    <li><a href="#m1-6">Faktor yang Memengaruhi Kebutuhan</a></li>
+    <li><a href="#m1-7">Studi Kasus</a></li>
+  </ol>
+</nav>
+
+<main>
+
+  <!-- 1.1 -->
+  <section id="m1-1">
+    <details open>
+      <summary>
+        <span class="num">1.1</span>
+        <span class="summary-text">Pengertian Kebutuhan Teknis Pengguna</span>
+        <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </summary>
+      <div class="content">
+        <p><strong>Kebutuhan teknis pengguna</strong> adalah terjemahan terukur dari apa yang diinginkan pengguna menjadi parameter yang bisa dirancang, dibeli, dan diuji oleh teknisi jaringan.</p>
+        <p>Pengguna biasanya berbicara dalam bahasa sehari-hari: <em>"internetnya lambat"</em>, <em>"Wi-Fi sering putus"</em>, <em>"file susah dikirim"</em>. Tugas teknisi adalah mengubah kalimat itu menjadi angka dan spesifikasi.</p>
+
+        <div class="callout info">
+          <span class="title">Contoh Penerjemahan</span>
+          <p style="margin:0">"Internet lambat" → butuh <strong>≥ 50 Mbps</strong> untuk 30 pengguna bersamaan, <strong>latency &lt; 50 ms</strong>, dan <strong>packet loss &lt; 1%</strong>.</p>
+        </div>
+
+        <h4>Empat Atribut Kebutuhan</h4>
+        <p>Kebutuhan yang baik harus memenuhi empat atribut berikut. Tanpa salah satunya, kebutuhan itu belum lengkap.</p>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Atribut</th><th>Pertanyaan Kunci</th><th>Contoh</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Fungsional</strong></td>
+                <td>Apa yang harus bisa dilakukan?</td>
+                <td>Pengguna bisa akses server lokal & internet</td>
+              </tr>
+              <tr>
+                <td><strong>Non-Fungsional</strong></td>
+                <td>Seberapa baik harus dilakukan?</td>
+                <td>Latency &lt; 50 ms, uptime 99%, aman</td>
+              </tr>
+              <tr>
+                <td><strong>Constraint</strong></td>
+                <td>Apa batasannya?</td>
+                <td>Anggaran Rp15 juta, ruang terbatas</td>
+              </tr>
+              <tr>
+                <td><strong>Prioritas</strong></td>
+                <td>Mana yang wajib vs opsional?</td>
+                <td>Must: internet. Should: Wi-Fi tamu</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="callout tip">
+          <span class="title">Tips</span>
+          <p style="margin:0">Gunakan skala prioritas <strong>MoSCoW</strong>: <em>Must have, Should have, Could have, Won't have</em>. Ini membantu saat anggaran terbatas.</p>
+        </div>
+      </div>
+    </details>
+  </section>
+
+  <!-- 1.2 -->
+  <section id="m1-2">
+    <details>
+      <summary>
+        <span class="num">1.2</span>
+        <span class="summary-text">Perbedaan Kebutuhan Pengguna & Kebutuhan Teknis</span>
+        <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </summary>
+      <div class="content">
+        <p>Dua hal ini sering tertukar. Bedanya sederhana: yang satu bicara <em>apa</em>, yang satu bicara <em>bagaimana</em>.</p>
+
+        <div class="vs-grid">
+          <div class="vs-card">
+            <div class="head">Kebutuhan Pengguna</div>
+            <p>Bahasa sehari-hari, tidak terukur.</p>
+            <p><em>"Kami butuh Wi-Fi cepat di ruang guru."</em></p>
+          </div>
+          <div class="vs-card alt">
+            <div class="head">Kebutuhan Teknis</div>
+            <p>Bahasa teknis, terukur, bisa diuji.</p>
+            <p><em>"Wi-Fi 5 GHz, ≥ 100 Mbps, cover 12×8 m, 30 client."</em></p>
+          </div>
+        </div>
+
+        <h4>Perbandingan Lengkap</h4>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Aspek</th><th>Kebutuhan Pengguna</th><th>Kebutuhan Teknis</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Bahasa</td><td>Umum, awam</td><td>Teknis, spesifik</td></tr>
+              <tr><td>Sifat</td><td>Kualitatif</td><td>Kuantitatif</td></tr>
+              <tr><td>Contoh</td><td>"Jaringan stabil"</td><td>Uptime ≥ 99%</td></tr>
+              <tr><td>Dipakai oleh</td><td>Manajemen, pengguna</td><td>Teknisi, vendor</td></tr>
+              <tr><td>Bisa diuji?</td><td>Sulit</td><td>Ya, terukur</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="callout warn">
+          <span class="title">Kesalahan Umum</span>
+          <p style="margin:0">Langsung membeli perangkat berdasarkan permintaan pengguna tanpa menerjemahkannya ke kebutuhan teknis. Akibatnya: over-budget atau under-spec.</p>
+        </div>
+      </div>
+    </details>
+  </section>
+
+  <!-- 1.3 -->
+  <section id="m1-3">
+    <details>
+      <summary>
+        <span class="num">1.3</span>
+        <span class="summary-text">Peran Teknisi dalam Menggali Kebutuhan</span>
+        <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </summary>
+      <div class="content">
+        <p>Teknisi jaringan bukan hanya "tukang setting". Dalam tahap analisis, ia berperan sebagai <strong>analis kebutuhan</strong>, bukan sekadar penerima pesanan.</p>
+
+        <h4>Empat Peran Utama</h4>
+        <ul>
+          <li><strong>Penggali informasi</strong> — bertanya, mengamati, mencatat.</li>
+          <li><strong>Penerjemah</strong> — mengubah bahasa pengguna ke bahasa teknis.</li>
+          <li><strong>Penasihat</strong> — memberi opsi dan konsekuensi tiap pilihan.</li>
+          <li><strong>Verifikator</strong> — memastikan solusi benar-benar menjawab kebutuhan.</li>
+        </ul>
+
+        <h4>Pertanyaan Wajib Saat Wawancara</h4>
+        <ol class="steps">
+          <li><strong>Siapa</strong> penggunanya? Berapa jumlahnya?</li>
+          <li><strong>Apa</strong> yang mereka kerjakan di jaringan?</li>
+          <li><strong>Kapan</strong> puncak penggunaan terjadi?</li>
+          <li><strong>Di mana</strong> mereka mengakses (ruang, lantai, area)?</li>
+          <li><strong>Mengapa</strong> jaringan ini dibutuhkan (masalah apa yang diselesaikan)?</li>
+          <li><strong>Bagaimana</strong> kalau kebutuhan bertambah 1–2 tahun ke depan?</li>
+        </ol>
+
+        <div class="callout tip">
+          <span class="title">Teknik 5W + 1H</span>
+          <p style="margin:0">Gunakan kerangka ini agar wawancara tidak melebar dan tetap fokus pada kebutuhan, bukan keinginan.</p>
+        </div>
+      </div>
+    </details>
+  </section>
+
+  <!-- 1.4 -->
+  <section id="m1-4">
+    <details>
+      <summary>
+        <span class="num">1.4</span>
+        <span class="summary-text">Identifikasi Masalah Jaringan</span>
+        <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </summary>
+      <div class="content">
+        <p>Sebelum merancang jaringan baru, kita harus tahu masalah apa yang ingin diselesaikan. Jaringan dibangun karena ada <em>gap</em> antara kondisi saat ini dan kondisi yang diinginkan.</p>
+
+        <h4>Gejala Masalah yang Sering Ditemui</h4>
+        <ul>
+          <li>Internet terasa lambat pada jam tertentu (pukul 10.00–12.00).</li>
+          <li>Wi-Fi hanya kuat di dekat router, lemah di ruang lain.</li>
+          <li>Koneksi sering terputus tanpa pola yang jelas.</li>
+          <li>Transfer file besar memakan waktu lama.</li>
+          <li>Video conference terputus-putus / patah-patah.</li>
+          <li>CCTV tidak bisa diakses dari jarak jauh.</li>
+          <li>Tidak ada pembatasan akses — semua orang bisa masuk.</li>
+        </ul>
+
+        <h4>Pola Analisis Masalah</h4>
+        <ol class="steps">
+          <li><strong>Kumpulkan gejala</strong> — apa yang dirasakan pengguna.</li>
+          <li><strong>Cari akar masalah</strong> — bandwidth kurang? coverage lemah? interferensi? salah konfigurasi?</li>
+          <li><strong>Dampak</strong> — apa akibatnya bagi pengguna dan organisasi?</li>
+          <li><strong>Skala prioritas</strong> — mana yang paling mendesak untuk diperbaiki.</li>
+        </ol>
+
+        <div class="callout info">
+          <span class="title">Ingat</span>
+          <p style="margin:0">Masalah sering muncul sebagai <em>gejala</em>, bukan <em>penyebab</em>. "Internet lambat" bisa jadi karena bandwidth kurang, tapi bisa juga karena router yang sudah tua atau kabel yang rusak.</p>
+        </div>
+      </div>
+    </details>
+  </section>
+
+  <!-- 1.5 -->
+  <section id="m1-5">
+    <details>
+      <summary>
+        <span class="num">1.5</span>
+        <span class="summary-text">Identifikasi Tujuan Pembangunan Jaringan</span>
+        <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </summary>
+      <div class="content">
+        <p>Tujuan pembangunan jaringan harus <strong>spesifik, terukur, dan bisa diverifikasi</strong>. Tujuan yang kabur akan menghasilkan desain yang kabur pula.</p>
+
+        <h4>Jenis Tujuan</h4>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Jenis</th><th>Contoh Tujuan</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>Konektivitas</strong></td><td>Semua PC lab dapat mengakses server lokal & internet.</td></tr>
+              <tr><td><strong>Performa</strong></td><td>Latency ke internet &lt; 50 ms, throughput ≥ 50 Mbps.</td></tr>
+              <tr><td><strong>Cakupan</strong></td><td>Wi-Fi menjangkau seluruh area guru tanpa blank spot.</td></tr>
+              <tr><td><strong>Keamanan</strong></td><td>Akses Wi-Fi terautentikasi, jaringan tamu terpisah.</td></tr>
+              <tr><td><strong>Skalabilitas</strong></td><td>Mampu menambahkan 50% pengguna tanpa ganti perangkat inti.</td></tr>
+              <tr><td><strong>Efisiensi biaya</strong></td><td>Total biaya pengadaan + operasional 1 tahun ≤ Rp20 juta.</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="callout tip">
+          <span class="title">Kaidah SMART</span>
+          <p style="margin:0"><strong>S</strong>pecific, <strong>M</strong>easurable, <strong>A</strong>chievable, <strong>R</strong>elevant, <strong>T</strong>ime-bound. Setiap tujuan jaringan sebaiknya lolos lima kriteria ini.</p>
+        </div>
+      </div>
+    </details>
+  </section>
+
+  <!-- 1.6 -->
+  <section id="m1-6">
+    <details>
+      <summary>
+        <span class="num">1.6</span>
+        <span class="summary-text">Faktor yang Memengaruhi Kebutuhan Jaringan</span>
+        <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </summary>
+      <div class="content">
+        <p>Ada delapan faktor yang selalu muncul dalam analisis kebutuhan jaringan. Kuasai semuanya, dan Anda sudah bisa menganalisis sebagian besar kasus.</p>
+
+        <h4>1. Jumlah Pengguna</h4>
+        <p>Semakin banyak pengguna, semakin besar kebutuhan bandwidth dan kapasitas perangkat. Perhatikan juga <em>jumlah pengguna bersamaan</em> (concurrent users), bukan hanya total pengguna.</p>
+
+        <h4>2. Jenis Perangkat</h4>
+        <p>PC desktop, laptop, smartphone, tablet, printer jaringan, IP camera, server — masing-masing punya pola konsumsi yang berbeda.</p>
+
+        <h4>3. Jenis Aplikasi</h4>
+        <p>Aplikasi ringan (browsing, email) vs berat (video conference, streaming, backup). Setiap aplikasi punya kebutuhan bandwidth dan sensitivitas yang berbeda.</p>
+
+        <h4>4. Bandwidth</h4>
+        <p>Total kebutuhan bandwidth = jumlah pengguna × kebutuhan per pengguna × overhead. Overhead biasanya 20–50%.</p>
+
+        <h4>5. Jarak</h4>
+        <p>Jarak menentukan pilihan media transmisi: kabel UTP maksimal 100 m, fiber optic bisa kilometer, Wi-Fi terbatas pada area tertentu.</p>
+
+        <h4>6. Mobilitas</h4>
+        <p>Pengguna yang berpindah-pindah membutuhkan Wi-Fi dengan roaming mulus. Pengguna tetap (fixed) lebih cocok pakai kabel.</p>
+
+        <h4>7. Keamanan</h4>
+        <p>Data sensitif butuh segmentasi jaringan, VLAN, firewall, autentikasi. Jaringan tamu harus dipisah dari jaringan internal.</p>
+
+        <h4>8. Anggaran</h4>
+        <p>Anggaran menentukan sejauh mana solusi ideal bisa dicapai. Sering harus ada kompromi antara fitur, performa, dan biaya.</p>
+
+        <div class="callout info">
+          <span class="title">Ringkasan Faktor</span>
+          <p style="margin:0">Kedelapan faktor ini akan terus muncul di modul-modul berikutnya. Kuasai sebagai kerangka analisis dasar.</p>
+        </div>
+      </div>
+    </details>
+  </section>
+
+  <!-- 1.7 -->
+  <section id="m1-7">
+    <details>
+      <summary>
+        <span class="num">1.7</span>
+        <span class="summary-text">Studi Kasus Analisis Kebutuhan Jaringan</span>
+        <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </summary>
+      <div class="content">
+        <p>Mari terapkan semua konsep di atas pada kasus nyata yang sederhana.</p>
+
+        <div class="case-box">
+          <span class="case-label">Kasus</span>
+          <p><strong>Ruang Guru SMK Nusantara</strong> memiliki 12 guru. Setiap guru memakai laptop untuk:</p>
+          <ul style="margin:6px 0 8px;padding-left:20px;font-size:14px">
+            <li>Input nilai ke sistem informasi sekolah (web-based)</li>
+            <li>Video conference dengan dinas pendidikan (kadang-kadang)</li>
+            <li>Streaming pembelajaran (YouTube)</li>
+            <li>Cetak dokumen via printer jaringan</li>
+          </ul>
+          <p>Masalah saat ini: Wi-Fi sering lambat, terutama saat jam istirahat.</p>
+        </div>
+
+        <h4>Langkah 1 — Identifikasi Masalah</h4>
+        <ul>
+          <li>Keluhan: Wi-Fi lambat saat jam istirahat (pukul 09.30–10.00).</li>
+          <li>Dugaan penyebab: <em>bandwidth sharing</em> dengan siswa, atau akses point tunggal yang overload.</li>
+        </ul>
+
+        <h4>Langkah 2 — Identifikasi Tujuan</h4>
+        <ul>
+          <li>12 guru dapat mengakses aplikasi sekolah & internet dengan nyaman.</li>
+          <li>Latency &lt; 100 ms, throughput ≥ 25 Mbps untuk 12 pengguna.</li>
+          <li>Wi-Fi menjangkau seluruh ruang guru (10×8 m).</li>
+        </ul>
+
+        <h4>Langkah 3 — Kebutuhan Pengguna (User Requirement)</h4>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>No</th><th>Kebutuhan</th><th>Prioritas</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>1</td><td>Wi-Fi stabil untuk 12 guru</td><td>Must</td></tr>
+              <tr><td>2</td><td>Akses sistem informasi sekolah</td><td>Must</td></tr>
+              <tr><td>3</td><td>Video conference lancar</td><td>Should</td></tr>
+              <tr><td>4</td><td>Cetak dokumen via printer jaringan</td><td>Must</td></tr>
+              <tr><td>5</td><td>Wi-Fi tamu untuk dinas luar</td><td>Could</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h4>Langkah 4 — Kebutuhan Teknis (Technical Requirement)</h4>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Parameter</th><th>Nilai</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Bandwidth total</td><td>≥ 50 Mbps (12 user × 3 Mbps × overhead 1.4)</td></tr>
+              <tr><td>Latency</td><td>&lt; 100 ms</td></tr>
+              <tr><td>Coverage</td><td>Ruang guru 10×8 m, tanpa blank spot</td></tr>
+              <tr><td>Jumlah client</td><td>≥ 30 client per AP</td></tr>
+              <tr><td>Frekuensi</td><td>5 GHz prioritas, 2.4 GHz fallback</td></tr>
+              <tr><td>Keamanan</td><td>WPA2/WPA3, SSID terpisah untuk tamu</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h4>Langkah 5 — Faktor yang Berpengaruh</h4>
+        <ul>
+          <li><strong>Jumlah pengguna:</strong> 12 (kecil, tapi harus antisipasi pertumbuhan).</li>
+          <li><strong>Jenis aplikasi:</strong> dominan browsing & video conference.</li>
+          <li><strong>Bandwidth:</strong> 50 Mbps cukup, tapi harus dipisah dari jaringan siswa.</li>
+          <li><strong>Jarak:</strong> ruang tunggal, 1 AP sudah memadai.</li>
+          <li><strong>Mobilitas:</strong> rendah–sedang.</li>
+          <li><strong>Keamanan:</strong> sedang (data nilai siswa).</li>
+          <li><strong>Anggaran:</strong> sedang.</li>
+        </ul>
+
+        <div class="case-box" style="margin-top:16px">
+          <span class="case-label">Refleksi</span>
+          <div class="question">
+            <strong>Diskusikan:</strong> Mengapa "Wi-Fi lambat" belum bisa disebut sebagai kebutuhan teknis? Parameter apa saja yang harus ditambahkan agar bisa diukur?
+          </div>
+        </div>
+      </div>
+    </details>
+  </section>
+
+  <!-- TAKEAWAY -->
+  <div class="takeaway">
+    <h3>Poin Kunci Modul 1</h3>
+    <ol>
+      <li>Kebutuhan teknis = terjemahan terukur dari keinginan pengguna.</li>
+      <li>Setiap kebutuhan wajib punya atribut: fungsional, non-fungsional, constraint, prioritas.</li>
+      <li>Teknisi berperan sebagai analis, bukan sekadar penerima pesanan.</li>
+      <li>Masalah jaringan harus dicari akar penyebabnya, bukan hanya gejalanya.</li>
+      <li>Tujuan jaringan harus spesifik, terukur, dan bisa diverifikasi (SMART).</li>
+      <li>Delapan faktor utama: pengguna, perangkat, aplikasi, bandwidth, jarak, mobilitas, keamanan, anggaran.</li>
+    </ol>
+  </div>
+
+</main>
+
+<button class="back-top" id="backTop" aria-label="Kembali ke atas">
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>
+</button>
+
+<footer>
+  <strong>Modul 1 — Konsep Dasar Analisis Kebutuhan Jaringan</strong><br>
+  Kelas XI TKJ · TP: Memahami kebutuhan teknis pengguna dan peralatan jaringan dengan teknologi yang sesuai.
+</footer>
+
+<script>
+  // Smooth scroll ke anchor
+  document.querySelectorAll('nav.toc a').forEach(a=>{
+    a.addEventListener('click', e=>{
+      const el = document.querySelector(a.getAttribute('href'));
+      if(el){ e.preventDefault(); el.scrollIntoView({behavior:'smooth', block:'start'}); }
+    });
+  });
+
+  // Tombol back to top
+  const btn = document.getElementById('backTop');
+  window.addEventListener('scroll', ()=>{
+    if(window.scrollY > 400) btn.classList.add('show');
+    else btn.classList.remove('show');
+  });
+  btn.addEventListener('click', ()=>window.scrollTo({top:0, behavior:'smooth'}));
+</script>
+
+</body>
+</html>

@@ -1,0 +1,1122 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0f766e">
+<title>Modul 2 — Identifikasi Karakteristik Pengguna</title>
+<style>
+  :root{
+    --primary:#0f766e;
+    --primary-dark:#115e59;
+    --primary-light:#ccfbf1;
+    --accent:#f59e0b;
+    --danger:#dc2626;
+    --success:#16a34a;
+    --bg:#f8fafc;
+    --card:#ffffff;
+    --text:#0f172a;
+    --text-muted:#475569;
+    --border:#e2e8f0;
+    --radius:14px;
+    --shadow:0 1px 3px rgba(15,23,42,.06), 0 1px 2px rgba(15,23,42,.04);
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{margin:0;padding:0}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    line-height:1.6;
+    font-size:16px;
+    -webkit-font-smoothing:antialiased;
+    padding-bottom:env(safe-area-inset-bottom);
+  }
+
+  header.hero{
+    background:linear-gradient(135deg,var(--primary) 0%,var(--primary-dark) 100%);
+    color:#fff;
+    padding:28px 20px 32px;
+    border-radius:0 0 24px 24px;
+    position:relative;
+    overflow:hidden;
+  }
+  header.hero::after{
+    content:"";
+    position:absolute;
+    right:-40px;top:-40px;
+    width:160px;height:160px;
+    background:rgba(255,255,255,.08);
+    border-radius:50%;
+  }
+  .badge{
+    display:inline-block;
+    background:rgba(255,255,255,.18);
+    color:#fff;
+    padding:4px 12px;
+    border-radius:999px;
+    font-size:12px;
+    font-weight:600;
+    letter-spacing:.4px;
+    text-transform:uppercase;
+    margin-bottom:12px;
+    backdrop-filter:blur(4px);
+  }
+  header.hero h1{
+    font-size:22px;
+    margin:0 0 8px;
+    line-height:1.3;
+    font-weight:700;
+  }
+  header.hero p{
+    margin:0;
+    font-size:14px;
+    opacity:.9;
+  }
+
+  .tp-box{
+    background:#fff;
+    margin:-16px 16px 20px;
+    padding:16px 18px;
+    border-radius:var(--radius);
+    box-shadow:var(--shadow);
+    border-left:4px solid var(--accent);
+    position:relative;
+    z-index:1;
+  }
+  .tp-box .label{
+    font-size:11px;
+    font-weight:700;
+    letter-spacing:.6px;
+    text-transform:uppercase;
+    color:var(--accent);
+    margin-bottom:6px;
+    display:block;
+  }
+  .tp-box p{
+    margin:0;
+    font-size:14.5px;
+    color:var(--text);
+    font-weight:500;
+  }
+
+  nav.toc{
+    background:#fff;
+    margin:0 16px 24px;
+    padding:16px 18px;
+    border-radius:var(--radius);
+    box-shadow:var(--shadow);
+  }
+  nav.toc h2{
+    font-size:14px;
+    margin:0 0 12px;
+    color:var(--text-muted);
+    text-transform:uppercase;
+    letter-spacing:.5px;
+    font-weight:700;
+  }
+  nav.toc ol{
+    margin:0;
+    padding-left:20px;
+    font-size:14.5px;
+  }
+  nav.toc li{margin-bottom:6px}
+  nav.toc a{
+    color:var(--primary);
+    text-decoration:none;
+    font-weight:500;
+  }
+  nav.toc a:active{opacity:.6}
+
+  main{
+    padding:0 16px 40px;
+    max-width:720px;
+    margin:0 auto;
+  }
+
+  section{
+    background:#fff;
+    border-radius:var(--radius);
+    box-shadow:var(--shadow);
+    margin-bottom:16px;
+    overflow:hidden;
+    scroll-margin-top:16px;
+  }
+
+  details{
+    border-radius:var(--radius);
+    overflow:hidden;
+  }
+  details summary{
+    list-style:none;
+    cursor:pointer;
+    padding:16px 18px;
+    display:flex;
+    align-items:center;
+    gap:12px;
+    font-weight:600;
+    font-size:15px;
+    user-select:none;
+    transition:background .15s;
+  }
+  details summary::-webkit-details-marker{display:none}
+  details summary:active{background:var(--bg)}
+
+  .num{
+    flex-shrink:0;
+    width:32px;height:32px;
+    background:var(--primary-light);
+    color:var(--primary-dark);
+    border-radius:9px;
+    display:flex;align-items:center;justify-content:center;
+    font-weight:700;
+    font-size:14px;
+  }
+  .summary-text{
+    flex:1;
+    color:var(--text);
+    line-height:1.35;
+  }
+  .chev{
+    flex-shrink:0;
+    width:20px;height:20px;
+    transition:transform .2s;
+    color:var(--text-muted);
+  }
+  details[open] .chev{transform:rotate(180deg)}
+
+  .content{
+    padding:0 18px 20px;
+    font-size:15px;
+    color:var(--text);
+    border-top:1px solid var(--border);
+    padding-top:16px;
+    margin-top:0;
+  }
+
+  .content p{margin:0 0 12px}
+  .content p:last-child{margin-bottom:0}
+  .content h4{
+    font-size:14px;
+    margin:16px 0 8px;
+    color:var(--primary-dark);
+    font-weight:700;
+  }
+  .content ul,.content ol{
+    margin:0 0 12px;
+    padding-left:22px;
+  }
+  .content li{margin-bottom:6px}
+  .content strong{color:var(--text);font-weight:600}
+
+  .callout{
+    border-radius:10px;
+    padding:12px 14px;
+    font-size:14px;
+    margin:12px 0;
+    border-left:3px solid;
+  }
+  .callout.tip{background:#ecfdf5;border-color:var(--success);color:#065f46}
+  .callout.warn{background:#fef2f2;border-color:var(--danger);color:#991b1b}
+  .callout.info{background:#eff6ff;border-color:#2563eb;color:#1e40af}
+  .callout .title{
+    font-weight:700;
+    font-size:12px;
+    text-transform:uppercase;
+    letter-spacing:.4px;
+    display:block;
+    margin-bottom:4px;
+  }
+
+  .table-wrap{
+    overflow-x:auto;
+    margin:12px -4px;
+    border-radius:10px;
+    -webkit-overflow-scrolling:touch;
+  }
+  table{
+    width:100%;
+    border-collapse:collapse;
+    font-size:13.5px;
+    min-width:480px;
+  }
+  th{
+    background:var(--primary-light);
+    color:var(--primary-dark);
+    padding:10px 12px;
+    text-align:left;
+    font-weight:700;
+    font-size:12.5px;
+    text-transform:uppercase;
+    letter-spacing:.3px;
+    white-space:nowrap;
+  }
+  td{
+    padding:10px 12px;
+    border-top:1px solid var(--border);
+    vertical-align:top;
+  }
+  tr:nth-child(even) td{background:#fafbfc}
+
+  /* Kartu kategori pengguna */
+  .persona-grid{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:10px;
+    margin:12px 0;
+  }
+  .persona{
+    background:var(--bg);
+    border-radius:12px;
+    padding:12px 14px;
+    border-left:4px solid var(--primary);
+    position:relative;
+  }
+  .persona .icon{
+    display:inline-block;
+    background:var(--primary-light);
+    color:var(--primary-dark);
+    padding:2px 8px;
+    border-radius:6px;
+    font-size:11px;
+    font-weight:700;
+    letter-spacing:.3px;
+    margin-bottom:6px;
+  }
+  .persona h5{
+    margin:0 0 6px;
+    font-size:14px;
+    color:var(--text);
+    font-weight:700;
+  }
+  .persona p{
+    margin:0 0 6px;
+    font-size:13.5px;
+    color:var(--text-muted);
+  }
+  .persona p:last-child{margin-bottom:0}
+
+  /* Environment cards (2.8) */
+  .env-grid{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:10px;
+    margin:12px 0;
+  }
+  .env-card{
+    background:#fff;
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:14px;
+  }
+  .env-card h5{
+    margin:0 0 8px;
+    font-size:14px;
+    color:var(--primary-dark);
+    font-weight:700;
+    display:flex;
+    align-items:center;
+    gap:6px;
+  }
+  .env-card h5::before{
+    content:"";
+    width:6px;height:6px;
+    background:var(--accent);
+    border-radius:50%;
+  }
+  .env-card ul{
+    margin:0;
+    padding-left:18px;
+    font-size:13.5px;
+    color:var(--text-muted);
+  }
+  .env-card ul li{margin-bottom:4px}
+  .env-card ul li:last-child{margin-bottom:0}
+
+  /* Steps */
+  .steps{
+    counter-reset:step;
+    list-style:none;
+    padding:0;
+    margin:12px 0;
+  }
+  .steps li{
+    counter-increment:step;
+    position:relative;
+    padding:0 0 16px 40px;
+    font-size:14.5px;
+  }
+  .steps li::before{
+    content:counter(step);
+    position:absolute;
+    left:0;top:0;
+    width:28px;height:28px;
+    background:var(--primary);
+    color:#fff;
+    border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    font-size:13px;
+    font-weight:700;
+  }
+  .steps li:last-child{padding-bottom:0}
+
+  /* URL Template */
+  .url-template{
+    background:#fff;
+    border:2px dashed var(--primary);
+    border-radius:12px;
+    padding:14px 16px;
+    margin:12px 0;
+  }
+  .url-template .head{
+    font-size:12px;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:.4px;
+    color:var(--primary-dark);
+    margin-bottom:10px;
+  }
+  .url-row{
+    display:flex;
+    gap:8px;
+    font-size:13px;
+    padding:8px 0;
+    border-bottom:1px dashed var(--border);
+  }
+  .url-row:last-child{border-bottom:none;padding-bottom:0}
+  .url-row .k{
+    flex-shrink:0;
+    width:110px;
+    font-weight:700;
+    color:var(--primary-dark);
+  }
+  .url-row .v{
+    flex:1;
+    color:var(--text-muted);
+  }
+
+  /* Case box */
+  .case-box{
+    background:linear-gradient(135deg,#f0fdfa 0%,#e0f2fe 100%);
+    border-radius:12px;
+    padding:14px 16px;
+    margin:12px 0;
+    border:1px solid #99f6e4;
+  }
+  .case-box .case-label{
+    font-size:11px;
+    font-weight:700;
+    letter-spacing:.5px;
+    text-transform:uppercase;
+    color:var(--primary-dark);
+    margin-bottom:6px;
+    display:block;
+  }
+  .case-box p{font-size:14px;margin:0 0 8px}
+  .case-box .question{
+    background:#fff;
+    border-radius:8px;
+    padding:10px 12px;
+    font-size:13.5px;
+    margin-top:8px;
+    border-left:3px solid var(--accent);
+  }
+  .case-box .question strong{color:var(--primary-dark)}
+
+  /* Takeaway */
+  .takeaway{
+    background:#0f172a;
+    color:#fff;
+    border-radius:var(--radius);
+    padding:20px;
+    margin:24px 0 0;
+  }
+  .takeaway h3{
+    margin:0 0 12px;
+    font-size:15px;
+    color:#5eead4;
+    text-transform:uppercase;
+    letter-spacing:.5px;
+  }
+  .takeaway ol{
+    margin:0;
+    padding-left:22px;
+    font-size:14.5px;
+  }
+  .takeaway li{margin-bottom:8px;color:#e2e8f0}
+  .takeaway li:last-child{margin-bottom:0}
+
+  footer{
+    text-align:center;
+    padding:24px 16px 40px;
+    font-size:12.5px;
+    color:var(--text-muted);
+  }
+  footer strong{color:var(--primary-dark)}
+
+  .back-top{
+    position:fixed;
+    right:16px;
+    bottom:calc(16px + env(safe-area-inset-bottom));
+    width:44px;height:44px;
+    border-radius:50%;
+    background:var(--primary);
+    color:#fff;
+    border:none;
+    box-shadow:0 4px 12px rgba(15,118,110,.35);
+    cursor:pointer;
+    display:none;
+    align-items:center;justify-content:center;
+    z-index:50;
+    transition:transform .15s,opacity .2s;
+  }
+  .back-top:active{transform:scale(.92)}
+  .back-top.show{display:flex}
+
+  @media (min-width:600px){
+    header.hero{padding:36px 28px 40px}
+    header.hero h1{font-size:26px}
+    .tp-box{margin:-20px 24px 24px}
+    nav.toc{margin:0 24px 28px}
+    main{padding:0 24px 60px}
+    .persona-grid{grid-template-columns:1fr 1fr}
+    .env-grid{grid-template-columns:1fr 1fr}
+    .content{font-size:15.5px}
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <span class="badge">Modul 2 · Kelas XI TKJ</span>
+  <h1>Identifikasi Karakteristik Pengguna</h1>
+  <p>Siapa yang memakai jaringan, bagaimana polanya, dan apa kebutuhannya.</p>
+</header>
+
+<div class="tp-box">
+  <span class="label">Tujuan Pembelajaran</span>
+  <p>Memahami kebutuhan teknis pengguna dan peralatan jaringan dengan teknologi yang sesuai.</p>
+</div>
+
+<nav class="toc">
+  <h2>Daftar Isi</h2>
+  <ol>
+    <li><a href="#m2-1">Kategori Pengguna Jaringan</a></li>
+    <li><a href="#m2-2">Jumlah & Pertumbuhan Pengguna</a></li>
+    <li><a href="#m2-3">Pola Penggunaan Jaringan</a></li>
+    <li><a href="#m2-4">Pengguna Kabel & Nirkabel</a></li>
+    <li><a href="#m2-5">Perangkat yang Digunakan Pengguna</a></li>
+    <li><a href="#m2-6">Kebutuhan Akses Internet</a></li>
+    <li><a href="#m2-7">Kebutuhan Akses Server & Layanan</a></li>
+    <li><a href="#m2-8">Kebutuhan Berdasarkan Lingkungan Kerja</a></li>
+    <li><a href="#m2-9">Membuat User Requirement List</a></li>
+  </ol>
+</nav>
+
+<main>
+
+  <!-- 2.1 -->
+  <section id="m2-1">
+    <details open>
+      <summary>
+        <span class="num">2.1</span>
+        <span class="summary-text">Kategori Pengguna Jaringan</span>
+        <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </summary>
+      <div class="content">
+        <p>Tidak semua pengguna jaringan sama. Mengelompokkan mereka ke dalam kategori membantu teknisi memetakan kebutuhan secara lebih akurat.</p>
+
+        <h4>Kategori Umum Pengguna</h4>
+        <div class="persona-grid">
+          <div class="persona">
+            <span class="icon">INTERNAL</span>
+            <h5>Pengguna Internal</h5>
+            <p>Staf, guru, karyawan yang bekerja di dalam organisasi.</p>
+            <p>Akses penuh ke sumber daya internal (server, printer, aplikasi).</p>
+          </div>
+          <div class="persona">
+            <span class="icon">EKSTERNAL</span>
+            <h5>Pengguna Eksternal / Tamu</h5>
+            <p>Tamu, vendor, dinas luar, orang tua siswa.</p>
+            <p>Akses terbatas: biasanya hanya internet, tanpa akses ke server internal.</p>
+          </div>
+          <div class="persona">
+            <span class="icon">SISWA</span>
+            <h5>Pengguna Siswa / Mahasiswa</h5>
+            <p>Pengguna dengan pola akses pada jam tertentu (jam pelajaran / praktikum).</p>
+            <p>Kadang butuh pembatasan konten dan bandwidth.</p>
+          </div>
+          <div class="persona">
+            <span class="icon">ADMIN</span>
+            <h5>Pengguna Administrator</h5>
+            <p>IT support, teknisi jaringan, admin sistem.</p>
+            <p>Butuh akses istimewa: konfigurasi perangkat, monitoring, remote akses.</p>
+          </div>
+        </div>
+
+        <h4>Kategori Berdasarkan Intensitas</h4>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Kategori</th><th>Karakteristik</th><th>Contoh</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Ringan</strong></td>
+                <td>Browsing, email, chat. Bandwidth kecil.</td>
+                <td>Resepsionis, kasir</td>
+              </tr>
+              <tr>
+                <td><strong>Sedang</strong></td>
+                <td>Aplikasi web, file sharing, dokumen.</td>
+                <td>Guru, staf administrasi</td>
+              </tr>
+              <tr>
+                <td><strong>Berat</strong></td>
+                <td>Video conference, streaming, upload besar.</td>
+                <td>Desainer, editor video</td>
+              </tr>
+              <tr>
+                <td><strong>Kritis</strong></td>
+                <td>Server, CCTV, VoIP — harus 24/7.</td>
+                <td>Server, kamera IP</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="callout tip">
+          <span class="title">Tips</span>
+          <p style="margin:0">Buat <em>user persona</em> singkat untuk setiap kategori: nama, peran, perangkat utama, aplikasi yang dipakai, dan jam sibuknya. Persona ini jadi dasar analisis.</p>
+        </div>
+      </div>
+    </details>
+  </section>
+
+  <!-- 2.2 -->
+  <section id="m2-2">
+    <details>
+      <summary>
+        <span class="num">2.2</span>
+        <span class="summary-text">Jumlah & Pertumbuhan Pengguna</span>
+        <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </summary>
+      <div class="content">
+        <p>Jumlah pengguna bukan hanya "total", tapi juga <strong>berapa yang aktif bersamaan</strong> dan <strong>bagaimana proyeksinya ke depan</strong>.</p>
+
+        <h4>Tiga Angka Penting</h4>
+        <div class="url-template">
+          <div class="head">Jumlah pengguna yang harus dicatat</div>
+          <div class="url-row">
+            <div class="k">Total</div>
+            <div class="v">Seluruh pengguna yang terdaftar (contoh: 500 siswa, 40 guru).</div>
+          </div>
+          <div class="url-row">
+            <div class="k">Aktif</div>
+            <div class="v">Pengguna yang benar-benar memakai jaringan setiap hari.</div>
+          </div>
+          <div class="url-row">
+            <div class="k">Concurrent</div>
+            <div class="v">Pengguna yang aktif bersamaan pada jam puncak (ini yang paling penting!).</div>
+          </div>
+        </div>
+
+        <h4>Contoh Perhitungan</h4>
+        <p>Sebuah sekolah memiliki <strong>500 siswa</strong> dan <strong>40 guru</strong>. Pada jam puncak (pukul 09.30):</p>
+        <ul>
+          <li>500 siswa total, tapi hanya 5 kelas (≈ 150 siswa) yang sedang pakai jaringan.</li>
+          <li>40 guru, sekitar 20 sedang aktif.</li>
+          <li><strong>Concurrent users = 170</strong>, bukan 540.</li>
+        </ul>
+
+        <div class="callout warn">
+          <span class="title">Kesalahan Umum</span>
+          <p style="margin:0">Menghitung bandwidth berdasarkan <em>total</em> pengguna, bukan <em>concurrent</em>. Akibatnya perangkat dan bandwidth jadi <em>over-spec</em> dan mahal.</p>
+        </div>
+
+        <h4>Proyeksi Pertumbuhan</h4>
+        <p>Selalu tanyakan: <em>"Berapa perkiraan pertumbuhan pengguna 1–3 tahun ke depan?"</em> Perangkat inti sebaiknya dipilih dengan cadangan kapasitas minimal <strong>30–50%</strong> di atas kebutuhan saat ini.</p>
+        <ul>
+          <li><strong>Pertumbuhan alami:</strong> 5–10% per tahun.</li>
+          <li><strong>Pertumbuhan karena kebijakan:</strong> bisa 50%+ (misal: sekolah baru saja dapat bantuan 30 laptop).</li>
+          <li><strong>Pertumbuhan musiman:</strong> jam penerimaan siswa baru, ujian online, dst.</li>
+        </ul>
+      </div>
+    </details>
+  </section>
+
+  <!-- 2.3 -->
+  <section id="m2-3">
+    <details>
+      <summary>
+        <span class="num">2.3</span>
+        <span class="summary-text">Pola Penggunaan Jaringan</span>
+        <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </summary>
+      <div class="content">
+        <p>Jaringan tidak dipakai secara merata sepanjang hari. Ada jam sibuk, ada jam sepi. Mengenali pola ini menentukan <em>kapan</em> dan <em>berapa besar</em> kapasitas yang dibutuhkan.</p>
+
+        <h4>Pola Berdasarkan Waktu</h4>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Pola</th><th>Contoh</th><th>Dampak</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Peak Hours</strong></td>
+                <td>Jam 9–11 di kantor, jam istirahat di sekolah</td>
+                <td>Bandwidth paling terpakai. Butuh kapasitas puncak.</td>
+              </tr>
+              <tr>
+                <td><strong>Off-peak</strong></td>
+                <td>Jam 12–13, sore hari</td>
+                <td>Bandwidth lega, bisa dipakai untuk backup terjadwal.</td>
+              </tr>
+              <tr>
+                <td><strong>Bursty</strong></td>
+                <td>Upload foto, download file besar</td>
+                <td>Naik-turun drastis. Butuh buffer & QoS.</td>
+              </tr>
+              <tr>
+                <td><strong>Continuous</strong></td>
+                <td>Server, CCTV, VoIP</td>
+                <td>Stabil 24/7, tidak boleh putus.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h4>Pola Berdasarkan Hari</h4>
+        <ul>
+          <li><strong>Weekday (Senin–Jumat):</strong> pola normal operasional.</li>
+          <li><strong>Weekend:</strong> biasanya menurun, kecuali untuk retail atau tempat wisata.</li>
+          <li><strong>Hari khusus:</strong> ujian online, rapat besar, event sekolah — perlu antisipasi.</li>
+        </ul>
+
+        <h4>Cara Mendapatkan Data Pola</h4>
+        <ol class="steps">
+          <li>Lihat <em>log</em> router atau <em>traffic monitoring</em> (jika sudah ada jaringan).</li>
+          <li>Wawancara pengguna tentang kebiasaan mereka.</li>
+          <li>Amati langsung di lapangan pada jam-jam berbeda.</li>
+          <li>Buat grafik sederhana: <em>jam vs jumlah pengguna</em>, <em>jam vs bandwidth</em>.</li>
+        </ol>
+
+        <div class="callout info">
+          <span class="title">Penting</span>
+          <p style="margin:0">Kapasitas jaringan harus dirancang untuk <strong>jam puncak</strong>, bukan rata-rata. Rata-rata sering menipu.</p>
+        </div>
+      </div>
+    </details>
+  </section>
+
+  <!-- 2.4 -->
+  <section id="m2-4">
+    <details>
+      <summary>
+        <span class="num">2.4</span>
+        <span class="summary-text">Pengguna Kabel & Nirkabel</span>
+        <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </summary>
+      <div class="content">
+        <p>Tidak semua pengguna cocok pakai kabel, dan tidak semua cocok pakai Wi-Fi. Masing-masing punya karakter.</p>
+
+        <h4>Pengguna Kabel (Wired)</h4>
+        <ul>
+          <li><strong>Perangkat tetap</strong> — PC desktop, printer jaringan, server, CCTV.</li>
+          <li><strong>Butuh kestabilan & kecepatan tinggi</strong> — transfer file besar, editing di server.</li>
+          <li><strong>Keamanan lebih baik</strong> — tidak bisa diakses tanpa colokan fisik.</li>
+          <li><strong>Tidak butuh mobilitas</strong> — tetap di satu titik.</li>
+        </ul>
+
+        <h4>Pengguna Nirkabel (Wireless)</h4>
+        <ul>
+          <li><strong>Perangkat mobile</strong> — laptop, smartphone, tablet.</li>
+          <li><strong>Butuh mobilitas</strong> — berpindah ruangan, rapat, area luas.</li>
+          <li><strong>Tidak bisa / sulit ditarik kabel</strong> — bangunan tua, area terpisah, area publik.</li>
+          <li><strong>Instalasi cepat</strong> — tidak perlu bongkar tembok.</li>
+        </ul>
+
+        <h4>Perbandingan Cepat</h4>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Aspek</th><th>Kabel</th><th>Nirkabel</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Kecepatan</td><td>Sangat tinggi (1–10 Gbps)</td><td>Sedang–tinggi (100 Mbps–1 Gbps)</td></tr>
+              <tr><td>Stabilitas</td><td>Sangat stabil</td><td>Terpengaruh interferensi</td></tr>
+              <tr><td>Mobilitas</td><td>Tidak ada</td><td>Tinggi</td></tr>
+              <tr><td>Keamanan</td><td>Lebih aman</td><td>Butuh enkripsi & autentikasi</td></tr>
+              <tr><td>Biaya instalasi</td><td>Lebih mahal (kabel + tenaga)</td><td>Lebih murah</td></tr>
+              <tr><td>Cocok untuk</td><td>Server, PC tetap, CCTV</td><td>Laptop, HP, tamu</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="callout tip">
+          <span class="title">Aturan Praktis</span>
+          <p style="margin:0">Kalau perangkat <em>tidak berpindah</em> dan butuh <em>bandwidth besar / stabil</em> → kabel. Kalau <em>berpindah-pindah</em> atau <em>tidak bisa ditarik kabel</em> → nirkabel.</p>
+        </div>
+      </div>
+    </details>
+  </section>
+
+  <!-- 2.5 -->
+  <section id="m2-5">
+    <details>
+      <summary>
+        <span class="num">2.5</span>
+        <span class="summary-text">Perangkat yang Digunakan Pengguna</span>
+        <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </summary>
+      <div class="content">
+        <p>Setiap perangkat punya kebutuhan jaringan yang berbeda. Data ini dipakai untuk menghitung kebutuhan port, jumlah AP, dan bandwidth.</p>
+
+        <h4>Kategori Perangkat</h4>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Perangkat</th><th>Media Ideal</th><th>Kebutuhan Bandwidth</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>PC Desktop</td><td>Kabel</td><td>10–100 Mbps</td></tr>
+              <tr><td>Laptop</td><td>Wi-Fi / Kabel</td><td>5–50 Mbps</td></tr>
+              <tr><td>Smartphone</td><td>Wi-Fi</td><td>2–10 Mbps</td></tr>
+              <tr><td>Tablet</td><td>Wi-Fi</td><td>2–10 Mbps</td></tr>
+              <tr><td>Printer Jaringan</td><td>Kabel</td><td>1–5 Mbps (burst)</td></tr>
+              <tr><td>IP Camera / CCTV</td><td>Kabel (PoE)</td><td>2–8 Mbps per kamera</td></tr>
+              <tr><td>Server</td><td>Kabel</td><td>100 Mbps–1 Gbps</td></tr>
+              <tr><td>Smart TV</td><td>Kabel / Wi-Fi</td><td>5–25 Mbps</td></tr>
+              <tr><td>IoT (sensor, absensi)</td><td>Wi-Fi</td><td>&lt; 1 Mbps</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h4>Hal yang Harus Dicatat</h4>
+        <ul>
+          <li><strong>Jumlah</strong> setiap jenis perangkat.</li>
+          <li><strong>Kemampuan</strong> perangkat: NIC 100 Mbps? 1 Gbps? Wi-Fi 4/5/6?</li>
+          <li><strong>Lokasi</strong> dominan perangkat tersebut.</li>
+          <li><strong>Jam penggunaan</strong> — sama dengan pola pengguna.</li>
+        </ul>
+
+        <div class="callout warn">
+          <span class="title">Jangan Lewatkan</span>
+          <p style="margin:0">Perangkat lama sering jadi <em>bottleneck</em>. NIC 100 Mbps di server akan membatasi kecepatan seluruh jaringan meski switch-nya 1 Gbps.</p>
+        </div>
+      </div>
+    </details>
+  </section>
+
+  <!-- 2.6 -->
+  <section id="m2-6">
+    <details>
+      <summary>
+        <span class="num">2.6</span>
+        <span class="summary-text">Kebutuhan Akses Internet</span>
+        <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </summary>
+      <div class="content">
+        <p>Ini pertanyaan yang paling sering ditanyakan pengguna, tapi paling jarang dijawab dengan tepat. "Berapa Mbps yang kami butuh?"</p>
+
+        <h4>Rumus Dasar</h4>
+        <div class="callout info">
+          <span class="title">Rumus Estimasi Bandwidth</span>
+          <p style="margin:0;font-size:14.5px">
+            <strong>Bandwidth = Concurrent Users × Bandwidth per user × Overhead</strong><br>
+            Overhead umumnya 1.2 – 1.5 (untuk protokol, header, dsb.)
+          </p>
+        </div>
+
+        <h4>Contoh Perhitungan</h4>
+        <p>Ruang guru dengan 20 pengguna aktif bersamaan, tiap pengguna butuh 2 Mbps rata-rata:</p>
+        <ul>
+          <li>20 × 2 Mbps × 1.3 = <strong>52 Mbps</strong></li>
+          <li>Ambil langganan minimal <strong>50–60 Mbps</strong>.</li>
+        </ul>
+
+        <h4>Kebutuhan per Jenis Aktivitas</h4>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Aktivitas</th><th>Bandwidth / User</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Browsing, email</td><td>0.5 – 2 Mbps</td></tr>
+              <tr><td>Video call (SD)</td><td>1.5 Mbps</td></tr>
+              <tr><td>Video call (HD)</td><td>3 – 4 Mbps</td></tr>
+              <tr><td>Streaming YouTube (HD)</td><td>5 Mbps</td></tr>
+              <tr><td>Streaming Netflix (4K)</td><td>25 Mbps</td></tr>
+              <tr><td>Online gaming</td><td>3 – 6 Mbps + latency rendah</td></tr>
+              <tr><td>Upload file besar</td><td>5 – 50 Mbps</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h4>Faktor Tambahan</h4>
+        <ul>
+          <li><strong>Uplink vs Downlink</strong> — internet rumah biasanya simetris lemah di uplink. Cek kebutuhan upload (Zoom, CCTV remote, backup cloud).</li>
+          <li><strong>Overhead</strong> — jangan pas-pasan; sisakan 20–50% cadangan.</li>
+          <li><strong>Pertumbuhan</strong> — langganan biasanya bisa di-<em>upgrade</em>, tapi infrastruktur internal harus siap.</li>
+        </ul>
+      </div>
+    </details>
+  </section>
+
+  <!-- 2.7 -->
+  <section id="m2-7">
+    <details>
+      <summary>
+        <span class="num">2.7</span>
+        <span class="summary-text">Kebutuhan Akses Server & Layanan Jaringan</span>
+        <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </summary>
+      <div class="content">
+        <p>Selain internet, pengguna sering butuh akses ke <em>server lokal</em> dan layanan internal. Ini punya karakter trafik yang berbeda — biasanya lebih cepat, lebih stabil, dan tidak keluar dari jaringan lokal.</p>
+
+        <h4>Layanan Umum di Jaringan Lokal</h4>
+        <ul>
+          <li><strong>File server</strong> — berbagi dokumen, materi, foto.</li>
+          <li><strong>Print server</strong> — printer jaringan bersama.</li>
+          <li><strong>Web server lokal</strong> — aplikasi sekolah, LMS.</li>
+          <li><strong>Database server</strong> — sistem informasi, absensi.</li>
+          <li><strong>DNS & DHCP server</strong> — layanan dasar jaringan.</li>
+          <li><strong>NAS / storage</strong> — backup dan arsip.</li>
+          <li><strong>Aplikasi internal</strong> — aplikasi khusus organisasi.</li>
+        </ul>
+
+        <h4>Karakteristik Trafik Server Lokal</h4>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Aspek</th><th>Server Lokal</th><th>Cloud / Internet</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Latency</td><td>Sangat rendah (&lt; 5 ms)</td><td>Tergantung ISP (10–100 ms)</td></tr>
+              <tr><td>Kecepatan</td><td>Terbatas LAN (100 Mbps–10 Gbps)</td><td>Terbatas langganan ISP</td></tr>
+              <tr><td>Ketersediaan</td><td>Butuh UPS, redundancy</td><td>Ditanggung provider</td></tr>
+              <tr><td>Biaya</td><td>Investasi awal besar</td><td>Berlangganan bulanan</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h4>Yang Harus Dicatat dari Pengguna</h4>
+        <ul>
+          <li>Siapa yang butuh akses ke server mana?</li>
+          <li>Berapa sering dan seberapa besar file yang diakses?</li>
+          <li>Apa dampaknya kalau server down?</li>
+          <li>Apakah akses dari luar (remote) diperlukan?</li>
+        </ul>
+
+        <div class="callout tip">
+          <span class="title">Tips</span>
+          <p style="margin:0">Server lokal biasanya diakses dari jaringan internal, jadi tidak perlu bandwidth internet — tapi perlu bandwidth LAN tinggi dan switch yang mendukung.</p>
+        </div>
+      </div>
+    </details>
+  </section>
+
+  <!-- 2.8 -->
+  <section id="m2-8">
+    <details>
+      <summary>
+        <span class="num">2.8</span>
+        <span class="summary-text">Kebutuhan Berdasarkan Lingkungan Kerja</span>
+        <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </summary>
+      <div class="content">
+        <p>Lingkungan kerja menentukan karakter pengguna dan prioritas kebutuhan. Berikut ringkasan lima lingkungan umum yang akan sering Anda temui.</p>
+
+        <div class="env-grid">
+          <div class="env-card">
+            <h5>Sekolah</h5>
+            <ul>
+              <li>Pengguna: siswa, guru, staf.</li>
+              <li>Pola: puncak di jam pelajaran & istirahat.</li>
+              <li>Prioritas: bandwidth besar di lab, filtering konten, Wi-Fi di area guru.</li>
+              <li>Tantangan: anggaran terbatas, pengguna banyak.</li>
+            </ul>
+          </div>
+
+          <div class="env-card">
+            <h5>Kantor</h5>
+            <ul>
+              <li>Pengguna: karyawan, manajer, tamu.</li>
+              <li>Pola: peak jam 9–16.</li>
+              <li>Prioritas: email, aplikasi bisnis, VoIP, VPN.</li>
+              <li>Tantangan: keamanan data, VLAN segmentasi.</li>
+            </ul>
+          </div>
+
+          <div class="env-card">
+            <h5>Laboratorium</h5>
+            <ul>
+              <li>Pengguna: praktikan, asisten lab.</li>
+              <li>Pola: sesi praktikum, batch.</li>
+              <li>Prioritas: koneksi ke server lab, bandwidth tinggi lokal.</li>
+              <li>Tantangan: semua PC aktif bersamaan, butuh stabilitas.</li>
+            </ul>
+          </div>
+
+          <div class="env-card">
+            <h5>Rumah</h5>
+            <ul>
+              <li>Pengguna: anggota keluarga.</li>
+              <li>Pola: malam hari, akhir pekan.</li>
+              <li>Prioritas: streaming, gaming, WFH.</li>
+              <li>Tantangan: coverage ke seluruh rumah, interference.</li>
+            </ul>
+          </div>
+
+          <div class="env-card">
+            <h5>Industri</h5>
+            <ul>
+              <li>Pengguna: operator, teknisi, supervisor.</li>
+              <li>Pola: 24/7 atau shift kerja.</li>
+              <li>Prioritas: keandalan tinggi, latensi rendah, IoT/SCADA.</li>
+              <li>Tantangan: lingkungan ekstrem, keamanan OT.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="callout info">
+          <span class="title">Ingat</span>
+          <p style="margin:0">Setiap lingkungan punya <em>trade-off</em> berbeda. Solusi untuk kantor belum tentu cocok untuk sekolah, meski jumlah penggunanya sama.</p>
+        </div>
+      </div>
+    </details>
+  </section>
+
+  <!-- 2.9 -->
+  <section id="m2-9">
+    <details>
+      <summary>
+        <span class="num">2.9</span>
+        <span class="summary-text">Membuat User Requirement List</span>
+        <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </summary>
+      <div class="content">
+        <p><strong>User Requirement List (URL)</strong> adalah dokumen hasil akhir Modul 2. Isinya: daftar kebutuhan pengguna yang sudah terstruktur, siap diterjemahkan ke kebutuhan teknis di Modul 3 dan seterusnya.</p>
+
+        <h4>Struktur Minimal URL</h4>
+        <div class="url-template">
+          <div class="head">Kolom wajib dalam URL</div>
+          <div class="url-row">
+            <div class="k">ID</div>
+            <div class="v">Nomor unik, misal URL-01, URL-02.</div>
+          </div>
+          <div class="url-row">
+            <div class="k">Kategori</div>
+            <div class="v">Pengguna / Perangkat / Aplikasi / Keamanan / Pertumbuhan.</div>
+          </div>
+          <div class="url-row">
+            <div class="k">Deskripsi</div>
+            <div class="v">Kebutuhan dalam bahasa sederhana.</div>
+          </div>
+          <div class="url-row">
+            <div class="k">Sumber</div>
+            <div class="v">Siapa yang menyampaikan (wawancara, observasi, kebijakan).</div>
+          </div>
+          <div class="url-row">
+            <div class="k">Prioritas</div>
+            <div class="v">Must / Should / Could / Won't (MoSCoW).</div>
+          </div>
+          <div class="url-row">
+            <div class="k">Catatan</div>
+            <div class="v">Kondisi khusus, kendala, atau asumsi.</div>
+          </div>
+        </div>
+
+        <h4>Contoh URL — Ruang Guru SMK</h4>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>ID</th><th>Kebutuhan</th><th>Prioritas</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>URL-01</td><td>Wi-Fi stabil untuk 12 guru di ruang guru</td><td>Must</td></tr>
+              <tr><td>URL-02</td><td>Akses ke sistem informasi sekolah (web)</td><td>Must</td></tr>
+              <tr><td>URL-03</td><td>Video conference kualitas HD untuk rapat</td><td>Should</td></tr>
+              <tr><td>URL-04</td><td>Printer jaringan dapat diakses semua guru</td><td>Must</td></tr>
+              <tr><td>URL-05</td><td>Wi-Fi tamu terpisah untuk dinas luar</td><td>Could</td></tr>
+              <tr><td>URL-06</td><td>Kapasitas naik 30% dalam 2 tahun</td><td>Should</td></tr>
+              <tr><td>URL-07</td><td>Log akses tercatat untuk audit</td><td>Could</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h4>Langkah Menyusun URL</h4>
+        <ol class="steps">
+          <li><strong>Kumpulkan data</strong> dari wawancara, observasi, dan dokumen.</li>
+          <li><strong>Kelompokkan</strong> berdasarkan kategori (pengguna, perangkat, aplikasi, dsb.).</li>
+          <li><strong>Tulis deskripsi</strong> dalam bahasa sederhana, tidak teknis.</li>
+          <li><strong>Tetapkan prioritas</strong> dengan MoSCoW bersama pengambil keputusan.</li>
+          <li><strong>Review ulang</strong> bersama pengguna untuk memastikan tidak ada yang terlewat.</li>
+          <li><strong>Kunci versi</strong> — URL yang sudah disetujui menjadi dasar analisis teknis berikutnya.</li>
+        </ol>
+
+        <div class="callout warn">
+          <span class="title">Hindari</span>
+          <p style="margin:0">Menulis URL dalam bahasa teknis. Simpan "5 GHz", "VLAN", "PoE" untuk tahap berikutnya. URL adalah bahasa pengguna, bukan bahasa teknisi.</p>
+        </div>
+
+        <div class="case-box">
+          <span class="case-label">Latihan</span>
+          <p>Buat URL untuk salah satu kasus berikut:</p>
+          <ul style="margin:6px 0 8px;padding-left:20px;font-size:14px">
+            <li>Laboratorium TKJ dengan 36 PC</li>
+            <li>Kantor kecil 15 karyawan</li>
+            <li>Rumah dengan 4 anggota keluarga</li>
+          </ul>
+          <div class="question">
+            <strong>Minimal 6 baris URL:</strong> 2 untuk pengguna, 2 untuk aplikasi, 1 untuk keamanan, 1 untuk pertumbuhan.
+          </div>
+        </div>
+      </div>
+    </details>
+  </section>
+
+  <div class="takeaway">
+    <h3>Poin Kunci Modul 2</h3>
+    <ol>
+      <li>Pengguna dikelompokkan berdasarkan peran, intensitas, dan lokasi.</li>
+      <li>Bedakan jumlah total, aktif, dan concurrent — yang menentukan kapasitas adalah concurrent.</li>
+      <li>Pola penggunaan punya jam puncak; rancang untuk puncak, bukan rata-rata.</li>
+      <li>Kabel untuk perangkat tetap & bandwidth tinggi; nirkabel untuk mobilitas.</li>
+      <li>Kebutuhan internet dihitung dari pengguna × bandwidth × overhead.</li>
+      <li>Server lokal dan cloud punya karakter trafik yang berbeda.</li>
+      <li>Lingkungan kerja (sekolah, kantor, lab, rumah, industri) menentukan prioritas.</li>
+      <li>Output Modul 2 adalah <strong>User Requirement List</strong> dengan prioritas MoSCoW.</li>
+    </ol>
+  </div>
+
+</main>
+
+<button class="back-top" id="backTop" aria-label="Kembali ke atas">
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>
+</button>
+
+<footer>
+  <strong>Modul 2 — Identifikasi Karakteristik Pengguna</strong><br>
+  Kelas XI TKJ · TP: Memahami kebutuhan teknis pengguna dan peralatan jaringan dengan teknologi yang sesuai.
+</footer>
+
+<script>
+  document.querySelectorAll('nav.toc a').forEach(a=>{
+    a.addEventListener('click', e=>{
+      const el = document.querySelector(a.getAttribute('href'));
+      if(el){ e.preventDefault(); el.scrollIntoView({behavior:'smooth', block:'start'}); }
+    });
+  });
+
+  const btn = document.getElementById('backTop');
+  window.addEventListener('scroll', ()=>{
+    if(window.scrollY > 400) btn.classList.add('show');
+    else btn.classList.remove('show');
+  });
+  btn.addEventListener('click', ()=>window.scrollTo({top:0, behavior:'smooth'}));
+</script>
+
+</body>
+</html>
